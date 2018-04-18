@@ -1,0 +1,415 @@
+{
+	"groups": [
+		{
+			"keys": "bgImage,musicBtnImage,startBtnImage,helpBtnImage,bombImage,wall1_1Image,wall1_2Image,fight1BgImage,streakNum,sourceNum,sorceMcImage,comboImage,profileBg_png,btn_modify_png,inputBg_png,btn_joinRoom2_png,roomBg_png,btn_kickPlayer_png,btn_leaveRoom_png,btn_backToHome_png,icon_lose_png,icon_win_png,btn_relive_png,bg_list_png,btn_startGame_png,btn_addRobot_png,arrow_png",
+			"name": "preload"
+		},
+		{
+			"keys": "completeImage,overBgImage,shanImage,closeGameBtnImage,optionBtnImage,option5Image,option6Image,option7Image,optionMusicBgImage,optionBgImage,blodBarMaskImage,rBlodBarBgImage,rBlodBarImage,bBlodBarBgImage,bBlodBarImage,maskImage,gameOverImage,gold,goldBg,roomBg,btn_joinRoom_png,btn_createRoom_png,btn_joinRandomRoom_png,btn_back_png,avatar_png,btn_close_png,profile_png",
+			"name": "bgPic"
+		},
+		{
+			"keys": "redNu,redNu_swf,promptPop,promptPop_swf,honglang,honglang_swf,lanlang,lanlang_swf,go,go_swf,xiaohongmao,xiaohongmao_swf,xiaolanmao,xiaolanmao_swf",
+			"name": "animation"
+		},
+		{
+			"keys": "bgSound,winSound,missSound,hitSound,goSound,overSound,beHitSound,numSound",
+			"name": "sound"
+		}
+	],
+	"resources": [
+		{
+			"url": "assets/load_bg.png",
+			"type": "image",
+			"name": "bgImage"
+		},
+		{
+			"url": "assets/help_btn.png",
+			"type": "image",
+			"name": "helpBtnImage"
+		},
+		{
+			"url": "assets/music_btn.png",
+			"type": "image",
+			"name": "musicBtnImage"
+		},
+		{
+			"url": "assets/start_btn.png",
+			"type": "image",
+			"name": "startBtnImage"
+		},
+		{
+			"url": "assets/fight1Bg.png",
+			"type": "image",
+			"name": "fight1BgImage"
+		},
+		{
+			"url": "assets/shan.png",
+			"type": "image",
+			"name": "shanImage"
+		},
+		{
+			"url": "assets/help_object-2.png",
+			"type": "image",
+			"name": "closeGameBtnImage"
+		},
+		{
+			"url": "assets/option_btn_b.png",
+			"type": "image",
+			"name": "optionBtnImage"
+		},
+		{
+			"url": "assets/option_bg.png",
+			"type": "image",
+			"name": "optionMusicBgImage"
+		},
+		{
+			"url": "assets/option_05.png",
+			"type": "image",
+			"name": "option5Image"
+		},
+		{
+			"url": "assets/option_06.png",
+			"type": "image",
+			"name": "option6Image"
+		},
+		{
+			"url": "assets/option_07.png",
+			"type": "image",
+			"name": "option7Image"
+		},
+		{
+			"url": "assets/optionBgImage.png",
+			"type": "image",
+			"name": "optionBgImage"
+		},
+		{
+			"url": "assets/wall1_1.png",
+			"type": "image",
+			"name": "wall1_1Image"
+		},
+		{
+			"url": "assets/wall1_2.png",
+			"type": "image",
+			"name": "wall1_2Image"
+		},
+		{
+			"url": "assets/bomb.png",
+			"type": "image",
+			"name": "bombImage"
+		},
+		{
+			"url": "assets/combo.png",
+			"type": "image",
+			"name": "comboImage"
+		},
+		{
+			"url": "assets/gameOver.png",
+			"type": "image",
+			"name": "gameOverImage"
+		},
+		{
+			"url": "assets/gold.png",
+			"type": "image",
+			"name": "gold"
+		},
+		{
+			"url": "assets/goldBg.png",
+			"type": "image",
+			"name": "goldBg"
+		},
+		{
+			"url": "assets/mask.png",
+			"type": "image",
+			"name": "maskImage"
+		},
+		{
+			"url": "assets/blodBarMask.png",
+			"type": "image",
+			"name": "blodBarMaskImage"
+		},
+		{
+			"url": "assets/rBlodBarBg.png",
+			"type": "image",
+			"name": "rBlodBarBgImage"
+		},
+		{
+			"url": "assets/rBlodBar.png",
+			"type": "image",
+			"name": "rBlodBarImage"
+		},
+		{
+			"url": "assets/bBlodBarBg.png",
+			"type": "image",
+			"name": "bBlodBarBgImage"
+		},
+		{
+			"url": "assets/bBlodBar.png",
+			"type": "image",
+			"name": "bBlodBarImage"
+		},
+		{
+			"url": "assets/sorceMc.png",
+			"type": "image",
+			"name": "sorceMcImage"
+		},
+		{
+			"url": "assets/overBg.png",
+			"type": "image",
+			"name": "overBgImage"
+		},
+		{
+			"url": "assets/complete.png",
+			"type": "image",
+			"name": "completeImage"
+		},
+		{
+			"url": "assets/number/streakNum.json",
+			"type": "sheet",
+			"name": "streakNum"
+		},
+		{
+			"url": "assets/number/sourceNum.json",
+			"type": "sheet",
+			"name": "sourceNum"
+		},
+		{
+			"url": "assets/sound/sound_bg.mp3",
+			"type": "sound",
+			"name": "bgSound",
+			"soundType": "music"
+		},
+		{
+			"url": "assets/sound/sound_win.mp3",
+			"type": "sound",
+			"name": "winSound",
+			"soundType": "effect"
+		},
+		{
+			"url": "assets/sound/sound_miss.mp3",
+			"type": "sound",
+			"name": "missSound",
+			"soundType": "effect"
+		},
+		{
+			"url": "assets/sound/sound_hit.mp3",
+			"type": "sound",
+			"name": "hitSound",
+			"soundType": "effect"
+		},
+		{
+			"url": "assets/sound/sound_go.mp3",
+			"type": "sound",
+			"name": "goSound",
+			"soundType": "effect"
+		},
+		{
+			"url": "assets/sound/sound_gameover.mp3",
+			"type": "sound",
+			"name": "overSound",
+			"soundType": "effect"
+		},
+		{
+			"url": "assets/sound/sound_behit.mp3",
+			"type": "sound",
+			"name": "beHitSound",
+			"soundType": "effect"
+		},
+		{
+			"url": "assets/sound/OneTwoThree.mp3",
+			"type": "sound",
+			"name": "numSound",
+			"soundType": "effect"
+		},
+		{
+			"url": "assets/xiaohongmao/xiaohongmao.json",
+			"type": "starlingswf_sheet",
+			"name": "xiaohongmao"
+		},
+		{
+			"url": "assets/xiaohongmao/xiaohongmao_swf.json",
+			"type": "json",
+			"name": "xiaohongmao_swf"
+		},
+		{
+			"url": "assets/xiaolanmao/xiaolanmao.json",
+			"type": "starlingswf_sheet",
+			"name": "xiaolanmao"
+		},
+		{
+			"url": "assets/xiaolanmao/xiaolanmao_swf.json",
+			"type": "json",
+			"name": "xiaolanmao_swf"
+		},
+		{
+			"url": "assets/redNu/redNu.json",
+			"type": "starlingswf_sheet",
+			"name": "redNu"
+		},
+		{
+			"url": "assets/redNu/redNu_swf.json",
+			"type": "json",
+			"name": "redNu_swf"
+		},
+		{
+			"url": "assets/promptPop/promptPop.json",
+			"type": "starlingswf_sheet",
+			"name": "promptPop"
+		},
+		{
+			"url": "assets/promptPop/promptPop_swf.json",
+			"type": "json",
+			"name": "promptPop_swf"
+		},
+		{
+			"url": "assets/honglang/honglang.json",
+			"type": "starlingswf_sheet",
+			"name": "honglang"
+		},
+		{
+			"url": "assets/honglang/honglang_swf.json",
+			"type": "json",
+			"name": "honglang_swf"
+		},
+		{
+			"url": "assets/lanlang/lanlang.json",
+			"type": "starlingswf_sheet",
+			"name": "lanlang"
+		},
+		{
+			"url": "assets/lanlang/lanlang_swf.json",
+			"type": "json",
+			"name": "lanlang_swf"
+		},
+		{
+			"url": "assets/go/go.json",
+			"type": "starlingswf_sheet",
+			"name": "go"
+		},
+		{
+			"url": "assets/go/go_swf.json",
+			"type": "json",
+			"name": "go_swf"
+		},
+		{
+			"url": "config/description.json",
+			"type": "json",
+			"name": "description"
+		},
+		{
+			"name": "roomBg",
+			"type": "image",
+			"url": "assets/roomBg.jpg"
+		},
+		{
+			"name": "btn_joinRoom_png",
+			"type": "image",
+			"url": "assets/btn_joinRoom.png"
+		},
+		{
+			"name": "btn_createRoom_png",
+			"type": "image",
+			"url": "assets/btn_createRoom.png"
+		},
+		{
+			"name": "btn_joinRandomRoom_png",
+			"type": "image",
+			"url": "assets/btn_joinRandomRoom.png"
+		},
+		{
+			"name": "btn_back_png",
+			"type": "image",
+			"url": "assets/btn_back.png"
+		},
+		{
+			"name": "avatar_png",
+			"type": "image",
+			"url": "assets/avatar.png"
+		},
+		{
+			"name": "btn_close_png",
+			"type": "image",
+			"url": "assets/btn_close.png"
+		},
+		{
+			"name": "profile_png",
+			"type": "image",
+			"url": "assets/profile.png"
+		},
+		{
+			"name": "profileBg_png",
+			"type": "image",
+			"url": "assets/profileBg.png"
+		},
+		{
+			"name": "btn_modify_png",
+			"type": "image",
+			"url": "assets/btn_modify.png"
+		},
+		{
+			"name": "inputBg_png",
+			"type": "image",
+			"url": "assets/inputBg.png"
+		},
+		{
+			"name": "btn_joinRoom2_png",
+			"type": "image",
+			"url": "assets/btn_joinRoom2.png"
+		},
+		{
+			"name": "roomBg_png",
+			"type": "image",
+			"url": "assets/roomBg.png"
+		},
+		{
+			"name": "btn_kickPlayer_png",
+			"type": "image",
+			"url": "assets/btn_kickPlayer.png"
+		},
+		{
+			"name": "btn_leaveRoom_png",
+			"type": "image",
+			"url": "assets/btn_leaveRoom.png"
+		},
+		{
+			"name": "btn_backToHome_png",
+			"type": "image",
+			"url": "assets/btn_backToHome.png"
+		},
+		{
+			"name": "icon_lose_png",
+			"type": "image",
+			"url": "assets/icon_lose.png"
+		},
+		{
+			"name": "icon_win_png",
+			"type": "image",
+			"url": "assets/icon_win.png"
+		},
+		{
+			"name": "btn_relive_png",
+			"type": "image",
+			"url": "assets/btn_relive.png"
+		},
+		{
+			"name": "bg_list_png",
+			"type": "image",
+			"url": "assets/bg_list.png"
+		},
+		{
+			"name": "btn_startGame_png",
+			"type": "image",
+			"url": "assets/btn_startGame.png"
+		},
+		{
+			"name": "btn_addRobot_png",
+			"type": "image",
+			"url": "assets/btn_addRobot.png"
+		},
+		{
+			"name": "arrow_png",
+			"type": "image",
+			"url": "assets/arrow.png"
+		}
+	]
+}

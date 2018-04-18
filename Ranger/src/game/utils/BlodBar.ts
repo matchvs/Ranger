@@ -1,0 +1,49 @@
+class BlodBar extends egret.Sprite {
+    private r: egret.Rectangle;
+    private type: string;
+    private blodBar: egret.Bitmap;
+    private w: number = 0;
+    constructor(type: string) {
+        super();
+        this.type = type;
+        this.initView(type);
+    }
+
+    private initView(type: string): void {
+        var barBg: egret.Bitmap
+        var blodBar: egret.Bitmap
+
+        if (type === "r") {
+            barBg = ResourceUtils.createBitmapByName("rBlodBarBgImage");
+            blodBar = ResourceUtils.createBitmapByName("rBlodBarImage");
+        } else if (type === "b") {
+            barBg = ResourceUtils.createBitmapByName("bBlodBarBgImage");
+            blodBar = ResourceUtils.createBitmapByName("bBlodBarImage");
+        }
+
+        this.addChild(barBg);
+        this.addChild(blodBar);
+
+        this.blodBar = blodBar;
+
+        blodBar.x = 32;
+        blodBar.y = 7;
+
+        /**
+         * rectangle
+         */
+        this.w = blodBar.width;
+        this.r = new egret.Rectangle();
+        this.r.x = 0;
+        this.r.y = 0;
+        this.r.width = blodBar.width;
+        this.r.height = blodBar.height;
+        blodBar.mask = this.r;
+    }
+
+    public scaleBlodX(): void {
+        let blood = this.type === "r" ? GameData.players[0].blood : GameData.players[1].blood
+        this.r.x = -(this.w - this.w * (blood / 5));
+        this.blodBar.mask = this.r
+    }
+}

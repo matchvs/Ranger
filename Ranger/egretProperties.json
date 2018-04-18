@@ -1,0 +1,37 @@
+{
+  "native": {
+    "path_ignore": []
+  },
+  "publish": {
+    "web": 0,
+    "native": 1,
+    "path": "bin-release"
+  },
+  "egret_version": "5.0.15",
+  "template": {},
+  "modules": [
+    {
+      "name": "egret"
+    },
+    {
+      "name": "game"
+    },
+    {
+      "name": "tween"
+    },
+    {
+      "name": "res"
+    },
+    {
+      "name": "promise",
+      "path": "./promise"
+    },
+    {
+      "name": "matchvs",
+      "path": "../matchvs"
+    },
+    {
+      "name": "socket"
+    }
+  ]
+}

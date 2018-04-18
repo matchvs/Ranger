@@ -1,0 +1,7 @@
+debug.log
+
+bin-debug/
+bin-release/
+libs/
+
+.idea/

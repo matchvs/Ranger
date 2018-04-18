@@ -1,0 +1,77 @@
+{
+    "frames": {
+        "img_xiaohongmao-sc/xiaohongmao003": {
+            "y": 0,
+            "offY": -1,
+            "h": 106,
+            "offX": -1,
+            "w": 120,
+            "x": 0
+        },
+        "img_xiaohongmao-sc/xiaohongmaozhuanshen3": {
+            "y": 186,
+            "offY": 0,
+            "h": 79,
+            "offX": -1,
+            "w": 120,
+            "x": 122
+        },
+        "img_xiaohongmao-sc/xiaohongmaowin": {
+            "y": 104,
+            "offY": 0,
+            "h": 80,
+            "offX": -1,
+            "w": 120,
+            "x": 122
+        },
+        "img_xiaohongmao-sc/xiaohongmao002": {
+            "y": 0,
+            "offY": 0,
+            "h": 102,
+            "offX": -1,
+            "w": 120,
+            "x": 122
+        },
+        "img_xiaohongmao-sc/xiaohongmaozhuanshen2": {
+            "y": 102,
+            "offY": 0,
+            "h": 82,
+            "offX": -1,
+            "w": 119,
+            "x": 365
+        },
+        "img_xiaohongmao-sc/xiaohongmao004": {
+            "y": 0,
+            "offY": 0,
+            "h": 100,
+            "offX": -1,
+            "w": 120,
+            "x": 366
+        },
+        "img_xiaohongmao-sc/xiaohongmaozhuanshen4": {
+            "y": 108,
+            "offY": 0,
+            "h": 80,
+            "offX": -1,
+            "w": 120,
+            "x": 0
+        },
+        "img_xiaohongmao-sc/xiaohongmao001": {
+            "y": 0,
+            "offY": 0,
+            "h": 100,
+            "offX": -1,
+            "w": 120,
+            "x": 244
+        },
+        "img_xiaohongmao-sc/xiaohongmaozhuanshen1": {
+            "y": 102,
+            "offY": 0,
+            "h": 94,
+            "offX": -1,
+            "w": 119,
+            "x": 244
+        }
+    },
+    "file": "xiaohongmao.png"
+}
