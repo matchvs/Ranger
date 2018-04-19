@@ -1,0 +1,45 @@
+{
+    "frames": {
+        "img_honglang-sc/honglangzou002": {
+            "offX": -1,
+            "y": 0,
+            "h": 212,
+            "w": 200,
+            "offY": -2,
+            "x": 0
+        },
+        "img_honglang-sc/honglangzou004": {
+            "offX": -1,
+            "y": 0,
+            "h": 213,
+            "w": 191,
+            "offY": -3,
+            "x": 202
+        },
+        "img_honglang-sc/honglangzou005": {
+            "offX": -3,
+            "y": 214,
+            "h": 228,
+            "w": 159,
+            "offY": -2,
+            "x": 0
+        },
+        "img_honglang-sc/honglangzou003": {
+            "offX": -2,
+            "y": 215,
+            "h": 213,
+            "w": 169,
+            "offY": -3,
+            "x": 161
+        },
+        "img_honglang-sc/honglangzou001": {
+            "offX": -1,
+            "y": 215,
+            "h": 213,
+            "w": 165,
+            "offY": -3,
+            "x": 332
+        }
+    },
+    "file": "honglang.png"
+}

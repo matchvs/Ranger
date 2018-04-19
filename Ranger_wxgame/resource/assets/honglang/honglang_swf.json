@@ -1,0 +1,207 @@
+{
+    "s9": {},
+    "mc": {
+        "mc_honglang": {
+            "loop": true,
+            "objCount": {
+                "img_honglang-sc/honglangzou002": [
+                    "img",
+                    1
+                ],
+                "img_honglang-sc/honglangzou004": [
+                    "img",
+                    1
+                ],
+                "img_honglang-sc/honglangzou005": [
+                    "img",
+                    1
+                ],
+                "img_honglang-sc/honglangzou003": [
+                    "img",
+                    1
+                ],
+                "img_honglang-sc/honglangzou001": [
+                    "img",
+                    1
+                ]
+            },
+            "labels": [
+                [
+                    "run",
+                    0,
+                    7
+                ],
+                [
+                    "die",
+                    8,
+                    8
+                ]
+            ],
+            "frameEvents": {},
+            "frames": [
+                [
+                    [
+                        "img_honglang-sc/honglangzou001",
+                        "img",
+                        5.65,
+                        -9.85,
+                        0.637603759765625,
+                        0.637603759765625,
+                        0,
+                        0,
+                        1,
+                        "",
+                        0
+                    ]
+                ],
+                [
+                    [
+                        "img_honglang-sc/honglangzou001",
+                        "img",
+                        5.65,
+                        -9.85,
+                        0.637603759765625,
+                        0.637603759765625,
+                        0,
+                        0,
+                        1,
+                        "",
+                        0
+                    ]
+                ],
+                [
+                    [
+                        "img_honglang-sc/honglangzou002",
+                        "img",
+                        -2.35,
+                        -9.15,
+                        0.637603759765625,
+                        0.637603759765625,
+                        0,
+                        0,
+                        1,
+                        "",
+                        0
+                    ]
+                ],
+                [
+                    [
+                        "img_honglang-sc/honglangzou002",
+                        "img",
+                        -2.35,
+                        -9.15,
+                        0.637603759765625,
+                        0.637603759765625,
+                        0,
+                        0,
+                        1,
+                        "",
+                        0
+                    ]
+                ],
+                [
+                    [
+                        "img_honglang-sc/honglangzou003",
+                        "img",
+                        -7.05,
+                        -8.9,
+                        0.637603759765625,
+                        0.637603759765625,
+                        0,
+                        0,
+                        1,
+                        "",
+                        0
+                    ]
+                ],
+                [
+                    [
+                        "img_honglang-sc/honglangzou003",
+                        "img",
+                        -7.05,
+                        -8.9,
+                        0.637603759765625,
+                        0.637603759765625,
+                        0,
+                        0,
+                        1,
+                        "",
+                        0
+                    ]
+                ],
+                [
+                    [
+                        "img_honglang-sc/honglangzou004",
+                        "img",
+                        1.55,
+                        -11.1,
+                        0.637603759765625,
+                        0.637603759765625,
+                        0,
+                        0,
+                        1,
+                        "",
+                        0
+                    ]
+                ],
+                [
+                    [
+                        "img_honglang-sc/honglangzou004",
+                        "img",
+                        1.55,
+                        -11.1,
+                        0.637603759765625,
+                        0.637603759765625,
+                        0,
+                        0,
+                        1,
+                        "",
+                        0
+                    ]
+                ],
+                [
+                    [
+                        "img_honglang-sc/honglangzou005",
+                        "img",
+                        0.75,
+                        2.75,
+                        0.676788330078125,
+                        0.676788330078125,
+                        0,
+                        0,
+                        1,
+                        "",
+                        0
+                    ]
+                ]
+            ]
+        }
+    },
+    "shapeImg": {},
+    "comp": {},
+    "img": {
+        "img_honglang-sc/honglangzou002": [
+            101.55,
+            116
+        ],
+        "img_honglang-sc/honglangzou004": [
+            96.5,
+            116
+        ],
+        "img_honglang-sc/honglangzou005": [
+            82,
+            116
+        ],
+        "img_honglang-sc/honglangzou003": [
+            86,
+            116
+        ],
+        "img_honglang-sc/honglangzou001": [
+            82.95,
+            116
+        ]
+    },
+    "particle": {},
+    "btn": {},
+    "spr": {}
+}
