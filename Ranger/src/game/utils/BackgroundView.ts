@@ -11,6 +11,13 @@ class BackGroundView extends egret.Sprite {
         var rightWall: Hinder = new Hinder();
 
         bg = ResourceUtils.createBitmapByName("fight1BgImage");
+        // bg.width = Const.SCENT_WIDTH;
+        // bg.height = Const.SCENT_HEIGHT;
+        // bg.anchorOffsetX = bg.width / 2;
+        // bg.anchorOffsetY = bg.height / 2;
+        // bg.x = 0;
+        // bg.y = 0;
+
         this.addChild(bg);
         leftWall.initView(1, 1);
         rightWall.initView(1, 2);

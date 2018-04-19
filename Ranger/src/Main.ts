@@ -6,7 +6,7 @@ class Main extends egret.DisplayObjectContainer {
     private _loadTimes: number = 0;
     public constructor() {
         super();
-
+        
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
 
         // 扩展资源加载模块文件解析器
@@ -34,6 +34,7 @@ class Main extends egret.DisplayObjectContainer {
         LocalStore_Clear();
 
         this.init();
+        this.stage.scaleMode = egret.StageScaleMode.SHOW_ALL;
     }
 
     private init() {

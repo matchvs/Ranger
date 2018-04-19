@@ -10,10 +10,10 @@ class GamePlayView extends egret.Sprite {
     constructor() {
         super();
         this.mvsBind();
-
         this.sp = new egret.Sprite();
         this.sp.touchEnabled = true;
         this.addChild(this.sp);
+        
     }
 
     public mvsBind() {
@@ -112,10 +112,11 @@ class GamePlayView extends egret.Sprite {
         var optionBmp: egret.Bitmap = ResourceUtils.createBitmapByName("optionBtnImage");
         optionBtn.addChild(optionBmp);
         optionBtn.touchEnabled = true;
-        optionBtn.width = 38;
-        optionBtn.height = 38;
-        optionBtn.x = 431;
-        optionBtn.y = 748;
+        optionBtn.width = this.stage.stageWidth/10 ;
+        optionBtn.height = this.stage.stageWidth/10;
+        optionBtn.x = this.stage.stageWidth * 0.90;
+        optionBtn.y = this.stage.stageHeight * 0.95;
+
         optionBtn.addEventListener(egret.TouchEvent.TOUCH_TAP, this.showOptionView, this);
         this.addChild(optionBtn);
 

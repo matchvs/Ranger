@@ -26,7 +26,7 @@
 		},
 		{
 			"name": "matchvs",
-			"path": "../matchvs_wx"
+			"path": "../matchvs"
 		}
 	]
 }
