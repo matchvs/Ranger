@@ -1,37 +1,32 @@
 {
-  "native": {
-    "path_ignore": []
-  },
-  "publish": {
-    "web": 0,
-    "native": 1,
-    "path": "bin-release"
-  },
-  "egret_version": "5.0.15",
-  "template": {},
-  "modules": [
-    {
-      "name": "egret"
-    },
-    {
-      "name": "game"
-    },
-    {
-      "name": "tween"
-    },
-    {
-      "name": "res"
-    },
-    {
-      "name": "promise",
-      "path": "./promise"
-    },
-    {
-      "name": "matchvs",
-      "path": "../matchvs"
-    },
-    {
-      "name": "socket"
-    }
-  ]
+	"engineVersion": "5.1.5",
+	"compilerVersion": "5.1.5",
+	"target": {
+		"current": "web"
+	},
+	"template": {},
+	"modules": [
+		{
+			"name": "egret"
+		},
+		{
+			"name": "game"
+		},
+		{
+			"name": "tween"
+		},
+		{
+			"name": "socket"
+		},
+		{
+			"name": "promise"
+		},
+		{
+			"name": "res"
+		},
+		{
+			"name": "matchvs",
+			"path": "../matchvs"
+		}
+	]
 }

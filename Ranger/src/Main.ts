@@ -29,7 +29,7 @@ class Main extends egret.DisplayObjectContainer {
 
         RES.addEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
         // 加载配置文件并解析
-        RES.loadConfig("resource/resource.json", "resource/");
+        RES.loadConfig("resource/default.res.json", "resource/");
 
         LocalStore_Clear();
 
