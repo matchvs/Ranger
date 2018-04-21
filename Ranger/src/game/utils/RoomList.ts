@@ -22,7 +22,7 @@ class RoomList extends egret.DisplayObjectContainer {
         scrollView.setContent(this.content);
 
         scrollView.width = Const.SCENT_WIDTH;
-        scrollView.height = 450;
+        scrollView.height = 450 * Utils.wHeightScale();
 
         this.addChild(scrollView);
     }
@@ -34,10 +34,13 @@ class RoomList extends egret.DisplayObjectContainer {
         for (let i = 0, l = roomListArr.length; i < l; i++) {
             let roomItemBmp: egret.Bitmap = ResourceUtils.createBitmapByName("bg_list_png");
 
+            roomItemBmp.width *= Utils.wWidthScale();
+            roomItemBmp.height *= Utils.wHeightScale();
+
             let roomItemSp = new egret.Sprite();
             roomItemSp.touchEnabled = true;
             roomItemSp.x = Const.SCENT_WIDTH / 2 - roomItemBmp.width / 2;
-            roomItemSp.y = (100 + 10) * i;
+            roomItemSp.y = (100 + 10) * Utils.wYScale() * i;
 
 
             // 不能自定义属性???
@@ -51,10 +54,10 @@ class RoomList extends egret.DisplayObjectContainer {
 
 
             let roomItemTxt = new egret.TextField();
-            roomItemTxt.size = 18;
+            roomItemTxt.size = 18 * Utils.wYScale();
             roomItemTxt.textColor = 0xffffff;
             roomItemTxt.text = roomListArr[i].roomID + "";
-            roomItemTxt.x = 22;
+            roomItemTxt.x = 22 * Utils.wXScale();
             roomItemTxt.y = roomItemBmp.height / 2 - roomItemTxt.height / 2;
             roomItemSp.addChild(roomItemTxt);
         }
@@ -81,7 +84,7 @@ class RoomList extends egret.DisplayObjectContainer {
             return;
         }
         GameData.isRoomItemClick = true;
-        
+
         this.roomId = e.currentTarget.name;
 
         if (this.roomId === GameData.lastRoomId) {

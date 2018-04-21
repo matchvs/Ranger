@@ -15,28 +15,28 @@ class RandomMatchView extends egret.Sprite {
 
     private initView() {
         this.bg = ResourceUtils.createBitmapByName("profileBg_png");
-        this.bg.width /= 2;
-        this.bg.height /= 3;
+        this.bg.width = this.bg.width / 2 * Utils.wWidthScale();
+        this.bg.height = this.bg.height / 3 * Utils.wHeightScale();
         this.addChild(this.bg);
 
         let txt = new egret.TextField();
         txt.text = "正在随机匹配";
-        txt.size = 20;
+        txt.size = 20 * Utils.wYScale();
         txt.textColor = 0x333333;
         txt.fontFamily = "Microsoft YaHei UI";
         txt.x = this.bg.width / 2 - txt.width / 2;
-        txt.y = 30;
+        txt.y = 30 * Utils.wYScale();
         this.addChild(txt);
 
         this.waitTime = new SpecialNumber("number-");
         this.addChild(this.waitTime);
         this.waitTime.setValue(0 + "");
         this.waitTime.x = this.bg.width / 2 - this.waitTime.width / 2;
-        this.waitTime.y = 65;
+        this.waitTime.y = 65 * Utils.wYScale();
 
         this.backBtn = new MyButtonForGame("btn_back_png", "btn_back_png");
         this.backBtn.x = this.bg.width / 2 - this.backBtn.width / 2;
-        this.backBtn.y = 100;
+        this.backBtn.y = 100 * Utils.wYScale();
         this.addChild(this.backBtn);
         this.backBtn.setClick(this.backBtnClickHandler.bind(this));
     }

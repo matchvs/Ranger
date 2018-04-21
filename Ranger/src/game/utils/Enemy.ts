@@ -50,14 +50,14 @@ class Enemy extends egret.Sprite {
 
         else {
             // 820
-            if (this.y < 1000) {
+            if (this.y < 1000 * Utils.wYScale()) {
                 // this.y += GameData.enemySpeed;
-                var newY = this.y + GameData.enemySpeed
+                var newY = this.y + GameData.enemySpeed * Utils.wYScale()
                 egret.Tween.get(this).to({ "y": newY }, 100)
             }
             // 820
             else {
-                this.y = 1000;
+                this.y = 1000 * Utils.wYScale();
                 this.over = true;
             }
             // else {
@@ -91,29 +91,29 @@ class Enemy extends egret.Sprite {
 
     public goOut(): void {
         if (this.row === 0) {
-            this.x -= 15;
-            this.y -= 15;
+            this.x -= 15 * Utils.wXScale();
+            this.y -= 15 * Utils.wYScale();
             // var newX = this.x - 15
             // var newY = this.y - 15
             // egret.Tween.get(this).to({ "x": newX, "y": newY }, 10)
         }
         else if (this.row === 1) {
-            this.x -= 15;
-            this.y -= 20;
+            this.x -= 15 * Utils.wXScale();
+            this.y -= 20 * Utils.wYScale();
             // var newX = this.x - 15
             // var newY = this.y - 20
             // egret.Tween.get(this).to({ "x": newX, "y": newY }, 10)
         }
         else if (this.row === 2) {
-            this.x += 15;
-            this.y -= 20;
+            this.x += 15 * Utils.wXScale();
+            this.y -= 20 * Utils.wYScale();
             // var newX = this.x + 15
             // var newY = this.y - 20
             // egret.Tween.get(this).to({ "x": newX, "y": newY }, 10)
         }
         else if (this.row === 3) {
-            this.x += 15;
-            this.y -= 15;
+            this.x += 15 * Utils.wXScale();
+            this.y -= 15 * Utils.wYScale();
             // var newX = this.x + 15
             // var newY = this.y - 15
             // egret.Tween.get(this).to({ "x": newX, "y": newY }, 10)

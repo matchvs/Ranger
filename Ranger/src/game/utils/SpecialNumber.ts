@@ -68,6 +68,10 @@ class SpecialNumber extends egret.Sprite
             if(image){
                 image.x = ww;
                 ww += image.width;
+                
+                image.width *= Utils.wWidthScale();
+                image.height *= Utils.wHeightScale();
+
                 this.addChild(image);
             }
         }

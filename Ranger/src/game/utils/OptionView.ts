@@ -17,6 +17,9 @@ class OptionView extends egret.Sprite {
         var spMask: egret.Sprite = new egret.Sprite();
         this.addChild(spMask);
         var mask: egret.Bitmap = ResourceUtils.createBitmapByName("maskImage");
+        mask.width *= Utils.wWidthScale();
+        mask.height *= Utils.wHeightScale();
+
         spMask.addChild(mask);
         spMask.touchEnabled = true;
         spMask.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onClickHandler, this);
@@ -33,6 +36,9 @@ class OptionView extends egret.Sprite {
         else if (type === Const.IN_PLAY_VIEW) {
             bg = ResourceUtils.createBitmapByName("optionBgImage");
         }
+
+        bg.width *= Utils.wWidthScale();
+        bg.height *= Utils.wHeightScale();
 
         this.spContainer.addChild(bg);
 
@@ -55,10 +61,14 @@ class OptionView extends egret.Sprite {
             var leaveRoomBtnSp: egret.Sprite = new egret.Sprite();
             this.spContainer.addChild(leaveRoomBtnSp);
             var leaveRoomBtn: egret.Bitmap = ResourceUtils.createBitmapByName("btn_leaveRoom_png");
+
+            leaveRoomBtn.width *= Utils.wWidthScale();
+            leaveRoomBtn.height *= Utils.wHeightScale();
+
             leaveRoomBtnSp.addChild(leaveRoomBtn);
 
             leaveRoomBtnSp.x = this.spContainer.width / 2 - leaveRoomBtnSp.width / 2;
-            leaveRoomBtnSp.y = 210;
+            leaveRoomBtnSp.y = Utils.wYScale() * 210;
             leaveRoomBtnSp.addEventListener(egret.TouchEvent.TOUCH_TAP, this.leaveRoom, this);
             leaveRoomBtnSp.touchEnabled = true;
         }
@@ -69,6 +79,10 @@ class OptionView extends egret.Sprite {
         var close: egret.Sprite = new egret.Sprite();
         this.spContainer.addChild(close);
         var spclose: egret.Bitmap = ResourceUtils.createBitmapByName("option7Image");
+
+        spclose.width *= Utils.wWidthScale();
+        spclose.height *= Utils.wHeightScale();
+
         close.addChild(spclose);
         close.touchEnabled = true;
         close.x = this.spContainer.width - close.width * 0.7;
@@ -77,27 +91,46 @@ class OptionView extends egret.Sprite {
 
         var soundBooBg: egret.Sprite = new egret.Sprite();
         this.spContainer.addChild(soundBooBg);
+
         this.spguanbg = ResourceUtils.createBitmapByName("option5Image");
+
+        this.spguanbg.width *= Utils.wWidthScale();
+        this.spguanbg.height *= Utils.wHeightScale();
+
         soundBooBg.addChild(this.spguanbg);
+
         this.spkaibg = ResourceUtils.createBitmapByName("option6Image");
+        this.spkaibg.width *= Utils.wWidthScale();
+        this.spkaibg.height *= Utils.wHeightScale();
+
         soundBooBg.addChild(this.spkaibg);
         this.spguanbg.x = 0;
-        this.spkaibg.x = 30;
-        soundBooBg.x = 182;
-        soundBooBg.y = 84;
+        this.spkaibg.x = Utils.wXScale() * 30;
+
+        soundBooBg.x = Utils.wXScale() * 182;
+        soundBooBg.y = Utils.wYScale() * 84;
+        
         soundBooBg.touchEnabled = true;
         soundBooBg.addEventListener(egret.TouchEvent.TOUCH_TAP, this.clickBgHandler, this);
 
         var soundBoo: egret.Sprite = new egret.Sprite();
         this.spContainer.addChild(soundBoo);
         this.spguan = ResourceUtils.createBitmapByName("option5Image");
+        
+        this.spguan.width *= Utils.wWidthScale();
+        this.spguan.height *= Utils.wHeightScale();
         soundBoo.addChild(this.spguan);
+
         this.spkai = ResourceUtils.createBitmapByName("option6Image");
+
+        this.spkai.width *= Utils.wWidthScale();
+        this.spkai.height *= Utils.wHeightScale();
         soundBoo.addChild(this.spkai);
+        
         this.spguan.x = 0;
-        this.spkai.x = 30;
-        soundBoo.x = 182;
-        soundBoo.y = 148;
+        this.spkai.x = 30 * Utils.wXScale();
+        soundBoo.x = 182 * Utils.wXScale();
+        soundBoo.y = 148 * Utils.wYScale();
         soundBoo.touchEnabled = true;
         soundBoo.addEventListener(egret.TouchEvent.TOUCH_TAP, this.clickHandler, this);
 

@@ -11,6 +11,10 @@ class MyButtonForGame extends egret.Sprite {
         this.sp = new egret.Sprite();
         this.addChild(this.sp);
         this.bg = ResourceUtils.createBitmapByName(bgName);
+
+        this.bg.width *= Utils.wWidthScale();
+        this.bg.height *= Utils.wHeightScale();
+
         this.sp.addChild(this.bg);
 
         // ???
@@ -18,6 +22,10 @@ class MyButtonForGame extends egret.Sprite {
         if (this.title.texture == null) {
             this.title.texture = RES.getRes(titleName);
         }
+
+        this.title.width *= Utils.wWidthScale();
+        this.title.height *= Utils.wHeightScale();
+
         this.title.x = (this.bg.width - this.title.width) >> 1;
         this.title.y = (this.bg.height - this.title.height) >> 1;
         this.sp.addChild(this.title);

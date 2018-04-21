@@ -18,6 +18,13 @@ class BackGroundView extends egret.Sprite {
         // bg.x = 0;
         // bg.y = 0;
 
+        // this.bg2.width = Const.SCENT_WIDTH;
+        // this.bg2.height = (800 / Const.SCENT_HEIGHT ) * this.bg2.height;
+
+        bg.width = Const.SCENT_WIDTH;
+        bg.height = Math.floor(Const.SCENT_HEIGHT / 800) * bg.height;
+
+
         this.addChild(bg);
         leftWall.initView(1, 1);
         rightWall.initView(1, 2);

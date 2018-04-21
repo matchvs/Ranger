@@ -63,6 +63,9 @@ class GameFightView extends egret.Sprite {
     // gameTime
     public gameTime: SpecialNumber;
 
+    public time: number;
+    public fightButtonBaseY: number;
+
     constructor() {
         super();
 
@@ -73,7 +76,7 @@ class GameFightView extends egret.Sprite {
         }
 
         if (GameData.isAddRobot === true) {
-            this.timeBooRobot = -30;
+            this.timeBooRobot = -30 * Utils.wYScale();
         }
 
         GameFightView.allArr = [this.oneEnemyArr, this.twoEnemyArr, this.threeEnemyArr, this.fourEnemyArr];
@@ -157,6 +160,8 @@ class GameFightView extends egret.Sprite {
          * shan
          */
         this.shan = ResourceUtils.createBitmapByName("shanImage");
+        this.shan.width = Const.SCENT_WIDTH;
+        this.shan.height = Const.SCENT_HEIGHT;
         this.addChild(this.shan);
         this.shan.visible = false;
 
@@ -176,30 +181,38 @@ class GameFightView extends egret.Sprite {
          * redGirl1
          */
         this.redGirl1 = new RedGirl('r');
-        this.redGirl1.x = Const.SCENT_WIDTH / 2 - 60;
-        this.redGirl1.y = Const.SCENT_HEIGHT - 50;
+
+        this.redGirl1.scaleX = 1 * Utils.wXScale();
+        this.redGirl1.scaleY = 1 * Utils.wYScale();
+
+        this.redGirl1.x = Const.SCENT_WIDTH / 2 - 60 * Utils.wXScale();
+        this.redGirl1.y = Const.SCENT_HEIGHT - 50 * Utils.wYScale();
         this.addChild(this.redGirl1);
 
         /**
          * redGirl2
          */
         this.redGirl2 = new RedGirl('b');
-        this.redGirl2.x = Const.SCENT_WIDTH / 2 + 60;
-        this.redGirl2.y = Const.SCENT_HEIGHT - 50;
+
+        this.redGirl2.scaleX = 1 * Utils.wXScale();
+        this.redGirl2.scaleY = 1 * Utils.wYScale();
+
+        this.redGirl2.x = Const.SCENT_WIDTH / 2 + 60 * Utils.wXScale();
+        this.redGirl2.y = Const.SCENT_HEIGHT - 50 * Utils.wYScale();
         this.addChild(this.redGirl2);
 
         /**
          * arrow 标识是自己
          */
         this.arrow = ResourceUtils.createBitmapByName("arrow_png");
-        this.arrow.width /= 2;
-        this.arrow.height /= 2;
+        this.arrow.width = this.arrow.width / 2 * Utils.wWidthScale();
+        this.arrow.height = this.arrow.height / 2 * Utils.wHeightScale();
         if (GameData.type === "r") {
-            this.arrow.x = 163;
+            this.arrow.x = 163 * Utils.wXScale();
         } else if (GameData.type === "b") {
-            this.arrow.x = 284;
+            this.arrow.x = 284 * Utils.wXScale();
         }
-        this.arrow.y = 630;
+        this.arrow.y = 630 * Utils.wYScale();
         this.addChild(this.arrow);
 
 
@@ -211,6 +224,8 @@ class GameFightView extends egret.Sprite {
         var n: number = 4;
         for (; i < n; i++) {
             var fightButton: FightButton = new FightButton();
+            fightButton.scaleX = 1 * Utils.wXScale();
+            fightButton.scaleY = 1 * Utils.wYScale();
             fightButton.touchEnabled = true;
 
             // 因为是add listener, 不能主动添加参数
@@ -218,8 +233,11 @@ class GameFightView extends egret.Sprite {
             fightButton.addEventListener(egret.TouchEvent.TOUCH_END, this.onEnd, this);
 
             this.uiSp.addChild(fightButton);
-            fightButton.x = i * (fightButton.width + 14) + 10;
-            fightButton.y = 500;
+            fightButton.x = (i * (fightButton.width + 14) + 10) * Utils.wXScale();
+            fightButton.y = 500 * Utils.wYScale();
+
+            this.fightButtonBaseY = 500 * Utils.wYScale();
+
             fightButton.name = i + "";
             // this.widthPoint 半
             this.widthPoint = fightButton.width / 2;
@@ -233,13 +251,13 @@ class GameFightView extends egret.Sprite {
 
         this.blodBar1 = new BlodBar("r");
         this.uiSp.addChild(this.blodBar1);
-        this.blodBar1.x = 11
-        this.blodBar1.y = 53
+        this.blodBar1.x = 11 * Utils.wXScale();
+        this.blodBar1.y = 53 * Utils.wYScale();
 
         this.blodBar2 = new BlodBar("b");
         this.uiSp.addChild(this.blodBar2);
-        this.blodBar2.x = 302
-        this.blodBar2.y = 53
+        this.blodBar2.x = 302 * Utils.wXScale();
+        this.blodBar2.y = 53 * Utils.wYScale();
 
         /**
          * 倒计时
@@ -248,7 +266,7 @@ class GameFightView extends egret.Sprite {
         this.uiSp.addChild(this.gameTime);
         this.gameTime.setValue(60 + "");
         this.gameTime.x = Const.SCENT_WIDTH / 2 - this.gameTime.width / 2;
-        this.gameTime.y = 40
+        this.gameTime.y = 40 * Utils.wYScale();
 
         /**
          * 分数
@@ -258,13 +276,13 @@ class GameFightView extends egret.Sprite {
         this.uiSp.addChild(this.score1)
         this.score1.setValue(0 + "")
         this.score1.x = this.blodBar1.x + this.blodBar1.width / 2 - this.score1.width / 2
-        this.score1.y = 19
+        this.score1.y = 19 * Utils.wYScale();
 
         this.score2 = new SpecialNumber("number-")
         this.uiSp.addChild(this.score2)
         this.score2.setValue(0 + "")
         this.score2.x = this.blodBar2.x + this.blodBar2.width / 2 - this.score2.width / 2
-        this.score2.y = 19
+        this.score2.y = 19 * Utils.wYScale();
 
 
         /**
@@ -272,8 +290,8 @@ class GameFightView extends egret.Sprite {
          */
         this.goldView = new GoldView();
         this.uiSp.addChild(this.goldView);
-        this.goldView.x = 15
-        this.goldView.y = 754
+        this.goldView.x = 15 * Utils.wXScale();
+        this.goldView.y = 754 * Utils.wYScale();
         this.goldView.setValue(GameData.gold + "");
 
         /**
@@ -281,7 +299,7 @@ class GameFightView extends egret.Sprite {
          */
         this.streakWinNum = new StreakNum();
         this.streakWinNum.x = Const.SCENT_WIDTH / 2 - this.streakWinNum.width / 2;
-        this.streakWinNum.y = 125;
+        this.streakWinNum.y = 125 * Utils.wYScale();;
         this.addChild(this.streakWinNum);
         this.streakWinNum.visible = false;
 
@@ -293,10 +311,25 @@ class GameFightView extends egret.Sprite {
         var prom: PromptPop;
         for (; i < n; i++) {
             prom = new PromptPop();
-            prom.activate(Const.SCENT_WIDTH / 2 - 100, Const.SCENT_HEIGHT - 300, prom.config);
+            prom.activate(Const.SCENT_WIDTH / 2 - 100 * Utils.wXScale(), Const.SCENT_HEIGHT - 300 * Utils.wYScale(), prom.config);
             this.addChild(prom);
             this.popArr.push(prom);
         }
+
+        // this.time
+
+        let ua = window.navigator.userAgent.toLowerCase();
+        if (ua) {
+            let microStr = "" + ua.match(/MicroMessenger/i);
+            if (microStr == "null") {
+                this.time = 1500;
+            } else if (microStr == "micromessenger") {
+                this.time = (Const.SCENT_HEIGHT - this.fightButtonBaseY) / GameData.enemySpeed * Utils.wYScale() * 100;
+            }
+        } else {
+            this.time = 1500;
+        }
+
     }
 
     public initBomb(): void {
@@ -378,7 +411,7 @@ class GameFightView extends egret.Sprite {
                     rank: 1,
                     score: 30
                 });
-            }, 1500);
+            }, this.time);
         }
     }
 
@@ -389,6 +422,9 @@ class GameFightView extends egret.Sprite {
         let [type, row, num] = [...nameArr]
 
         var enemy: Enemy = new Enemy(type);
+        enemy.scaleX = 1 * Utils.wXScale();
+        enemy.scaleY = 1 * Utils.wYScale();
+
         this.enemySp.addChild(enemy);
 
         let row_n = Number(row);
@@ -1035,11 +1071,11 @@ class GameFightView extends egret.Sprite {
                 this.isFire = true;
                 // 每次都重新设置原点
                 if (GameData.type === "r") {
-                    (<Bomb>this.bombArr[i]).x = Const.SCENT_WIDTH / 2 - 60;
+                    (<Bomb>this.bombArr[i]).x = Const.SCENT_WIDTH / 2 - 60 * Utils.wXScale();
                 } else if (GameData.type === "b") {
-                    (<Bomb>this.bombArr[i]).x = Const.SCENT_WIDTH / 2 + 60;
+                    (<Bomb>this.bombArr[i]).x = Const.SCENT_WIDTH / 2 + 60 * Utils.wXScale();
                 }
-                (<Bomb>this.bombArr[i]).y = 750;
+                (<Bomb>this.bombArr[i]).y = 750 * Utils.wYScale();
 
                 // 中心点
                 (<Bomb>this.bombArr[i]).lastX = btn.x + this.widthPoint;

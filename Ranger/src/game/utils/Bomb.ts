@@ -9,6 +9,8 @@ class Bomb extends egret.Sprite
     {
         super();
         this.sp = ResourceUtils.createBitmapByName("bombImage");
+        this.sp.width *= Utils.wWidthScale();
+        this.sp.height *= Utils.wHeightScale();
         this.addChild(this.sp);
         this.sp.x = this.sp.width/2;
         this.sp.rotation = 90;

@@ -11,7 +11,13 @@ class GoldView extends egret.Sprite {
         let goldBg: egret.Bitmap = ResourceUtils.createBitmapByName("goldBg"); 
         let gold: egret.Bitmap = ResourceUtils.createBitmapByName("gold");
 
-        gold.x = 10;
+        goldBg.width *= Utils.wWidthScale();
+        goldBg.height *= Utils.wHeightScale();
+
+        gold.width *= Utils.wWidthScale();
+        gold.height *= Utils.wHeightScale();
+
+        gold.x = 10 * Utils.wYScale();
         gold.y = goldBg.height / 2 - gold.height / 2;
 
         this.addChild(goldBg);
@@ -19,13 +25,13 @@ class GoldView extends egret.Sprite {
 
         this.goldValue = new egret.TextField();
         // Microsoft YaHei UI
-        this.goldValue.size = 24;
+        this.goldValue.size = 24 * Utils.wYScale();
         this.goldValue.textColor = 0xfecb38;
         this.goldValue.text = "0";
-        this.goldValue.width = 120;
-        this.goldValue.height = 32;
+        this.goldValue.width = 120 * Utils.wWidthScale();
+        this.goldValue.height = 32 * Utils.wHeightScale();
         // this.goldValue.bold = true;
-        this.goldValue.x = 20;
+        this.goldValue.x = 20 * Utils.wXScale();
         // this.goldValue.y = this._btn.y;
         this.goldValue.textAlign = "center";
         this.goldValue.verticalAlign = "middle";

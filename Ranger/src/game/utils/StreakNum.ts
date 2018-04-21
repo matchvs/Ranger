@@ -8,11 +8,16 @@ class StreakNum extends egret.Sprite {
 
     private initView(): void {
         var combo: egret.Bitmap = ResourceUtils.createBitmapByName("comboImage");
+        
+        combo.width *= Utils.wWidthScale();
+        combo.height *= Utils.wHeightScale();
+
+
         this.addChild(combo);
         this.conboW = combo.width;
         this.showSorce = new SpecialNumber("number-0");
         this.showSorce.x = this.conboW / 2 - this.showSorce.width / 2;
-        this.showSorce.y = combo.height + 5;
+        this.showSorce.y = combo.height + 5 * Utils.wHeightScale();
         this.addChild(this.showSorce);
     }
 

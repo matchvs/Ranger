@@ -86,6 +86,9 @@ class GameOverView extends egret.Sprite {
         GameData.gold += goldValue;
 
         this.bg = ResourceUtils.createBitmapByName("overBgImage");
+        this.bg.width = Utils.wWidthScale() * this.bg.width;
+        this.bg.height = Utils.wHeightScale() * this.bg.height;
+
         this.thisContainer.addChild(this.bg);
         this.bg.x = Const.SCENT_WIDTH / 2 - this.bg.width / 2;
         this.bg.y = Const.SCENT_HEIGHT / 2 - this.bg.height / 2;
@@ -95,8 +98,11 @@ class GameOverView extends egret.Sprite {
         } else {
             this.iconWinOrLose = ResourceUtils.createBitmapByName("icon_lose_png");
         }
+        this.iconWinOrLose.width = Utils.wWidthScale() * this.iconWinOrLose.width;
+        this.iconWinOrLose.height = Utils.wHeightScale() * this.iconWinOrLose.height;
+
         this.iconWinOrLose.x = Const.SCENT_WIDTH / 2 - this.iconWinOrLose.width / 2;
-        this.iconWinOrLose.y = this.bg.y + 209;
+        this.iconWinOrLose.y = this.bg.y + Utils.wYScale() * 209;
         this.thisContainer.addChild(this.iconWinOrLose);
 
 
@@ -104,33 +110,27 @@ class GameOverView extends egret.Sprite {
 
         let scoreTxt = new egret.TextField();
         scoreTxt.text = "本局分数";
-        scoreTxt.size = 20;
+        scoreTxt.size = Utils.wYScale() * 20;
         scoreTxt.textColor = 0x333333;
         scoreTxt.fontFamily = "Microsoft YaHei UI";
         scoreTxt.x = Const.SCENT_WIDTH / 4 - scoreTxt.width / 2;
-        scoreTxt.y = this.bg.y + 324;
+        scoreTxt.y = this.bg.y + Utils.wYScale() * 324;
         this.thisContainer.addChild(scoreTxt);
 
 
 
         let scoreValueTxt = new egret.TextField();
         scoreValueTxt.text = scoreValue + ""
-        scoreValueTxt.size = 35;
+        scoreValueTxt.size = Utils.wYScale() * 35;
         scoreValueTxt.textColor = 0xea6200;
         scoreValueTxt.fontFamily = "Microsoft YaHei UI";
         scoreValueTxt.x = Const.SCENT_WIDTH / 4 - scoreValueTxt.width / 2;
-        scoreValueTxt.y = scoreTxt.y + scoreTxt.height + 15;
+        scoreValueTxt.y = scoreTxt.y + scoreTxt.height + Utils.wYScale() * 15;
         this.thisContainer.addChild(scoreValueTxt);
-
-        // if (GameData.type == "r") {
-        //     GameData.gold += Math.floor(GameData.players[0].score / 100);
-        // } else if (GameData.type == "b") {
-        //     GameData.gold += Math.floor(GameData.players[1].score / 100);
-        // }
 
         let goldTxt = new egret.TextField();
         goldTxt.text = "获得金币";
-        goldTxt.size = 20;
+        goldTxt.size = Utils.wYScale() * 20;
         goldTxt.textColor = 0x333333;
         goldTxt.fontFamily = "Microsoft YaHei UI";
         goldTxt.x = Const.SCENT_WIDTH / 4 * 3 - goldTxt.width / 2;
@@ -140,20 +140,24 @@ class GameOverView extends egret.Sprite {
 
         let goldValueTxt = new egret.TextField();
         goldValueTxt.text = goldValue + ""
-        goldValueTxt.size = 35;
+        goldValueTxt.size = Utils.wYScale() * 35;
         goldValueTxt.textColor = 0xea6200;
         goldValueTxt.fontFamily = "Microsoft YaHei UI";
         goldValueTxt.x = Const.SCENT_WIDTH / 4 * 3 - goldValueTxt.width / 2;
-        goldValueTxt.y = goldTxt.y + goldTxt.height + 15;
+        goldValueTxt.y = goldTxt.y + goldTxt.height + Utils.wYScale() * 15;
         this.thisContainer.addChild(goldValueTxt);
 
         let backHomeBtnSp = new egret.Sprite();
         this.thisContainer.addChild(backHomeBtnSp);
         this.backHomeBtn = ResourceUtils.createBitmapByName("btn_backToHome_png");
+
+        this.backHomeBtn.width = Utils.wWidthScale() * this.backHomeBtn.width;
+        this.backHomeBtn.height = Utils.wHeightScale() * this.backHomeBtn.height;
+
         this.backHomeBtn.touchEnabled = true;
         this.backHomeBtn.addEventListener(egret.TouchEvent.TOUCH_TAP, this.toGameEnterView, this);
         this.backHomeBtn.x = Const.SCENT_WIDTH / 2 - this.backHomeBtn.width / 2
-        this.backHomeBtn.y = this.bg.y + 489;
+        this.backHomeBtn.y = this.bg.y + Utils.wYScale() * 489;
         backHomeBtnSp.addChild(this.backHomeBtn);
 
         this.prompt = new Prompt();

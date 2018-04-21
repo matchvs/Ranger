@@ -101,6 +101,8 @@ class GamePlayView extends egret.Sprite {
         // this.sp.addChild(this.thisContainer);
 
         this.gameFightView = new GameFightView();
+        this.gameFightView.width = Const.SCENT_WIDTH;
+        this.gameFightView.height = Const.SCENT_HEIGHT;
         this.sp.addChild(this.gameFightView);
 
 
@@ -110,12 +112,19 @@ class GamePlayView extends egret.Sprite {
          */
         var optionBtn: egret.Sprite = new egret.Sprite();
         var optionBmp: egret.Bitmap = ResourceUtils.createBitmapByName("optionBtnImage");
+        optionBmp.width = 38 * Utils.wWidthScale();
+        optionBmp.height = 38 * Utils.wHeightScale();
+
         optionBtn.addChild(optionBmp);
         optionBtn.touchEnabled = true;
-        optionBtn.width = this.stage.stageWidth/10 ;
-        optionBtn.height = this.stage.stageWidth/10;
-        optionBtn.x = this.stage.stageWidth * 0.90;
-        optionBtn.y = this.stage.stageHeight * 0.95;
+        // optionBtn.width = this.stage.stageWidth/10 ;
+        // optionBtn.height = this.stage.stageWidth/10;
+        // optionBtn.x = this.stage.stageWidth * 0.90;
+        // optionBtn.y = this.stage.stageHeight * 0.95;
+
+        
+        optionBtn.x = 431 * Utils.wXScale();
+        optionBtn.y = 748 * Utils.wYScale();
 
         optionBtn.addEventListener(egret.TouchEvent.TOUCH_TAP, this.showOptionView, this);
         this.addChild(optionBtn);

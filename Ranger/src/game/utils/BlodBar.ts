@@ -21,13 +21,19 @@ class BlodBar extends egret.Sprite {
             blodBar = ResourceUtils.createBitmapByName("bBlodBarImage");
         }
 
+        barBg.width *= Utils.wWidthScale();
+        barBg.height *= Utils.wHeightScale();
+
+        blodBar.width *= Utils.wWidthScale();
+        blodBar.height *= Utils.wHeightScale();
+
         this.addChild(barBg);
         this.addChild(blodBar);
 
         this.blodBar = blodBar;
 
-        blodBar.x = 32;
-        blodBar.y = 7;
+        blodBar.x = 32 * Utils.wXScale();
+        blodBar.y = 7 * Utils.wYScale();
 
         /**
          * rectangle

@@ -144,10 +144,10 @@ class GameEnterView extends egret.Sprite {
         // var avatarBmp: egret.Bitmap = ResourceUtils.createBitmapByName("avatar_png");
         // avatarPng.addChild(avatarBmp);
         this.avatarPng.touchEnabled = true;
-        this.avatarPng.width = 65;
-        this.avatarPng.height = 65;
-        this.avatarPng.x = 20;
-        this.avatarPng.y = 20;
+        this.avatarPng.width = 65 * Utils.wWidthScale();
+        this.avatarPng.height = 65 * Utils.wHeightScale();
+        this.avatarPng.x = 20 * Utils.wXScale();
+        this.avatarPng.y = 20 * Utils.wYScale();
         // this.avatarPng.addEventListener(egret.TouchEvent.TOUCH_TAP, this.showProfileView, this);
         this.avatarPng.addEventListener(egret.TouchEvent.TOUCH_TAP, this.avatarClickHandler, this);
         this.addChild(this.avatarPng);
@@ -155,18 +155,18 @@ class GameEnterView extends egret.Sprite {
         this.loadAvatar();
 
         var userNameTxt: egret.TextField = new egret.TextField();
-        userNameTxt.size = 18;
+        userNameTxt.size = 18 * Utils.wYScale();
         userNameTxt.textColor = 0xffffff;
         // userNameTxt.text = Const.userName;
         userNameTxt.text = "" + Const.userId;
-        userNameTxt.x = 104;
-        userNameTxt.y = 28;
+        userNameTxt.x = 104 * Utils.wXScale();
+        userNameTxt.y = 28 * Utils.wYScale();
         userNameTxt.verticalAlign = "middle";
         this.addChild(userNameTxt);
 
         var goldView = new GoldView();
-        goldView.x = 104;
-        goldView.y = 57;
+        goldView.x = 104 * Utils.wXScale();
+        goldView.y = 57 * Utils.wYScale();
         this.addChild(goldView);
         goldView.setValue(GameData.gold + "");
 
@@ -174,8 +174,8 @@ class GameEnterView extends egret.Sprite {
 
         this.backBtn = new MyButtonForGame("btn_back_png", "btn_back_png");
         this.addChild(this.backBtn);
-        this.backBtn.x = 380;
-        this.backBtn.y = 38;
+        this.backBtn.x = 380 * Utils.wXScale();
+        this.backBtn.y = 38 * Utils.wYScale();
         this.backBtn.setClick(this.backToStartView.bind(this));
 
 
@@ -186,7 +186,7 @@ class GameEnterView extends egret.Sprite {
         this.addChild(this.roomList);
         this.roomList.x = 0;
         // this.roomList.x = Const.SCENT_WIDTH / 2 - this.roomList.width / 2;
-        this.roomList.y = 126;
+        this.roomList.y = 126 * Utils.wYScale();
         // this.roomList.addRoomItem([{ roomId: 1 }, { roomId: 2 }, { roomId: 3 }, { roomId: 4 }]);
         // this.roomList.addRoomItem([{ roomId: 1 }, { roomId: 2 }, { roomId: 3 }, { roomId: 4 }, { roomId: 5},{ roomId: 6}]);
         // this.roomList.addRoomItem([{ roomId: 1 }, { roomId: 2 }, { roomId: 3 }, { roomId: 4 }, { roomId: 5}, { roomId: 6}, { roomId: 7}, { roomId: 8}]);
@@ -196,13 +196,13 @@ class GameEnterView extends egret.Sprite {
         this.quickJoinBtnBtn = new MyButtonForGame("btn_joinRandomRoom_png", "btn_joinRandomRoom_png");
         this.addChild(this.quickJoinBtnBtn);
         this.quickJoinBtnBtn.x = Const.SCENT_WIDTH / 2 - this.quickJoinBtnBtn.width / 2;
-        this.quickJoinBtnBtn.y = 612;
+        this.quickJoinBtnBtn.y = 612 * Utils.wYScale();
         this.quickJoinBtnBtn.setClick(this.quickJoinBtnBtnHandler.bind(this));
 
         this.createRoomBtn = new MyButtonForGame("btn_createRoom_png", "btn_createRoom_png");
         this.addChild(this.createRoomBtn);
         this.createRoomBtn.x = this.quickJoinBtnBtn.x;
-        this.createRoomBtn.y = this.quickJoinBtnBtn.y + this.quickJoinBtnBtn.height + 20;
+        this.createRoomBtn.y = this.quickJoinBtnBtn.y + this.quickJoinBtnBtn.height + 20 * Utils.wYScale();
         this.createRoomBtn.setClick(this.createRoomBtnHandler.bind(this));
 
         this.joinRoomBtn1 = new MyButtonForGame("btn_joinRoom_png", "btn_joinRoom_png");
@@ -218,11 +218,13 @@ class GameEnterView extends egret.Sprite {
         // startBtn.setClick(this.JoinRandomRoom.bind(this));
 
         this.roomView = new RoomView(this);
-        this.roomView.y = 130;
+        this.roomView.y = 130 * Utils.wYScale();
         this.addChild(this.roomView);
         this.roomView.visible = false;
 
         this.dMask = ResourceUtils.createBitmapByName("maskImage");
+        this.dMask.width *= Utils.wWidthScale();
+        this.dMask.height *= Utils.wHeightScale();
         this.addChild(this.dMask);
         this.dMask.visible = false;
 
@@ -230,7 +232,7 @@ class GameEnterView extends egret.Sprite {
         this.joinRoomView.visible = false;
         // this.joinRoomView.x = this.profileView.x;
         // this.joinRoomView.y = this.profileView.y;
-        this.joinRoomView.x = Const.SCENT_WIDTH / 2 - this.joinRoomView.width / 2 + 12;
+        this.joinRoomView.x = Const.SCENT_WIDTH / 2 - this.joinRoomView.width / 2 + 12 * Utils.wXScale();
         this.joinRoomView.y = Const.SCENT_HEIGHT / 2 - this.joinRoomView.height / 2;
         this.addChild(this.joinRoomView);
 
@@ -1247,10 +1249,16 @@ class GameEnterView extends egret.Sprite {
         // avatarPng.addChild(avatarBmp);
 
         // var avatarBmp = new egret.Bitmap(texture);
-        
+
         var avatarBmp = ResourceUtils.createBitmapByName("avatar_png");
-        avatarBmp.width = 65;
-        avatarBmp.height = 65;
+
+        avatarBmp.width = 65 * Utils.wWidthScale();
+        avatarBmp.height = 65 * Utils.wHeightScale();
+        // this.avatarPng.x = 20 * Utils.wXScale();
+        // this.avatarPng.y = 20 * Utils.wYScale();
+
+        // avatarBmp.width = 65;
+        // avatarBmp.height = 65;
         this.avatarPng.addChild(avatarBmp);
     }
 

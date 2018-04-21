@@ -20,9 +20,15 @@ class JoinRoomView extends egret.Sprite {
 
     public initView() {
         this.bg = ResourceUtils.createBitmapByName("profileBg_png");
+        this.bg.width *= Utils.wWidthScale();
+        this.bg.height *= Utils.wHeightScale();
         this.addChild(this.bg);
 
         this.closeBtn = new MyButtonForGame("btn_close_png", "btn_close_png");
+        
+        this.closeBtn.width *= Utils.wWidthScale();
+        this.closeBtn.height *= Utils.wHeightScale();
+
         this.addChild(this.closeBtn);
         this.closeBtn.x = this.bg.width - this.closeBtn.width / 2;
         this.closeBtn.y = - this.closeBtn.height / 2;
@@ -32,29 +38,29 @@ class JoinRoomView extends egret.Sprite {
         roomIdTxt.text = "输入房间ID";
         roomIdTxt.textColor = 0x333333;
         roomIdTxt.fontFamily = "Microsoft YaHei UI";
-        roomIdTxt.size = 18
+        roomIdTxt.size = 18 * Utils.wYScale();
         roomIdTxt.x = this.bg.width / 2 - roomIdTxt.width / 2;
-        roomIdTxt.y = 46;
+        roomIdTxt.y = 46 * Utils.wYScale();
         this.addChild(roomIdTxt);
 
         // let 
         let roomIdInputBg = ResourceUtils.createBitmapByName("inputBg_png")
-        roomIdInputBg.width = 360;
-        roomIdInputBg.height = 48;
+        roomIdInputBg.width = 360 * Utils.wWidthScale();
+        roomIdInputBg.height = 48 * Utils.wHeightScale();
         roomIdInputBg.x = this.bg.width / 2 - roomIdInputBg.width / 2;
-        roomIdInputBg.y = 89;
+        roomIdInputBg.y = 89 * Utils.wYScale();
         this.addChild(roomIdInputBg);
 
         this.roomId = "";
 
         this.roomIdInput = new egret.TextField();
         this.roomIdInput.type = egret.TextFieldType.INPUT;
-        this.roomIdInput.size = 18;
+        this.roomIdInput.size = 18 * Utils.wYScale();
         this.roomIdInput.textColor = 0x000000;
         this.roomIdInput.fontFamily = "Microsoft YaHei UI";
-        this.roomIdInput.width = roomIdInputBg.width - 30;
+        this.roomIdInput.width = roomIdInputBg.width - 30 * Utils.wWidthScale();
         this.roomIdInput.height = roomIdInputBg.height;
-        this.roomIdInput.x = roomIdInputBg.x + 15;
+        this.roomIdInput.x = roomIdInputBg.x + 15 * Utils.wWidthScale();
         this.roomIdInput.y = roomIdInputBg.y + roomIdInputBg.height / 2 - this.roomIdInput.height / 2;
         this.roomIdInput.verticalAlign = "middle";
         this.roomIdInput.addEventListener(egret.Event.CHANGE, () => {
@@ -64,7 +70,7 @@ class JoinRoomView extends egret.Sprite {
 
         let joinRoomBtn = new MyButtonForGame("btn_joinRoom2_png", "btn_joinRoom2_png");
         joinRoomBtn.x = this.bg.width / 2 - joinRoomBtn.width / 2
-        joinRoomBtn.y = 165
+        joinRoomBtn.y = 165 * Utils.wYScale();
         this.addChild(joinRoomBtn);
         joinRoomBtn.setClick(this.joinRoom.bind(this));
     }

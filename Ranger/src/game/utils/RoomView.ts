@@ -26,12 +26,12 @@ class RoomView extends egret.Sprite {
         this.height = Const.SCENT_HEIGHT - 130;
 
         this.roomIdTxt = new egret.TextField();
+        this.roomIdTxt.size = 19 * Utils.wYScale();
         this.roomIdTxt.text = "房间ID: 0";
         this.roomIdTxt.x = this.width / 2 - this.roomIdTxt.width / 2;
-        this.roomIdTxt.y = 2;
+        this.roomIdTxt.y = 2 * Utils.wYScale();
         this.roomIdTxt.textColor = 0x89512b;
         this.roomIdTxt.fontFamily = "Microsoft YaHei UI";
-        this.roomIdTxt.size = 19;
         this.addChild(this.roomIdTxt);
 
 
@@ -46,18 +46,18 @@ class RoomView extends egret.Sprite {
         this.addChild(this.roomItem1Sp);
 
         let roomItem1Bg: egret.Bitmap = ResourceUtils.createBitmapByName("roomBg_png");
-        roomItem1Bg.width = 420;
-        roomItem1Bg.height = 100;
+        roomItem1Bg.width = 420 * Utils.wWidthScale();
+        roomItem1Bg.height = 100 * Utils.wHeightScale();
         roomItem1Bg.x = this.width / 2 - roomItem1Bg.width / 2;
-        roomItem1Bg.y = this.roomIdTxt.y + this.roomIdTxt.height + 20;
+        roomItem1Bg.y = this.roomIdTxt.y + this.roomIdTxt.height + 20 * Utils.wYScale();
         this.roomItem1Sp.addChild(roomItem1Bg);
 
 
         this.userName1Txt = new egret.TextField();
         this.userName1Txt.text = "--";
-        this.userName1Txt.size = 20;
+        this.userName1Txt.size = 20 * Utils.wYScale();
         this.userName1Txt.textColor = 0xffffff;
-        this.userName1Txt.x = roomItem1Bg.x + 25;
+        this.userName1Txt.x = roomItem1Bg.x + 25 * Utils.wXScale();
 
         this.userName1TxtBaseHeight = roomItem1Bg.y + roomItem1Bg.height / 2;
         this.userName1Txt.y = this.userName1TxtBaseHeight - this.userName1Txt.height / 2;
@@ -65,11 +65,11 @@ class RoomView extends egret.Sprite {
 
         let ownerTxt = new egret.TextField();
         ownerTxt.text = "房主";
-        ownerTxt.size = 20;
+        ownerTxt.size = 20 * Utils.wYScale();
         ownerTxt.textColor = 0x2ad23f;
         ownerTxt.fontFamily = "Microsoft YaHei UI";
         ownerTxt.bold = true;
-        ownerTxt.x = roomItem1Bg.x + roomItem1Bg.width - 60 - ownerTxt.width / 2;
+        ownerTxt.x = roomItem1Bg.x + roomItem1Bg.width - 60 * Utils.wXScale() - ownerTxt.width / 2;
         ownerTxt.y = roomItem1Bg.y + roomItem1Bg.height / 2 - ownerTxt.height / 2;
         this.roomItem1Sp.addChild(ownerTxt);
 
@@ -84,12 +84,12 @@ class RoomView extends egret.Sprite {
         roomItem2Bg.width = roomItem1Bg.width;
         roomItem2Bg.height = roomItem1Bg.height;
         roomItem2Bg.x = roomItem1Bg.x;
-        roomItem2Bg.y = roomItem1Bg.y + roomItem1Bg.height + 10;
+        roomItem2Bg.y = roomItem1Bg.y + roomItem1Bg.height + 10 * Utils.wYScale();
         this.roomItem2Sp.addChild(roomItem2Bg);
 
         this.userName2Txt = new egret.TextField();
         this.userName2Txt.text = "--";
-        this.userName2Txt.size = 20;
+        this.userName2Txt.size = 20 * Utils.wYScale();
         this.userName2Txt.textColor = 0xffffff;
         this.userName2Txt.x = this.userName1Txt.x;
 
@@ -104,7 +104,7 @@ class RoomView extends egret.Sprite {
         // ownerTxt.textColor = 0x2ad23f;
         // ownerTxt.fontFamily = "Microsoft YaHei UI";
         // ownerTxt.bold = true;
-        this.kickPlayerBtn.x = roomItem2Bg.x + roomItem2Bg.width - 60 - this.kickPlayerBtn.width / 2;
+        this.kickPlayerBtn.x = roomItem2Bg.x + roomItem2Bg.width - 60 * Utils.wXScale() - this.kickPlayerBtn.width / 2;
         this.kickPlayerBtn.y = roomItem2Bg.y + roomItem2Bg.height / 2 - this.kickPlayerBtn.height / 2;
         this.roomItem2Sp.addChild(this.kickPlayerBtn);
         this.kickPlayerBtn.setClick(this.kickPlayer.bind(this));
@@ -119,13 +119,13 @@ class RoomView extends egret.Sprite {
         // btn_startGame_png
         this.startGameBtn = new MyButtonForGame("btn_startGame_png", "btn_startGame_png");
         this.startGameBtn.x = this.width / 2 - this.startGameBtn.width / 2;
-        this.startGameBtn.y = this.height - 200 - this.startGameBtn.height / 2;
+        this.startGameBtn.y = this.height - 200 * Utils.wYScale(); - this.startGameBtn.height / 2;
         this.addChild(this.startGameBtn);
         this.startGameBtn.setClick(this.startGame.bind(this));
 
         let leaveRoomBtn = new MyButtonForGame("btn_leaveRoom_png", "btn_leaveRoom_png");
         leaveRoomBtn.x = this.width / 2 - leaveRoomBtn.width / 2;
-        leaveRoomBtn.y = this.height - 60 - leaveRoomBtn.height;
+        leaveRoomBtn.y = this.height - 60 * Utils.wYScale() - leaveRoomBtn.height;
         this.addChild(leaveRoomBtn);
         leaveRoomBtn.setClick(this.leaveRoom.bind(this));
     }
