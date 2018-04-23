@@ -22,21 +22,11 @@ class Main extends egret.DisplayObjectContainer {
         // var link = "http://static.egret-labs.org/h5game/62/v20/index.html";
         // var ico = "http://static.egret-labs.org/h5game/icons/10000062.jpg";
 
-        Const.SCENT_WIDTH = this.stage.stageWidth;
-        Const.SCENT_HEIGHT = this.stage.stageHeight;
-        this.loadingView = new LoadingUI();
-        this.stage.addChild(this.loadingView);
-
-        RES.addEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
-        // 加载配置文件并解析
-        RES.loadConfig("resource/default.res.json", "resource/");
-
-        LocalStore_Clear();
-
-        this.init();
-        this.stage.scaleMode = egret.StageScaleMode.SHOW_ALL;
+        this.runGame().catch(e => {
+            console.log(e);
+        })
     }
-
+  
     private init() {
         if (GameData.initStatus === 6) {
             return;
@@ -65,6 +55,28 @@ class Main extends egret.DisplayObjectContainer {
             // AlertPanel.i().showErr("matchvs初始化失败");
         }
         GameData.initStatus = 5;
+    }
+
+
+  private async runGame() {
+        await this.loadResource();
+        LocalStore_Clear();
+        Const.SCENT_WIDTH = this.stage.stageWidth;
+        Const.SCENT_HEIGHT = this.stage.stageHeight;
+        console.log(" ============== Screen Size:"+Const.SCENT_WIDTH +","+ Const.SCENT_HEIGHT );
+        console.log(" ============== Display Size:"+this.stage.width+","+this.stage.height  );
+        this.init();
+        this.createGameScene();
+
+    }
+
+    private async loadResource() {
+        this.loadingView = new LoadingUI();
+        this.stage.addChild(this.loadingView);
+        RES.addEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
+        // 加载配置文件并解析
+        await RES.loadConfig("resource/default.res.json", "resource/");
+        this.stage.removeChild(this.loadingView);
     }
 
     private onConfigComplete(event: RES.ResourceEvent): void {

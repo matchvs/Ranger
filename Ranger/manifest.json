@@ -11,9 +11,10 @@
 	],
 	"game": [
 		"bin-debug/starlingswf/display/SwfSprite.js",
-		"bin-debug/game/utils/MyButtonForGame.js",
 		"bin-debug/starlingswf/SwfFrameInfo.js",
 		"bin-debug/starlingswf/display/SwfMovieClip.js",
+		"bin-debug/game/utils/MyButtonForGame.js",
+		"bin-debug/starlingswf/SwfAnimationInfo.js",
 		"bin-debug/game/utils/ProfileView.js",
 		"bin-debug/MvsManager.js",
 		"bin-debug/Platform.js",
@@ -35,7 +36,7 @@
 		"bin-debug/game/utils/MusicView.js",
 		"bin-debug/game/utils/MyButton.js",
 		"bin-debug/AlertPanel.js",
-		"bin-debug/game/utils/OptionView.js",
+		"bin-debug/starlingswf/game/StarlingSwfUtils.js",
 		"bin-debug/Const.js",
 		"bin-debug/game/utils/Prompt.js",
 		"bin-debug/game/utils/PromptPop.js",
@@ -49,10 +50,9 @@
 		"bin-debug/game/utils/SoundUtils.js",
 		"bin-debug/game/utils/SpecialNumber.js",
 		"bin-debug/game/utils/StreakNum.js",
-		"bin-debug/game/utils/utils.js",
+		"bin-debug/game/utils/Utils.js",
 		"bin-debug/starlingswf/StarlingSwfSheetAnalyzer.js",
 		"bin-debug/starlingswf/Swf.js",
-		"bin-debug/starlingswf/SwfAnimationInfo.js",
 		"bin-debug/starlingswf/SwfAssetManager.js",
 		"bin-debug/GameData.js",
 		"bin-debug/starlingswf/SwfUpdateManager.js",
@@ -62,6 +62,6 @@
 		"bin-debug/Main.js",
 		"bin-debug/starlingswf/game/StarlingSwfFactory.js",
 		"bin-debug/starlingswf/game/StarlingSwfMovieClip.js",
-		"bin-debug/starlingswf/game/StarlingSwfUtils.js"
+		"bin-debug/game/utils/OptionView.js"
 	]
 }
