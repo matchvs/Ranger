@@ -124,7 +124,7 @@ class Main extends egret.DisplayObjectContainer {
     }
 
     private onStartGame(): void {
-        this.stage.removeChild(this.loadingView);
+        // this.stage.removeChild(this.loadingView);
         RES.removeEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onResourceLoadComplete, this);
         RES.removeEventListener(RES.ResourceEvent.GROUP_PROGRESS, this.onResourceProgress, this);
         RES.removeEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR, this.onResourceLoadError, this);
