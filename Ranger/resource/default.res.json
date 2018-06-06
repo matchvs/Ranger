@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "bgImage,musicBtnImage,startBtnImage,helpBtnImage,bombImage,wall1_1Image,wall1_2Image,fight1BgImage,streakNum,sourceNum,sorceMcImage,comboImage,profileBg_png,btn_modify_png,inputBg_png,btn_joinRoom2_png,roomBg_png,btn_kickPlayer_png,btn_leaveRoom_png,btn_backToHome_png,icon_lose_png,icon_win_png,btn_relive_png,bg_list_png,btn_startGame_png,btn_addRobot_png,arrow_png",
+			"keys": "bgImage,musicBtnImage,startBtnImage,helpBtnImage,bombImage,wall1_1Image,wall1_2Image,fight1BgImage,streakNum,sourceNum,sorceMcImage,comboImage,profileBg_png,btn_modify_png,inputBg_png,btn_joinRoom2_png,roomBg_png,btn_kickPlayer_png,btn_leaveRoom_png,btn_backToHome_png,icon_lose_png,icon_win_png,btn_relive_png,bg_list_png,btn_startGame_png,btn_addRobot_png,arrow_png,logo_png",
 			"name": "preload"
 		},
 		{
@@ -410,6 +410,11 @@
 			"name": "arrow_png",
 			"type": "image",
 			"url": "assets/arrow.png"
+		},
+		{
+			"name": "logo_png",
+			"type": "image",
+			"url": "assets/logo.png"
 		}
 	]
 }

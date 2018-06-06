@@ -230,8 +230,8 @@ function binl2b64(binarray) {
 //
 var format = function (fmt) {
     var argIndex = 1 // skip initial format argument
-    , args = [].slice.call(arguments), i = 0, n = fmt.length, result = '', c, escaped = false, arg, tmp, leadingZero = false, precision, nextArg = function () { return args[argIndex++]; }, slurpNumber = function () {
-        var digits = '';
+    , args = [].slice.call(arguments), i = 0, n = fmt.length, result = "", c, escaped = false, arg, tmp, leadingZero = false, precision, nextArg = function () { return args[argIndex++]; }, slurpNumber = function () {
+        var digits = "";
         while (/\d/.test(fmt[i])) {
             digits += fmt[i++];
             c = fmt[i];
@@ -242,11 +242,11 @@ var format = function (fmt) {
         c = fmt[i];
         if (escaped) {
             escaped = false;
-            if (c == '.') {
+            if (c == ".") {
                 leadingZero = false;
                 c = fmt[++i];
             }
-            else if (c == '0' && fmt[i + 1] == '.') {
+            else if (c == "0" && fmt[i + 1] == ".") {
                 leadingZero = true;
                 i += 2;
                 c = fmt[i];
@@ -256,44 +256,44 @@ var format = function (fmt) {
             }
             precision = slurpNumber();
             switch (c) {
-                case 'b':// number in binary
+                case "b":// number in binary
                     result += parseInt(nextArg(), 10).toString(2);
                     break;
-                case 'c':// character
+                case "c":// character
                     arg = nextArg();
-                    if (typeof arg === 'string' || arg instanceof String)
+                    if (typeof arg === "string" || arg instanceof String)
                         result += arg;
                     else
                         result += String.fromCharCode(parseInt(arg, 10));
                     break;
-                case 'd':// number in decimal
+                case "d":// number in decimal
                     result += parseInt(nextArg(), 10);
                     break;
-                case 'f':// floating point number
+                case "f":// floating point number
                     tmp = String(parseFloat(nextArg()).toFixed(precision || 6));
-                    result += leadingZero ? tmp : tmp.replace(/^0/, '');
+                    result += leadingZero ? tmp : tmp.replace(/^0/, "");
                     break;
-                case 'j':// JSON
+                case "j":// JSON
                     result += JSON.stringify(nextArg());
                     break;
-                case 'o':// number in octal
-                    result += '0' + parseInt(nextArg(), 10).toString(8);
+                case "o":// number in octal
+                    result += "0" + parseInt(nextArg(), 10).toString(8);
                     break;
-                case 's':// string
+                case "s":// string
                     result += nextArg();
                     break;
-                case 'x':// lowercase hexadecimal
-                    result += '0x' + parseInt(nextArg(), 10).toString(16);
+                case "x":// lowercase hexadecimal
+                    result += "0x" + parseInt(nextArg(), 10).toString(16);
                     break;
-                case 'X':// uppercase hexadecimal
-                    result += '0x' + parseInt(nextArg(), 10).toString(16).toUpperCase();
+                case "X":// uppercase hexadecimal
+                    result += "0x" + parseInt(nextArg(), 10).toString(16).toUpperCase();
                     break;
                 default:
                     result += c;
                     break;
             }
         }
-        else if (c === '%') {
+        else if (c === "%") {
             escaped = true;
         }
         else {
@@ -302,19 +302,61 @@ var format = function (fmt) {
     }
     return result;
 };
-/* ================ mvsconfig.js ================= */
-/**
- * http请求相关的地址
- * @type {{GETHOSTLIST_URL: string, REGISTER_USER_URL: string}}
- */
-var LocalConf = {
-    HOST_GATWAY_ADDR: "ws://192.168.9.94:12345/ws",
-    GETHOSTLIST_URL: "http://sdk.matchvs.com",
-    REGISTER_USER_URL: "http://testuser.matchvs.com",
-    CMSNS_URL: "",
-    VS_OPEN_URL: "",
-    VS_PAY_URL: "",
-    VS_PRODUCT_URL: ""
+/* ================ matchvsLog.js ================= */
+var MatchvsLog = {
+    logLock: true,
+    toArray: function (argument) {
+        var args = [];
+        for (var i = 0; i < argument.length; i++) {
+            args.push(argument[i]);
+        }
+        return args;
+    }
+};
+MatchvsLog.openLog = function () {
+    this.logLock = true;
+};
+MatchvsLog.closeLog = function () {
+    this.logLock = false;
+};
+MatchvsLog.logI = function () {
+    if (!this.logLock)
+        return;
+    var loc = "";
+    console.info("日志打开");
+    try {
+        throw new Error();
+    }
+    catch (e) {
+        loc = e.stack.replace(/Error\n/).split(/\n/)[1].replace(/^\s+|\s+$/, "");
+    }
+    console.info("[INFO] " + loc + " " + this.toArray(arguments));
+};
+MatchvsLog.logE = function () {
+    if (!this.logLock)
+        return;
+    var loc = "";
+    try {
+        throw new Error();
+    }
+    catch (e) {
+        loc = e.stack.replace(/Error\n/).split(/\n/)[1].replace(/^\s+|\s+$/, "");
+    }
+    console.error("[ERRO] " + loc + " " + this.toArray(arguments));
+}; /* ================ mvsconfig.js ================= */
+var HEART_BEAT_INTERVAL = 3000; //心跳间隔时间
+var ENGE_STATE = {
+    NONE: 0x0000,
+    INITING: 0x0001,
+    HAVE_INIT: 0x0002,
+    LOGINING: 0x0004,
+    HAVE_LOGIN: 0x0008,
+    IN_ROOM: 0x0010,
+    CREATEROOM: 0x0020,
+    JOIN_ROOMING: 0x0040,
+    LEAVE_ROOMING: 0x0080,
+    LOGOUTING: 0x0100,
+    RECONNECTING: 0x0200 //正在重新连接
 };
 /**
  * 平台配置值
@@ -331,6 +373,7 @@ var MVSCONFIG = {
 };
 var HttpConf = {
     HOST_GATWAY_ADDR: "",
+    HOST_HOTEL_ADDR: "",
     GETHOSTLIST_URL: "http://sdk.matchvs.com",
     REGISTER_USER_URL: "",
     CMSNS_URL: "",
@@ -338,28 +381,13 @@ var HttpConf = {
     VS_PAY_URL: "",
     VS_PRODUCT_URL: ""
 };
-/**
- * 获取配置
- * @param channel
- * @param platform
- * @returns {*}
- * @constructor
- */
-function MVSConfig(channel, platform) {
-    if ("localhost" === platform) {
-        return LocalConf;
-    }
-    else {
-        return HttpConf;
-    }
-}
 /* ================ msutil.js ================= */
-if (typeof String.prototype.startsWith !== 'function') {
+if (typeof String.prototype.startsWith !== "function") {
     String.prototype.startsWith = function (prefix) {
         return this.slice(0, prefix.length) === prefix;
     };
 }
-if (typeof String.prototype.endsWith !== 'function') {
+if (typeof String.prototype.endsWith !== "function") {
     String.prototype.endsWith = function (suffix) {
         return this.indexOf(suffix, this.length - suffix.length) !== -1;
     };
@@ -439,9 +467,9 @@ function LocalStore_Save(key, value) {
         return true;
     }
     if (MVSCONFIG.MVS_PTF_ADATPER === ENMU_MVS_PTF.MVS_EGRET) {
-        return;
+        return false;
     }
-    if (wx.setStorageSync) {
+    if (typeof (wx) !== "undefined") {
         wx.setStorageSync(key, value);
         return true;
     }
@@ -460,15 +488,14 @@ function LocalStore_Clear() {
         return true;
     }
     if (MVSCONFIG.MVS_PTF_ADATPER === ENMU_MVS_PTF.MVS_EGRET) {
-        return;
+        return false;
     }
-    if (wx.setStorageSync) {
+    if (typeof (wx) !== "undefined") {
         wx.clearStorageSync();
         return true;
     }
     else {
         return false;
-        // document.cookie+=(key+"="+value);
     }
 }
 /**
@@ -479,13 +506,12 @@ function LocalStore_Load(key) {
         return localStorage.getItem(key);
     }
     if (MVSCONFIG.MVS_PTF_ADATPER === ENMU_MVS_PTF.MVS_EGRET) {
-        return;
+        return null;
     }
-    if (wx.getStorageSync) {
+    if (typeof (wx) !== "undefined") {
         return wx.getStorageSync(key);
     }
     else {
-        // return  document.cookie.replace(/(?:(?:^|.*;\s*)"+key+"\s*\=\s*([^;]*).*$)|^.*$/, "$1");
         return null;
     }
 }
@@ -500,6 +526,39 @@ function isIE() {
  */
 function getHotelUrl(engine) {
     return "wss://" + engine.mBookInfo.getWssproxy() + "/proxy?hotel=" + engine.mBookInfo.getHoteladdr();
+}
+function commEngineStateCheck(engineState, roomLoock, type) {
+    if ((engineState & ENGE_STATE.HAVE_INIT) !== ENGE_STATE.HAVE_INIT)
+        return -2; //未初始化
+    if ((engineState & ENGE_STATE.INITING) === ENGE_STATE.INITING)
+        return -3; //正在初始化
+    if ((engineState & ENGE_STATE.HAVE_LOGIN) !== ENGE_STATE.HAVE_LOGIN)
+        return -4; //未登录
+    if ((engineState & ENGE_STATE.LOGINING) === ENGE_STATE.LOGINING)
+        return -5; //正在登录
+    if ((engineState & ENGE_STATE.CREATEROOM) === ENGE_STATE.CREATEROOM)
+        return -7; //在创建房间
+    if ((engineState & ENGE_STATE.JOIN_ROOMING) === ENGE_STATE.JOIN_ROOMING)
+        return -7; //正在加入房间
+    if ((engineState & ENGE_STATE.LOGOUTING) === ENGE_STATE.LOGOUTING)
+        return -11; // 正在登出
+    if (type === 1) {
+        if ((engineState & ENGE_STATE.IN_ROOM) !== ENGE_STATE.IN_ROOM)
+            return -6; //没有进入房间
+        if ((engineState & ENGE_STATE.LEAVE_ROOMING) === ENGE_STATE.LEAVE_ROOMING)
+            return -10; //正在离开房间
+    }
+    else if (type === 2) {
+        if ((engineState & ENGE_STATE.IN_ROOM) === ENGE_STATE.IN_ROOM)
+            return -8; //已经在房间
+        if ((engineState & ENGE_STATE.LEAVE_ROOMING) === ENGE_STATE.LEAVE_ROOMING)
+            return -10; //正在离开房间
+    }
+    else if (type === 3) {
+        if ((engineState & ENGE_STATE.LEAVE_ROOMING) === ENGE_STATE.LEAVE_ROOMING)
+            return -10; //正在离开房间
+    }
+    return 0;
 } /* ================ mspb.js ================= */
 (function e(t, n, r) {
     function s(o, u) {
@@ -1156,7 +1215,7 @@ function getHotelUrl(engine) {
                 goog.ENABLE_CHROME_APP_SAFE_SCRIPT_LOADING = !1;
                 goog.provide = function (a) {
                     if (!COMPILED && goog.isProvided_(a))
-                        throw Error('Namespace "' + a + '" already declared.');
+                        throw Error("Namespace \"" + a + "\" already declared.");
                     goog.constructNamespace_(a);
                 };
                 goog.constructNamespace_ = function (a, b) {
@@ -1178,7 +1237,7 @@ function getHotelUrl(engine) {
                     goog.moduleLoaderState_.moduleName = a;
                     if (!COMPILED) {
                         if (goog.isProvided_(a))
-                            throw Error('Namespace "' + a + '" already declared.');
+                            throw Error("Namespace \"" + a + "\" already declared.");
                         delete goog.implicitNamespaces_[a];
                     }
                 };
@@ -1295,10 +1354,10 @@ function getHotelUrl(engine) {
                 }, goog.importScript_ = function (a, b) {
                     (goog.global.CLOSURE_IMPORT_SCRIPT || goog.writeScriptTag_)(a, b) && (goog.dependencies_.written[a] = !0);
                 }, goog.IS_OLD_IE_ = !(goog.global.atob || !goog.global.document || !goog.global.document.all), goog.importModule_ = function (a) {
-                    goog.importScript_("", 'goog.retrieveAndExecModule_("' + a + '");') && (goog.dependencies_.written[a] = !0);
+                    goog.importScript_("", "goog.retrieveAndExecModule_(\"" + a + "\");") && (goog.dependencies_.written[a] = !0);
                 }, goog.queuedModules_ = [], goog.wrapModule_ = function (a, b) {
                     return goog.LOAD_MODULE_USING_EVAL &&
-                        goog.isDef(goog.global.JSON) ? "goog.loadModule(" + goog.global.JSON.stringify(b + "\n//# sourceURL=" + a + "\n") + ");" : 'goog.loadModule(function(exports) {"use strict";' + b + "\n;return exports});\n//# sourceURL=" + a + "\n";
+                        goog.isDef(goog.global.JSON) ? "goog.loadModule(" + goog.global.JSON.stringify(b + "\n//# sourceURL=" + a + "\n") + ");" : "goog.loadModule(function(exports) {\"use strict\";" + b + "\n;return exports});\n//# sourceURL=" + a + "\n";
                 }, goog.loadQueuedModules_ = function () {
                     var a = goog.queuedModules_.length;
                     if (0 < a) {
@@ -1339,7 +1398,7 @@ function getHotelUrl(engine) {
                             throw Error("Invalid module definition");
                         var d = goog.moduleLoaderState_.moduleName;
                         if (!goog.isString(d) || !d)
-                            throw Error('Invalid module name "' + d + '"');
+                            throw Error("Invalid module name \"" + d + "\"");
                         goog.moduleLoaderState_.declareLegacyNamespace ? goog.constructNamespace_(d, c) : goog.SEAL_MODULE_EXPORTS && Object.seal && Object.seal(c);
                         goog.loadedModules_[d] = c;
                     }
@@ -1350,7 +1409,7 @@ function getHotelUrl(engine) {
                     eval(a);
                     return {};
                 }, goog.writeScriptSrcNode_ = function (a) {
-                    goog.global.document.write('<script type="text/javascript" src="' + a + '">\x3c/script>');
+                    goog.global.document.write("<script type=\"text/javascript\" src=\"" + a + "\">\x3c/script>");
                 }, goog.appendScriptSrcNode_ = function (a) {
                     var b = goog.global.document, c = b.createElement("script");
                     c.type = "text/javascript";
@@ -1364,11 +1423,11 @@ function getHotelUrl(engine) {
                         if (!goog.ENABLE_CHROME_APP_SAFE_SCRIPT_LOADING && "complete" == c.readyState) {
                             if (/\bdeps.js$/.test(a))
                                 return !1;
-                            throw Error('Cannot write "' + a + '" after document load');
+                            throw Error("Cannot write \"" + a + "\" after document load");
                         }
                         var d = goog.IS_OLD_IE_;
-                        void 0 === b ? d ? (d = " onreadystatechange='goog.onScriptLoad_(this, " + ++goog.lastNonModuleScriptIndex_ + ")' ", c.write('<script type="text/javascript" src="' +
-                            a + '"' + d + ">\x3c/script>")) : goog.ENABLE_CHROME_APP_SAFE_SCRIPT_LOADING ? goog.appendScriptSrcNode_(a) : goog.writeScriptSrcNode_(a) : c.write('<script type="text/javascript">' + b + "\x3c/script>");
+                        void 0 === b ? d ? (d = " onreadystatechange='goog.onScriptLoad_(this, " + ++goog.lastNonModuleScriptIndex_ + ")' ", c.write("<script type=\"text/javascript\" src=\"" +
+                            a + "\"" + d + ">\x3c/script>")) : goog.ENABLE_CHROME_APP_SAFE_SCRIPT_LOADING ? goog.appendScriptSrcNode_(a) : goog.writeScriptSrcNode_(a) : c.write("<script type=\"text/javascript\">" + b + "\x3c/script>");
                         return !0;
                     }
                     return !1;
@@ -1850,7 +1909,7 @@ function getHotelUrl(engine) {
                         -1 != a.indexOf("&") && (a = a.replace(goog.string.AMP_RE_, "&amp;"));
                         -1 != a.indexOf("<") && (a = a.replace(goog.string.LT_RE_, "&lt;"));
                         -1 != a.indexOf(">") && (a = a.replace(goog.string.GT_RE_, "&gt;"));
-                        -1 != a.indexOf('"') && (a = a.replace(goog.string.QUOT_RE_, "&quot;"));
+                        -1 != a.indexOf("\"") && (a = a.replace(goog.string.QUOT_RE_, "&quot;"));
                         -1 != a.indexOf("'") && (a = a.replace(goog.string.SINGLE_QUOTE_RE_, "&#39;"));
                         -1 != a.indexOf("\x00") && (a = a.replace(goog.string.NULL_RE_, "&#0;"));
                         goog.string.DETECT_DOUBLE_ESCAPING && -1 != a.indexOf("e") && (a = a.replace(goog.string.E_RE_, "&#101;"));
@@ -1872,7 +1931,7 @@ function getHotelUrl(engine) {
                     return goog.string.contains(a, "&") ? goog.string.unescapeEntitiesUsingDom_(a, b) : a;
                 };
                 goog.string.unescapeEntitiesUsingDom_ = function (a, b) {
-                    var c = { "&amp;": "&", "&lt;": "<", "&gt;": ">", "&quot;": '"' }, d;
+                    var c = { "&amp;": "&", "&lt;": "<", "&gt;": ">", "&quot;": "\"" }, d;
                     d = b ? b.createElement("div") : goog.global.document.createElement("div");
                     return a.replace(goog.string.HTML_ENTITY_PATTERN_, function (a, b) {
                         var g = c[a];
@@ -1896,7 +1955,7 @@ function getHotelUrl(engine) {
                             case "gt":
                                 return ">";
                             case "quot":
-                                return '"';
+                                return "\"";
                             default:
                                 if ("#" == c.charAt(0)) {
                                     var d = Number("0" + c.substr(1));
@@ -1909,7 +1968,7 @@ function getHotelUrl(engine) {
                 };
                 goog.string.HTML_ENTITY_PATTERN_ = /&([^;\s<&]+);?/g;
                 goog.string.whitespaceEscape = function (a, b) {
-                    return goog.string.newLineToBr(a.replace(/  /g, " &#160;"), b);
+                    return goog.string.newLineToBr(a.replace(/ {2}/g, " &#160;"), b);
                 };
                 goog.string.preserveSpaces = function (a) {
                     return a.replace(/(^|[\n ]) /g, "$1" + goog.string.Unicode.NBSP);
@@ -1948,18 +2007,18 @@ function getHotelUrl(engine) {
                     "\r": "\\r",
                     "\t": "\\t",
                     "\x0B": "\\x0B",
-                    '"': '\\"',
+                    "\"": "\\\"",
                     "\\": "\\\\",
                     "<": "<"
                 };
                 goog.string.jsEscapeCache_ = { "'": "\\'" };
                 goog.string.quote = function (a) {
                     a = String(a);
-                    for (var b = ['"'], c = 0; c < a.length; c++) {
+                    for (var b = ["\""], c = 0; c < a.length; c++) {
                         var d = a.charAt(c), e = d.charCodeAt(0);
                         b[c + 1] = goog.string.specialEscapeChars_[d] || (31 < e && 127 > e ? d : goog.string.escapeChar(d));
                     }
-                    b.push('"');
+                    b.push("\"");
                     return b.join("");
                 };
                 goog.string.escapeString = function (a) {
@@ -2968,7 +3027,7 @@ function getHotelUrl(engine) {
                 };
                 goog.object.add = function (a, b, c) {
                     if (null !== a && b in a)
-                        throw Error('The object already contains the key "' + b + '"');
+                        throw Error("The object already contains the key \"" + b + "\"");
                     goog.object.set(a, b, c);
                 };
                 goog.object.get = function (a, b, c) {
@@ -4246,13 +4305,13 @@ function getHotelUrl(engine) {
                     return e;
                 };
                 jspb.utils.debugBytesToTextFormat = function (a) {
-                    var b = '"';
+                    var b = "\"";
                     if (a) {
                         a = jspb.utils.byteSourceToUint8Array(a);
                         for (var c = 0; c < a.length; c++)
                             b += "\\x", 16 > a[c] && (b += "0"), b += a[c].toString(16);
                     }
-                    return b + '"';
+                    return b + "\"";
                 };
                 jspb.utils.debugScalarToTextFormat = function (a) {
                     return goog.isString(a) ? goog.string.quote(a) : a.toString();
@@ -5777,10 +5836,10 @@ function getHotelUrl(engine) {
              * @public
              */
             // GENERATED CODE -- DO NOT EDIT!
-            var jspb = _require('google-protobuf');
+            var jspb = _require("google-protobuf");
             var goog = jspb;
             var global = window; // var global = Function('return this')();
-            goog.exportSymbol('proto.stream.ErrorCode', null, global);
+            goog.exportSymbol("proto.stream.ErrorCode", null, global);
             /**
              * @enum {number}
              */
@@ -5801,9 +5860,9 @@ function getHotelUrl(engine) {
             };
             goog.object.extend(exports, proto.stream);
         }, { "google-protobuf": 1 }], 3: [function (_require, module, exports) {
-            var myProto = _require('./sdk_pb');
-            var myProto1 = _require('./gateway_pb');
-            var myProto2 = _require('./errorcode_pb');
+            var myProto = _require("./sdk_pb");
+            var myProto1 = _require("./gateway_pb");
+            var myProto2 = _require("./errorcode_pb");
             module.exports = {
                 DataProto: myProto,
                 DataProto: myProto1,
@@ -5818,55 +5877,61 @@ function getHotelUrl(engine) {
              * @public
              */
             // GENERATED CODE -- DO NOT EDIT!
-            var jspb = _require('google-protobuf');
+            var jspb = _require("google-protobuf");
             var goog = jspb;
             var global = window; // var global = Function('return this')();
-            var errorcode_pb = _require('./errorcode_pb.js');
-            goog.exportSymbol('proto.stream.BookInfo', null, global);
-            goog.exportSymbol('proto.stream.CmdId', null, global);
-            goog.exportSymbol('proto.stream.ConnDetailV2', null, global);
-            goog.exportSymbol('proto.stream.CreateRoom', null, global);
-            goog.exportSymbol('proto.stream.CreateRoomRsp', null, global);
-            goog.exportSymbol('proto.stream.DisconnectReq', null, global);
-            goog.exportSymbol('proto.stream.DisconnectRsp', null, global);
-            goog.exportSymbol('proto.stream.GetRoomDetailReq', null, global);
-            goog.exportSymbol('proto.stream.GetRoomDetailRsp', null, global);
-            goog.exportSymbol('proto.stream.GetRoomList', null, global);
-            goog.exportSymbol('proto.stream.GetRoomListExReq', null, global);
-            goog.exportSymbol('proto.stream.GetRoomListExRsp', null, global);
-            goog.exportSymbol('proto.stream.GetRoomListRsp', null, global);
-            goog.exportSymbol('proto.stream.HeartbeatReq', null, global);
-            goog.exportSymbol('proto.stream.HeartbeatRsp', null, global);
-            goog.exportSymbol('proto.stream.JoinOverNotify', null, global);
-            goog.exportSymbol('proto.stream.JoinOverReq', null, global);
-            goog.exportSymbol('proto.stream.JoinOverRsp', null, global);
-            goog.exportSymbol('proto.stream.JoinRoomReq', null, global);
-            goog.exportSymbol('proto.stream.JoinRoomRsp', null, global);
-            goog.exportSymbol('proto.stream.JoinRoomType', null, global);
-            goog.exportSymbol('proto.stream.KickPlayer', null, global);
-            goog.exportSymbol('proto.stream.KickPlayerNotify', null, global);
-            goog.exportSymbol('proto.stream.KickPlayerRsp', null, global);
-            goog.exportSymbol('proto.stream.LeaveRoomReq', null, global);
-            goog.exportSymbol('proto.stream.LeaveRoomRsp', null, global);
-            goog.exportSymbol('proto.stream.LoginReq', null, global);
-            goog.exportSymbol('proto.stream.LoginRsp', null, global);
-            goog.exportSymbol('proto.stream.LogoutRsp', null, global);
-            goog.exportSymbol('proto.stream.NetworkStateNotify', null, global);
-            goog.exportSymbol('proto.stream.NetworkStateReq', null, global);
-            goog.exportSymbol('proto.stream.NetworkStateRsp', null, global);
-            goog.exportSymbol('proto.stream.NoticeJoin', null, global);
-            goog.exportSymbol('proto.stream.NoticeLeave', null, global);
-            goog.exportSymbol('proto.stream.PlayerInfo', null, global);
-            goog.exportSymbol('proto.stream.RoomDetail', null, global);
-            goog.exportSymbol('proto.stream.RoomFilter', null, global);
-            goog.exportSymbol('proto.stream.RoomInfo', null, global);
-            goog.exportSymbol('proto.stream.RoomInfoEx', null, global);
-            goog.exportSymbol('proto.stream.RoomListSort', null, global);
-            goog.exportSymbol('proto.stream.RoomState', null, global);
-            goog.exportSymbol('proto.stream.SortOrder', null, global);
-            goog.exportSymbol('proto.stream.TcpProtoHeader', null, global);
-            goog.exportSymbol('proto.stream.UserV2', null, global);
-            goog.exportSymbol('proto.stream.keyValue', null, global);
+            var errorcode_pb = _require("./errorcode_pb.js");
+            goog.exportSymbol("proto.stream.BookInfo", null, global);
+            goog.exportSymbol("proto.stream.CmdId", null, global);
+            goog.exportSymbol("proto.stream.ConnDetailV2", null, global);
+            goog.exportSymbol("proto.stream.CreateRoom", null, global);
+            goog.exportSymbol("proto.stream.CreateRoomRsp", null, global);
+            goog.exportSymbol("proto.stream.DisconnectReq", null, global);
+            goog.exportSymbol("proto.stream.DisconnectRsp", null, global);
+            goog.exportSymbol("proto.stream.GetRoomDetailReq", null, global);
+            goog.exportSymbol("proto.stream.GetRoomDetailRsp", null, global);
+            goog.exportSymbol("proto.stream.GetRoomList", null, global);
+            goog.exportSymbol("proto.stream.GetRoomListExReq", null, global);
+            goog.exportSymbol("proto.stream.GetRoomListExRsp", null, global);
+            goog.exportSymbol("proto.stream.GetRoomListRsp", null, global);
+            goog.exportSymbol("proto.stream.HeartbeatReq", null, global);
+            goog.exportSymbol("proto.stream.HeartbeatRsp", null, global);
+            goog.exportSymbol("proto.stream.JoinOpenNotify", null, global);
+            goog.exportSymbol("proto.stream.JoinOpenReq", null, global);
+            goog.exportSymbol("proto.stream.JoinOpenRsp", null, global);
+            goog.exportSymbol("proto.stream.JoinOverNotify", null, global);
+            goog.exportSymbol("proto.stream.JoinOverReq", null, global);
+            goog.exportSymbol("proto.stream.JoinOverRsp", null, global);
+            goog.exportSymbol("proto.stream.JoinRoomReq", null, global);
+            goog.exportSymbol("proto.stream.JoinRoomRsp", null, global);
+            goog.exportSymbol("proto.stream.JoinRoomType", null, global);
+            goog.exportSymbol("proto.stream.KickPlayer", null, global);
+            goog.exportSymbol("proto.stream.KickPlayerNotify", null, global);
+            goog.exportSymbol("proto.stream.KickPlayerRsp", null, global);
+            goog.exportSymbol("proto.stream.LeaveRoomReq", null, global);
+            goog.exportSymbol("proto.stream.LeaveRoomRsp", null, global);
+            goog.exportSymbol("proto.stream.LoginReq", null, global);
+            goog.exportSymbol("proto.stream.LoginRsp", null, global);
+            goog.exportSymbol("proto.stream.LogoutRsp", null, global);
+            goog.exportSymbol("proto.stream.NetworkStateNotify", null, global);
+            goog.exportSymbol("proto.stream.NetworkStateReq", null, global);
+            goog.exportSymbol("proto.stream.NetworkStateRsp", null, global);
+            goog.exportSymbol("proto.stream.NoticeJoin", null, global);
+            goog.exportSymbol("proto.stream.NoticeLeave", null, global);
+            goog.exportSymbol("proto.stream.NoticeRoomProperty", null, global);
+            goog.exportSymbol("proto.stream.PlayerInfo", null, global);
+            goog.exportSymbol("proto.stream.RoomDetail", null, global);
+            goog.exportSymbol("proto.stream.RoomFilter", null, global);
+            goog.exportSymbol("proto.stream.RoomInfo", null, global);
+            goog.exportSymbol("proto.stream.RoomInfoEx", null, global);
+            goog.exportSymbol("proto.stream.RoomListSort", null, global);
+            goog.exportSymbol("proto.stream.RoomState", null, global);
+            goog.exportSymbol("proto.stream.SetRoomPropertyReq", null, global);
+            goog.exportSymbol("proto.stream.SetRoomPropertyRsp", null, global);
+            goog.exportSymbol("proto.stream.SortOrder", null, global);
+            goog.exportSymbol("proto.stream.TcpProtoHeader", null, global);
+            goog.exportSymbol("proto.stream.UserV2", null, global);
+            goog.exportSymbol("proto.stream.keyValue", null, global);
             /**
              * Generated by JsPbCodeGenerator.
              * @param {Array=} opt_data Optional initial data array, typically from a
@@ -5882,7 +5947,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.LoginReq, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.LoginReq.displayName = 'proto.stream.LoginReq';
+                proto.stream.LoginReq.displayName = "proto.stream.LoginReq";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -6101,7 +6166,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.LoginRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.LoginRsp.displayName = 'proto.stream.LoginRsp';
+                proto.stream.LoginRsp.displayName = "proto.stream.LoginRsp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -6240,7 +6305,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.HeartbeatReq, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.HeartbeatReq.displayName = 'proto.stream.HeartbeatReq';
+                proto.stream.HeartbeatReq.displayName = "proto.stream.HeartbeatReq";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -6379,7 +6444,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.HeartbeatRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.HeartbeatRsp.displayName = 'proto.stream.HeartbeatRsp';
+                proto.stream.HeartbeatRsp.displayName = "proto.stream.HeartbeatRsp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -6518,7 +6583,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.DisconnectReq, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.DisconnectReq.displayName = 'proto.stream.DisconnectReq';
+                proto.stream.DisconnectReq.displayName = "proto.stream.DisconnectReq";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -6677,7 +6742,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.DisconnectRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.DisconnectRsp.displayName = 'proto.stream.DisconnectRsp';
+                proto.stream.DisconnectRsp.displayName = "proto.stream.DisconnectRsp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -6796,7 +6861,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.LogoutRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.LogoutRsp.displayName = 'proto.stream.LogoutRsp';
+                proto.stream.LogoutRsp.displayName = "proto.stream.LogoutRsp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -6915,7 +6980,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.keyValue, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.keyValue.displayName = 'proto.stream.keyValue';
+                proto.stream.keyValue.displayName = "proto.stream.keyValue";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -7054,7 +7119,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.PlayerInfo, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.PlayerInfo.displayName = 'proto.stream.PlayerInfo';
+                proto.stream.PlayerInfo.displayName = "proto.stream.PlayerInfo";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -7211,7 +7276,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.BookInfo, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.BookInfo.displayName = 'proto.stream.BookInfo';
+                proto.stream.BookInfo.displayName = "proto.stream.BookInfo";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -7390,7 +7455,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.RoomInfo, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.RoomInfo.displayName = 'proto.stream.RoomInfo';
+                proto.stream.RoomInfo.displayName = "proto.stream.RoomInfo";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -7667,7 +7732,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.JoinRoomReq, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.JoinRoomReq.displayName = 'proto.stream.JoinRoomReq';
+                proto.stream.JoinRoomReq.displayName = "proto.stream.JoinRoomReq";
             }
             /**
              * List of repeated fields within this message type.
@@ -7944,7 +8009,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.JoinRoomRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.JoinRoomRsp.displayName = 'proto.stream.JoinRoomRsp';
+                proto.stream.JoinRoomRsp.displayName = "proto.stream.JoinRoomRsp";
             }
             /**
              * List of repeated fields within this message type.
@@ -8201,7 +8266,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.NoticeJoin, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.NoticeJoin.displayName = 'proto.stream.NoticeJoin';
+                proto.stream.NoticeJoin.displayName = "proto.stream.NoticeJoin";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -8331,7 +8396,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.NoticeLeave, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.NoticeLeave.displayName = 'proto.stream.NoticeLeave';
+                proto.stream.NoticeLeave.displayName = "proto.stream.NoticeLeave";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -8528,7 +8593,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.JoinOverReq, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.JoinOverReq.displayName = 'proto.stream.JoinOverReq';
+                proto.stream.JoinOverReq.displayName = "proto.stream.JoinOverReq";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -8725,7 +8790,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.JoinOverRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.JoinOverRsp.displayName = 'proto.stream.JoinOverRsp';
+                proto.stream.JoinOverRsp.displayName = "proto.stream.JoinOverRsp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -8882,7 +8947,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.JoinOverNotify, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.JoinOverNotify.displayName = 'proto.stream.JoinOverNotify';
+                proto.stream.JoinOverNotify.displayName = "proto.stream.JoinOverNotify";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -9054,12 +9119,543 @@ function getHotelUrl(engine) {
              * @extends {jspb.Message}
              * @constructor
              */
+            proto.stream.JoinOpenReq = function (opt_data) {
+                jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+            };
+            goog.inherits(proto.stream.JoinOpenReq, jspb.Message);
+            if (goog.DEBUG && !COMPILED) {
+                proto.stream.JoinOpenReq.displayName = "proto.stream.JoinOpenReq";
+            }
+            if (jspb.Message.GENERATE_TO_OBJECT) {
+                /**
+                 * Creates an object representation of this proto suitable for use in Soy templates.
+                 * Field names that are reserved in JavaScript and will be renamed to pb_name.
+                 * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+                 * For the list of reserved names please see:
+                 *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
+                 * @param {boolean=} opt_includeInstance Whether to include the JSPB instance
+                 *     for transitional soy proto support: http://goto/soy-param-migration
+                 * @return {!Object}
+                 */
+                proto.stream.JoinOpenReq.prototype.toObject = function (opt_includeInstance) {
+                    return proto.stream.JoinOpenReq.toObject(opt_includeInstance, this);
+                };
+                /**
+                 * Static version of the {@see toObject} method.
+                 * @param {boolean|undefined} includeInstance Whether to include the JSPB
+                 *     instance for transitional soy proto support:
+                 *     http://goto/soy-param-migration
+                 * @param {!proto.stream.JoinOpenReq} msg The msg instance to transform.
+                 * @return {!Object}
+                 * @suppress {unusedLocalVariables} f is only used for nested messages
+                 */
+                proto.stream.JoinOpenReq.toObject = function (includeInstance, msg) {
+                    var f, obj = {
+                        roomid: jspb.Message.getFieldWithDefault(msg, 1, "0"),
+                        gameid: jspb.Message.getFieldWithDefault(msg, 2, 0),
+                        userid: jspb.Message.getFieldWithDefault(msg, 3, 0),
+                        cpproto: msg.getCpproto_asB64()
+                    };
+                    if (includeInstance) {
+                        obj.$jspbMessageInstance = msg;
+                    }
+                    return obj;
+                };
+            }
+            /**
+             * Deserializes binary data (in protobuf wire format).
+             * @param {jspb.ByteSource} bytes The bytes to deserialize.
+             * @return {!proto.stream.JoinOpenReq}
+             */
+            proto.stream.JoinOpenReq.deserializeBinary = function (bytes) {
+                var reader = new jspb.BinaryReader(bytes);
+                var msg = new proto.stream.JoinOpenReq;
+                return proto.stream.JoinOpenReq.deserializeBinaryFromReader(msg, reader);
+            };
+            /**
+             * Deserializes binary data (in protobuf wire format) from the
+             * given reader into the given message object.
+             * @param {!proto.stream.JoinOpenReq} msg The message object to deserialize into.
+             * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+             * @return {!proto.stream.JoinOpenReq}
+             */
+            proto.stream.JoinOpenReq.deserializeBinaryFromReader = function (msg, reader) {
+                while (reader.nextField()) {
+                    if (reader.isEndGroup()) {
+                        break;
+                    }
+                    var field = reader.getFieldNumber();
+                    switch (field) {
+                        case 1:
+                            var value = (reader.readUint64String());
+                            msg.setRoomid(value);
+                            break;
+                        case 2:
+                            var value = (reader.readUint32());
+                            msg.setGameid(value);
+                            break;
+                        case 3:
+                            var value = (reader.readUint32());
+                            msg.setUserid(value);
+                            break;
+                        case 4:
+                            var value = (reader.readBytes());
+                            msg.setCpproto(value);
+                            break;
+                        default:
+                            reader.skipField();
+                            break;
+                    }
+                }
+                return msg;
+            };
+            /**
+             * Serializes the message to binary data (in protobuf wire format).
+             * @return {!Uint8Array}
+             */
+            proto.stream.JoinOpenReq.prototype.serializeBinary = function () {
+                var writer = new jspb.BinaryWriter();
+                proto.stream.JoinOpenReq.serializeBinaryToWriter(this, writer);
+                return writer.getResultBuffer();
+            };
+            /**
+             * Serializes the given message to binary data (in protobuf wire
+             * format), writing to the given BinaryWriter.
+             * @param {!proto.stream.JoinOpenReq} message
+             * @param {!jspb.BinaryWriter} writer
+             * @suppress {unusedLocalVariables} f is only used for nested messages
+             */
+            proto.stream.JoinOpenReq.serializeBinaryToWriter = function (message, writer) {
+                var f = undefined;
+                f = message.getRoomid();
+                if (parseInt(f, 10) !== 0) {
+                    writer.writeUint64String(1, f);
+                }
+                f = message.getGameid();
+                if (f !== 0) {
+                    writer.writeUint32(2, f);
+                }
+                f = message.getUserid();
+                if (f !== 0) {
+                    writer.writeUint32(3, f);
+                }
+                f = message.getCpproto_asU8();
+                if (f.length > 0) {
+                    writer.writeBytes(4, f);
+                }
+            };
+            /**
+             * optional uint64 roomID = 1;
+             * @return {string}
+             */
+            proto.stream.JoinOpenReq.prototype.getRoomid = function () {
+                return (jspb.Message.getFieldWithDefault(this, 1, "0"));
+            };
+            /** @param {string} value */
+            proto.stream.JoinOpenReq.prototype.setRoomid = function (value) {
+                jspb.Message.setProto3StringIntField(this, 1, value);
+            };
+            /**
+             * optional uint32 gameID = 2;
+             * @return {number}
+             */
+            proto.stream.JoinOpenReq.prototype.getGameid = function () {
+                return (jspb.Message.getFieldWithDefault(this, 2, 0));
+            };
+            /** @param {number} value */
+            proto.stream.JoinOpenReq.prototype.setGameid = function (value) {
+                jspb.Message.setProto3IntField(this, 2, value);
+            };
+            /**
+             * optional uint32 userID = 3;
+             * @return {number}
+             */
+            proto.stream.JoinOpenReq.prototype.getUserid = function () {
+                return (jspb.Message.getFieldWithDefault(this, 3, 0));
+            };
+            /** @param {number} value */
+            proto.stream.JoinOpenReq.prototype.setUserid = function (value) {
+                jspb.Message.setProto3IntField(this, 3, value);
+            };
+            /**
+             * optional bytes cpProto = 4;
+             * @return {!(string|Uint8Array)}
+             */
+            proto.stream.JoinOpenReq.prototype.getCpproto = function () {
+                return (jspb.Message.getFieldWithDefault(this, 4, ""));
+            };
+            /**
+             * optional bytes cpProto = 4;
+             * This is a type-conversion wrapper around `getCpproto()`
+             * @return {string}
+             */
+            proto.stream.JoinOpenReq.prototype.getCpproto_asB64 = function () {
+                return (jspb.Message.bytesAsB64(this.getCpproto()));
+            };
+            /**
+             * optional bytes cpProto = 4;
+             * Note that Uint8Array is not supported on all browsers.
+             * @see http://caniuse.com/Uint8Array
+             * This is a type-conversion wrapper around `getCpproto()`
+             * @return {!Uint8Array}
+             */
+            proto.stream.JoinOpenReq.prototype.getCpproto_asU8 = function () {
+                return (jspb.Message.bytesAsU8(this.getCpproto()));
+            };
+            /** @param {!(string|Uint8Array)} value */
+            proto.stream.JoinOpenReq.prototype.setCpproto = function (value) {
+                jspb.Message.setProto3BytesField(this, 4, value);
+            };
+            /**
+             * Generated by JsPbCodeGenerator.
+             * @param {Array=} opt_data Optional initial data array, typically from a
+             * server response, or constructed directly in Javascript. The array is used
+             * in place and becomes part of the constructed object. It is not cloned.
+             * If no data is provided, the constructed object will be empty, but still
+             * valid.
+             * @extends {jspb.Message}
+             * @constructor
+             */
+            proto.stream.JoinOpenRsp = function (opt_data) {
+                jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+            };
+            goog.inherits(proto.stream.JoinOpenRsp, jspb.Message);
+            if (goog.DEBUG && !COMPILED) {
+                proto.stream.JoinOpenRsp.displayName = "proto.stream.JoinOpenRsp";
+            }
+            if (jspb.Message.GENERATE_TO_OBJECT) {
+                /**
+                 * Creates an object representation of this proto suitable for use in Soy templates.
+                 * Field names that are reserved in JavaScript and will be renamed to pb_name.
+                 * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+                 * For the list of reserved names please see:
+                 *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
+                 * @param {boolean=} opt_includeInstance Whether to include the JSPB instance
+                 *     for transitional soy proto support: http://goto/soy-param-migration
+                 * @return {!Object}
+                 */
+                proto.stream.JoinOpenRsp.prototype.toObject = function (opt_includeInstance) {
+                    return proto.stream.JoinOpenRsp.toObject(opt_includeInstance, this);
+                };
+                /**
+                 * Static version of the {@see toObject} method.
+                 * @param {boolean|undefined} includeInstance Whether to include the JSPB
+                 *     instance for transitional soy proto support:
+                 *     http://goto/soy-param-migration
+                 * @param {!proto.stream.JoinOpenRsp} msg The msg instance to transform.
+                 * @return {!Object}
+                 * @suppress {unusedLocalVariables} f is only used for nested messages
+                 */
+                proto.stream.JoinOpenRsp.toObject = function (includeInstance, msg) {
+                    var f, obj = {
+                        status: jspb.Message.getFieldWithDefault(msg, 1, 0),
+                        cpproto: msg.getCpproto_asB64()
+                    };
+                    if (includeInstance) {
+                        obj.$jspbMessageInstance = msg;
+                    }
+                    return obj;
+                };
+            }
+            /**
+             * Deserializes binary data (in protobuf wire format).
+             * @param {jspb.ByteSource} bytes The bytes to deserialize.
+             * @return {!proto.stream.JoinOpenRsp}
+             */
+            proto.stream.JoinOpenRsp.deserializeBinary = function (bytes) {
+                var reader = new jspb.BinaryReader(bytes);
+                var msg = new proto.stream.JoinOpenRsp;
+                return proto.stream.JoinOpenRsp.deserializeBinaryFromReader(msg, reader);
+            };
+            /**
+             * Deserializes binary data (in protobuf wire format) from the
+             * given reader into the given message object.
+             * @param {!proto.stream.JoinOpenRsp} msg The message object to deserialize into.
+             * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+             * @return {!proto.stream.JoinOpenRsp}
+             */
+            proto.stream.JoinOpenRsp.deserializeBinaryFromReader = function (msg, reader) {
+                while (reader.nextField()) {
+                    if (reader.isEndGroup()) {
+                        break;
+                    }
+                    var field = reader.getFieldNumber();
+                    switch (field) {
+                        case 1:
+                            var value = (reader.readEnum());
+                            msg.setStatus(value);
+                            break;
+                        case 2:
+                            var value = (reader.readBytes());
+                            msg.setCpproto(value);
+                            break;
+                        default:
+                            reader.skipField();
+                            break;
+                    }
+                }
+                return msg;
+            };
+            /**
+             * Serializes the message to binary data (in protobuf wire format).
+             * @return {!Uint8Array}
+             */
+            proto.stream.JoinOpenRsp.prototype.serializeBinary = function () {
+                var writer = new jspb.BinaryWriter();
+                proto.stream.JoinOpenRsp.serializeBinaryToWriter(this, writer);
+                return writer.getResultBuffer();
+            };
+            /**
+             * Serializes the given message to binary data (in protobuf wire
+             * format), writing to the given BinaryWriter.
+             * @param {!proto.stream.JoinOpenRsp} message
+             * @param {!jspb.BinaryWriter} writer
+             * @suppress {unusedLocalVariables} f is only used for nested messages
+             */
+            proto.stream.JoinOpenRsp.serializeBinaryToWriter = function (message, writer) {
+                var f = undefined;
+                f = message.getStatus();
+                if (f !== 0.0) {
+                    writer.writeEnum(1, f);
+                }
+                f = message.getCpproto_asU8();
+                if (f.length > 0) {
+                    writer.writeBytes(2, f);
+                }
+            };
+            /**
+             * optional ErrorCode status = 1;
+             * @return {!proto.stream.ErrorCode}
+             */
+            proto.stream.JoinOpenRsp.prototype.getStatus = function () {
+                return (jspb.Message.getFieldWithDefault(this, 1, 0));
+            };
+            /** @param {!proto.stream.ErrorCode} value */
+            proto.stream.JoinOpenRsp.prototype.setStatus = function (value) {
+                jspb.Message.setProto3EnumField(this, 1, value);
+            };
+            /**
+             * optional bytes cpProto = 2;
+             * @return {!(string|Uint8Array)}
+             */
+            proto.stream.JoinOpenRsp.prototype.getCpproto = function () {
+                return (jspb.Message.getFieldWithDefault(this, 2, ""));
+            };
+            /**
+             * optional bytes cpProto = 2;
+             * This is a type-conversion wrapper around `getCpproto()`
+             * @return {string}
+             */
+            proto.stream.JoinOpenRsp.prototype.getCpproto_asB64 = function () {
+                return (jspb.Message.bytesAsB64(this.getCpproto()));
+            };
+            /**
+             * optional bytes cpProto = 2;
+             * Note that Uint8Array is not supported on all browsers.
+             * @see http://caniuse.com/Uint8Array
+             * This is a type-conversion wrapper around `getCpproto()`
+             * @return {!Uint8Array}
+             */
+            proto.stream.JoinOpenRsp.prototype.getCpproto_asU8 = function () {
+                return (jspb.Message.bytesAsU8(this.getCpproto()));
+            };
+            /** @param {!(string|Uint8Array)} value */
+            proto.stream.JoinOpenRsp.prototype.setCpproto = function (value) {
+                jspb.Message.setProto3BytesField(this, 2, value);
+            };
+            /**
+             * Generated by JsPbCodeGenerator.
+             * @param {Array=} opt_data Optional initial data array, typically from a
+             * server response, or constructed directly in Javascript. The array is used
+             * in place and becomes part of the constructed object. It is not cloned.
+             * If no data is provided, the constructed object will be empty, but still
+             * valid.
+             * @extends {jspb.Message}
+             * @constructor
+             */
+            proto.stream.JoinOpenNotify = function (opt_data) {
+                jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+            };
+            goog.inherits(proto.stream.JoinOpenNotify, jspb.Message);
+            if (goog.DEBUG && !COMPILED) {
+                proto.stream.JoinOpenNotify.displayName = "proto.stream.JoinOpenNotify";
+            }
+            if (jspb.Message.GENERATE_TO_OBJECT) {
+                /**
+                 * Creates an object representation of this proto suitable for use in Soy templates.
+                 * Field names that are reserved in JavaScript and will be renamed to pb_name.
+                 * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+                 * For the list of reserved names please see:
+                 *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
+                 * @param {boolean=} opt_includeInstance Whether to include the JSPB instance
+                 *     for transitional soy proto support: http://goto/soy-param-migration
+                 * @return {!Object}
+                 */
+                proto.stream.JoinOpenNotify.prototype.toObject = function (opt_includeInstance) {
+                    return proto.stream.JoinOpenNotify.toObject(opt_includeInstance, this);
+                };
+                /**
+                 * Static version of the {@see toObject} method.
+                 * @param {boolean|undefined} includeInstance Whether to include the JSPB
+                 *     instance for transitional soy proto support:
+                 *     http://goto/soy-param-migration
+                 * @param {!proto.stream.JoinOpenNotify} msg The msg instance to transform.
+                 * @return {!Object}
+                 * @suppress {unusedLocalVariables} f is only used for nested messages
+                 */
+                proto.stream.JoinOpenNotify.toObject = function (includeInstance, msg) {
+                    var f, obj = {
+                        userid: jspb.Message.getFieldWithDefault(msg, 1, 0),
+                        roomid: jspb.Message.getFieldWithDefault(msg, 2, "0"),
+                        cpproto: msg.getCpproto_asB64()
+                    };
+                    if (includeInstance) {
+                        obj.$jspbMessageInstance = msg;
+                    }
+                    return obj;
+                };
+            }
+            /**
+             * Deserializes binary data (in protobuf wire format).
+             * @param {jspb.ByteSource} bytes The bytes to deserialize.
+             * @return {!proto.stream.JoinOpenNotify}
+             */
+            proto.stream.JoinOpenNotify.deserializeBinary = function (bytes) {
+                var reader = new jspb.BinaryReader(bytes);
+                var msg = new proto.stream.JoinOpenNotify;
+                return proto.stream.JoinOpenNotify.deserializeBinaryFromReader(msg, reader);
+            };
+            /**
+             * Deserializes binary data (in protobuf wire format) from the
+             * given reader into the given message object.
+             * @param {!proto.stream.JoinOpenNotify} msg The message object to deserialize into.
+             * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+             * @return {!proto.stream.JoinOpenNotify}
+             */
+            proto.stream.JoinOpenNotify.deserializeBinaryFromReader = function (msg, reader) {
+                while (reader.nextField()) {
+                    if (reader.isEndGroup()) {
+                        break;
+                    }
+                    var field = reader.getFieldNumber();
+                    switch (field) {
+                        case 1:
+                            var value = (reader.readUint32());
+                            msg.setUserid(value);
+                            break;
+                        case 2:
+                            var value = (reader.readUint64String());
+                            msg.setRoomid(value);
+                            break;
+                        case 3:
+                            var value = (reader.readBytes());
+                            msg.setCpproto(value);
+                            break;
+                        default:
+                            reader.skipField();
+                            break;
+                    }
+                }
+                return msg;
+            };
+            /**
+             * Serializes the message to binary data (in protobuf wire format).
+             * @return {!Uint8Array}
+             */
+            proto.stream.JoinOpenNotify.prototype.serializeBinary = function () {
+                var writer = new jspb.BinaryWriter();
+                proto.stream.JoinOpenNotify.serializeBinaryToWriter(this, writer);
+                return writer.getResultBuffer();
+            };
+            /**
+             * Serializes the given message to binary data (in protobuf wire
+             * format), writing to the given BinaryWriter.
+             * @param {!proto.stream.JoinOpenNotify} message
+             * @param {!jspb.BinaryWriter} writer
+             * @suppress {unusedLocalVariables} f is only used for nested messages
+             */
+            proto.stream.JoinOpenNotify.serializeBinaryToWriter = function (message, writer) {
+                var f = undefined;
+                f = message.getUserid();
+                if (f !== 0) {
+                    writer.writeUint32(1, f);
+                }
+                f = message.getRoomid();
+                if (parseInt(f, 10) !== 0) {
+                    writer.writeUint64String(2, f);
+                }
+                f = message.getCpproto_asU8();
+                if (f.length > 0) {
+                    writer.writeBytes(3, f);
+                }
+            };
+            /**
+             * optional uint32 userID = 1;
+             * @return {number}
+             */
+            proto.stream.JoinOpenNotify.prototype.getUserid = function () {
+                return (jspb.Message.getFieldWithDefault(this, 1, 0));
+            };
+            /** @param {number} value */
+            proto.stream.JoinOpenNotify.prototype.setUserid = function (value) {
+                jspb.Message.setProto3IntField(this, 1, value);
+            };
+            /**
+             * optional uint64 roomID = 2;
+             * @return {string}
+             */
+            proto.stream.JoinOpenNotify.prototype.getRoomid = function () {
+                return (jspb.Message.getFieldWithDefault(this, 2, "0"));
+            };
+            /** @param {string} value */
+            proto.stream.JoinOpenNotify.prototype.setRoomid = function (value) {
+                jspb.Message.setProto3StringIntField(this, 2, value);
+            };
+            /**
+             * optional bytes cpProto = 3;
+             * @return {!(string|Uint8Array)}
+             */
+            proto.stream.JoinOpenNotify.prototype.getCpproto = function () {
+                return (jspb.Message.getFieldWithDefault(this, 3, ""));
+            };
+            /**
+             * optional bytes cpProto = 3;
+             * This is a type-conversion wrapper around `getCpproto()`
+             * @return {string}
+             */
+            proto.stream.JoinOpenNotify.prototype.getCpproto_asB64 = function () {
+                return (jspb.Message.bytesAsB64(this.getCpproto()));
+            };
+            /**
+             * optional bytes cpProto = 3;
+             * Note that Uint8Array is not supported on all browsers.
+             * @see http://caniuse.com/Uint8Array
+             * This is a type-conversion wrapper around `getCpproto()`
+             * @return {!Uint8Array}
+             */
+            proto.stream.JoinOpenNotify.prototype.getCpproto_asU8 = function () {
+                return (jspb.Message.bytesAsU8(this.getCpproto()));
+            };
+            /** @param {!(string|Uint8Array)} value */
+            proto.stream.JoinOpenNotify.prototype.setCpproto = function (value) {
+                jspb.Message.setProto3BytesField(this, 3, value);
+            };
+            /**
+             * Generated by JsPbCodeGenerator.
+             * @param {Array=} opt_data Optional initial data array, typically from a
+             * server response, or constructed directly in Javascript. The array is used
+             * in place and becomes part of the constructed object. It is not cloned.
+             * If no data is provided, the constructed object will be empty, but still
+             * valid.
+             * @extends {jspb.Message}
+             * @constructor
+             */
             proto.stream.LeaveRoomReq = function (opt_data) {
                 jspb.Message.initialize(this, opt_data, 0, -1, null, null);
             };
             goog.inherits(proto.stream.LeaveRoomReq, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.LeaveRoomReq.displayName = 'proto.stream.LeaveRoomReq';
+                proto.stream.LeaveRoomReq.displayName = "proto.stream.LeaveRoomReq";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -9256,7 +9852,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.LeaveRoomRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.LeaveRoomRsp.displayName = 'proto.stream.LeaveRoomRsp';
+                proto.stream.LeaveRoomRsp.displayName = "proto.stream.LeaveRoomRsp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -9453,7 +10049,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.TcpProtoHeader, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.TcpProtoHeader.displayName = 'proto.stream.TcpProtoHeader';
+                proto.stream.TcpProtoHeader.displayName = "proto.stream.TcpProtoHeader";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -9652,7 +10248,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.ConnDetailV2, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.ConnDetailV2.displayName = 'proto.stream.ConnDetailV2';
+                proto.stream.ConnDetailV2.displayName = "proto.stream.ConnDetailV2";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -9871,7 +10467,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.UserV2, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.UserV2.displayName = 'proto.stream.UserV2';
+                proto.stream.UserV2.displayName = "proto.stream.UserV2";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -10130,7 +10726,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.NetworkStateReq, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.NetworkStateReq.displayName = 'proto.stream.NetworkStateReq';
+                proto.stream.NetworkStateReq.displayName = "proto.stream.NetworkStateReq";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -10309,7 +10905,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.NetworkStateRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.NetworkStateRsp.displayName = 'proto.stream.NetworkStateRsp';
+                proto.stream.NetworkStateRsp.displayName = "proto.stream.NetworkStateRsp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -10428,7 +11024,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.NetworkStateNotify, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.NetworkStateNotify.displayName = 'proto.stream.NetworkStateNotify';
+                proto.stream.NetworkStateNotify.displayName = "proto.stream.NetworkStateNotify";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -10607,7 +11203,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.CreateRoom, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.CreateRoom.displayName = 'proto.stream.CreateRoom';
+                proto.stream.CreateRoom.displayName = "proto.stream.CreateRoom";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -10788,7 +11384,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.CreateRoomRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.CreateRoomRsp.displayName = 'proto.stream.CreateRoomRsp';
+                proto.stream.CreateRoomRsp.displayName = "proto.stream.CreateRoomRsp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -10978,7 +11574,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.GetRoomList, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.GetRoomList.displayName = 'proto.stream.GetRoomList';
+                proto.stream.GetRoomList.displayName = "proto.stream.GetRoomList";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -11128,7 +11724,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.RoomFilter, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.RoomFilter.displayName = 'proto.stream.RoomFilter';
+                proto.stream.RoomFilter.displayName = "proto.stream.RoomFilter";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -11365,7 +11961,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.GetRoomListRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.GetRoomListRsp.displayName = 'proto.stream.GetRoomListRsp';
+                proto.stream.GetRoomListRsp.displayName = "proto.stream.GetRoomListRsp";
             }
             /**
              * List of repeated fields within this message type.
@@ -11522,7 +12118,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.GetRoomListExReq, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.GetRoomListExReq.displayName = 'proto.stream.GetRoomListExReq';
+                proto.stream.GetRoomListExReq.displayName = "proto.stream.GetRoomListExReq";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -11752,7 +12348,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.RoomInfoEx, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.RoomInfoEx.displayName = 'proto.stream.RoomInfoEx';
+                proto.stream.RoomInfoEx.displayName = "proto.stream.RoomInfoEx";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -12089,7 +12685,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.GetRoomListExRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.GetRoomListExRsp.displayName = 'proto.stream.GetRoomListExRsp';
+                proto.stream.GetRoomListExRsp.displayName = "proto.stream.GetRoomListExRsp";
             }
             /**
              * List of repeated fields within this message type.
@@ -12266,7 +12862,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.GetRoomDetailReq, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.GetRoomDetailReq.displayName = 'proto.stream.GetRoomDetailReq';
+                proto.stream.GetRoomDetailReq.displayName = "proto.stream.GetRoomDetailReq";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -12405,7 +13001,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.GetRoomDetailRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.GetRoomDetailRsp.displayName = 'proto.stream.GetRoomDetailRsp';
+                proto.stream.GetRoomDetailRsp.displayName = "proto.stream.GetRoomDetailRsp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -12555,7 +13151,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.RoomDetail, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.RoomDetail.displayName = 'proto.stream.RoomDetail';
+                proto.stream.RoomDetail.displayName = "proto.stream.RoomDetail";
             }
             /**
              * List of repeated fields within this message type.
@@ -12870,7 +13466,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.KickPlayer, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.KickPlayer.displayName = 'proto.stream.KickPlayer';
+                proto.stream.KickPlayer.displayName = "proto.stream.KickPlayer";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -13067,7 +13663,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.KickPlayerRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.KickPlayerRsp.displayName = 'proto.stream.KickPlayerRsp';
+                proto.stream.KickPlayerRsp.displayName = "proto.stream.KickPlayerRsp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -13246,7 +13842,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.KickPlayerNotify, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.KickPlayerNotify.displayName = 'proto.stream.KickPlayerNotify';
+                proto.stream.KickPlayerNotify.displayName = "proto.stream.KickPlayerNotify";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -13429,6 +14025,577 @@ function getHotelUrl(engine) {
                 jspb.Message.setProto3IntField(this, 4, value);
             };
             /**
+             * Generated by JsPbCodeGenerator.
+             * @param {Array=} opt_data Optional initial data array, typically from a
+             * server response, or constructed directly in Javascript. The array is used
+             * in place and becomes part of the constructed object. It is not cloned.
+             * If no data is provided, the constructed object will be empty, but still
+             * valid.
+             * @extends {jspb.Message}
+             * @constructor
+             */
+            proto.stream.SetRoomPropertyReq = function (opt_data) {
+                jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+            };
+            goog.inherits(proto.stream.SetRoomPropertyReq, jspb.Message);
+            if (goog.DEBUG && !COMPILED) {
+                proto.stream.SetRoomPropertyReq.displayName = "proto.stream.SetRoomPropertyReq";
+            }
+            if (jspb.Message.GENERATE_TO_OBJECT) {
+                /**
+                 * Creates an object representation of this proto suitable for use in Soy templates.
+                 * Field names that are reserved in JavaScript and will be renamed to pb_name.
+                 * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+                 * For the list of reserved names please see:
+                 *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
+                 * @param {boolean=} opt_includeInstance Whether to include the JSPB instance
+                 *     for transitional soy proto support: http://goto/soy-param-migration
+                 * @return {!Object}
+                 */
+                proto.stream.SetRoomPropertyReq.prototype.toObject = function (opt_includeInstance) {
+                    return proto.stream.SetRoomPropertyReq.toObject(opt_includeInstance, this);
+                };
+                /**
+                 * Static version of the {@see toObject} method.
+                 * @param {boolean|undefined} includeInstance Whether to include the JSPB
+                 *     instance for transitional soy proto support:
+                 *     http://goto/soy-param-migration
+                 * @param {!proto.stream.SetRoomPropertyReq} msg The msg instance to transform.
+                 * @return {!Object}
+                 * @suppress {unusedLocalVariables} f is only used for nested messages
+                 */
+                proto.stream.SetRoomPropertyReq.toObject = function (includeInstance, msg) {
+                    var f, obj = {
+                        gameid: jspb.Message.getFieldWithDefault(msg, 1, 0),
+                        roomid: jspb.Message.getFieldWithDefault(msg, 2, "0"),
+                        userid: jspb.Message.getFieldWithDefault(msg, 3, 0),
+                        roomproperty: msg.getRoomproperty_asB64()
+                    };
+                    if (includeInstance) {
+                        obj.$jspbMessageInstance = msg;
+                    }
+                    return obj;
+                };
+            }
+            /**
+             * Deserializes binary data (in protobuf wire format).
+             * @param {jspb.ByteSource} bytes The bytes to deserialize.
+             * @return {!proto.stream.SetRoomPropertyReq}
+             */
+            proto.stream.SetRoomPropertyReq.deserializeBinary = function (bytes) {
+                var reader = new jspb.BinaryReader(bytes);
+                var msg = new proto.stream.SetRoomPropertyReq;
+                return proto.stream.SetRoomPropertyReq.deserializeBinaryFromReader(msg, reader);
+            };
+            /**
+             * Deserializes binary data (in protobuf wire format) from the
+             * given reader into the given message object.
+             * @param {!proto.stream.SetRoomPropertyReq} msg The message object to deserialize into.
+             * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+             * @return {!proto.stream.SetRoomPropertyReq}
+             */
+            proto.stream.SetRoomPropertyReq.deserializeBinaryFromReader = function (msg, reader) {
+                while (reader.nextField()) {
+                    if (reader.isEndGroup()) {
+                        break;
+                    }
+                    var field = reader.getFieldNumber();
+                    switch (field) {
+                        case 1:
+                            var value = (reader.readUint32());
+                            msg.setGameid(value);
+                            break;
+                        case 2:
+                            var value = (reader.readUint64String());
+                            msg.setRoomid(value);
+                            break;
+                        case 3:
+                            var value = (reader.readUint32());
+                            msg.setUserid(value);
+                            break;
+                        case 4:
+                            var value = (reader.readBytes());
+                            msg.setRoomproperty(value);
+                            break;
+                        default:
+                            reader.skipField();
+                            break;
+                    }
+                }
+                return msg;
+            };
+            /**
+             * Serializes the message to binary data (in protobuf wire format).
+             * @return {!Uint8Array}
+             */
+            proto.stream.SetRoomPropertyReq.prototype.serializeBinary = function () {
+                var writer = new jspb.BinaryWriter();
+                proto.stream.SetRoomPropertyReq.serializeBinaryToWriter(this, writer);
+                return writer.getResultBuffer();
+            };
+            /**
+             * Serializes the given message to binary data (in protobuf wire
+             * format), writing to the given BinaryWriter.
+             * @param {!proto.stream.SetRoomPropertyReq} message
+             * @param {!jspb.BinaryWriter} writer
+             * @suppress {unusedLocalVariables} f is only used for nested messages
+             */
+            proto.stream.SetRoomPropertyReq.serializeBinaryToWriter = function (message, writer) {
+                var f = undefined;
+                f = message.getGameid();
+                if (f !== 0) {
+                    writer.writeUint32(1, f);
+                }
+                f = message.getRoomid();
+                if (parseInt(f, 10) !== 0) {
+                    writer.writeUint64String(2, f);
+                }
+                f = message.getUserid();
+                if (f !== 0) {
+                    writer.writeUint32(3, f);
+                }
+                f = message.getRoomproperty_asU8();
+                if (f.length > 0) {
+                    writer.writeBytes(4, f);
+                }
+            };
+            /**
+             * optional uint32 gameID = 1;
+             * @return {number}
+             */
+            proto.stream.SetRoomPropertyReq.prototype.getGameid = function () {
+                return (jspb.Message.getFieldWithDefault(this, 1, 0));
+            };
+            /** @param {number} value */
+            proto.stream.SetRoomPropertyReq.prototype.setGameid = function (value) {
+                jspb.Message.setProto3IntField(this, 1, value);
+            };
+            /**
+             * optional uint64 roomID = 2;
+             * @return {string}
+             */
+            proto.stream.SetRoomPropertyReq.prototype.getRoomid = function () {
+                return (jspb.Message.getFieldWithDefault(this, 2, "0"));
+            };
+            /** @param {string} value */
+            proto.stream.SetRoomPropertyReq.prototype.setRoomid = function (value) {
+                jspb.Message.setProto3StringIntField(this, 2, value);
+            };
+            /**
+             * optional uint32 userID = 3;
+             * @return {number}
+             */
+            proto.stream.SetRoomPropertyReq.prototype.getUserid = function () {
+                return (jspb.Message.getFieldWithDefault(this, 3, 0));
+            };
+            /** @param {number} value */
+            proto.stream.SetRoomPropertyReq.prototype.setUserid = function (value) {
+                jspb.Message.setProto3IntField(this, 3, value);
+            };
+            /**
+             * optional bytes roomProperty = 4;
+             * @return {!(string|Uint8Array)}
+             */
+            proto.stream.SetRoomPropertyReq.prototype.getRoomproperty = function () {
+                return (jspb.Message.getFieldWithDefault(this, 4, ""));
+            };
+            /**
+             * optional bytes roomProperty = 4;
+             * This is a type-conversion wrapper around `getRoomproperty()`
+             * @return {string}
+             */
+            proto.stream.SetRoomPropertyReq.prototype.getRoomproperty_asB64 = function () {
+                return (jspb.Message.bytesAsB64(this.getRoomproperty()));
+            };
+            /**
+             * optional bytes roomProperty = 4;
+             * Note that Uint8Array is not supported on all browsers.
+             * @see http://caniuse.com/Uint8Array
+             * This is a type-conversion wrapper around `getRoomproperty()`
+             * @return {!Uint8Array}
+             */
+            proto.stream.SetRoomPropertyReq.prototype.getRoomproperty_asU8 = function () {
+                return (jspb.Message.bytesAsU8(this.getRoomproperty()));
+            };
+            /** @param {!(string|Uint8Array)} value */
+            proto.stream.SetRoomPropertyReq.prototype.setRoomproperty = function (value) {
+                jspb.Message.setProto3BytesField(this, 4, value);
+            };
+            /**
+             * Generated by JsPbCodeGenerator.
+             * @param {Array=} opt_data Optional initial data array, typically from a
+             * server response, or constructed directly in Javascript. The array is used
+             * in place and becomes part of the constructed object. It is not cloned.
+             * If no data is provided, the constructed object will be empty, but still
+             * valid.
+             * @extends {jspb.Message}
+             * @constructor
+             */
+            proto.stream.SetRoomPropertyRsp = function (opt_data) {
+                jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+            };
+            goog.inherits(proto.stream.SetRoomPropertyRsp, jspb.Message);
+            if (goog.DEBUG && !COMPILED) {
+                proto.stream.SetRoomPropertyRsp.displayName = "proto.stream.SetRoomPropertyRsp";
+            }
+            if (jspb.Message.GENERATE_TO_OBJECT) {
+                /**
+                 * Creates an object representation of this proto suitable for use in Soy templates.
+                 * Field names that are reserved in JavaScript and will be renamed to pb_name.
+                 * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+                 * For the list of reserved names please see:
+                 *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
+                 * @param {boolean=} opt_includeInstance Whether to include the JSPB instance
+                 *     for transitional soy proto support: http://goto/soy-param-migration
+                 * @return {!Object}
+                 */
+                proto.stream.SetRoomPropertyRsp.prototype.toObject = function (opt_includeInstance) {
+                    return proto.stream.SetRoomPropertyRsp.toObject(opt_includeInstance, this);
+                };
+                /**
+                 * Static version of the {@see toObject} method.
+                 * @param {boolean|undefined} includeInstance Whether to include the JSPB
+                 *     instance for transitional soy proto support:
+                 *     http://goto/soy-param-migration
+                 * @param {!proto.stream.SetRoomPropertyRsp} msg The msg instance to transform.
+                 * @return {!Object}
+                 * @suppress {unusedLocalVariables} f is only used for nested messages
+                 */
+                proto.stream.SetRoomPropertyRsp.toObject = function (includeInstance, msg) {
+                    var f, obj = {
+                        status: jspb.Message.getFieldWithDefault(msg, 1, 0),
+                        roomid: jspb.Message.getFieldWithDefault(msg, 2, "0"),
+                        userid: jspb.Message.getFieldWithDefault(msg, 3, 0),
+                        roomproperty: msg.getRoomproperty_asB64()
+                    };
+                    if (includeInstance) {
+                        obj.$jspbMessageInstance = msg;
+                    }
+                    return obj;
+                };
+            }
+            /**
+             * Deserializes binary data (in protobuf wire format).
+             * @param {jspb.ByteSource} bytes The bytes to deserialize.
+             * @return {!proto.stream.SetRoomPropertyRsp}
+             */
+            proto.stream.SetRoomPropertyRsp.deserializeBinary = function (bytes) {
+                var reader = new jspb.BinaryReader(bytes);
+                var msg = new proto.stream.SetRoomPropertyRsp;
+                return proto.stream.SetRoomPropertyRsp.deserializeBinaryFromReader(msg, reader);
+            };
+            /**
+             * Deserializes binary data (in protobuf wire format) from the
+             * given reader into the given message object.
+             * @param {!proto.stream.SetRoomPropertyRsp} msg The message object to deserialize into.
+             * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+             * @return {!proto.stream.SetRoomPropertyRsp}
+             */
+            proto.stream.SetRoomPropertyRsp.deserializeBinaryFromReader = function (msg, reader) {
+                while (reader.nextField()) {
+                    if (reader.isEndGroup()) {
+                        break;
+                    }
+                    var field = reader.getFieldNumber();
+                    switch (field) {
+                        case 1:
+                            var value = (reader.readEnum());
+                            msg.setStatus(value);
+                            break;
+                        case 2:
+                            var value = (reader.readUint64String());
+                            msg.setRoomid(value);
+                            break;
+                        case 3:
+                            var value = (reader.readUint32());
+                            msg.setUserid(value);
+                            break;
+                        case 4:
+                            var value = (reader.readBytes());
+                            msg.setRoomproperty(value);
+                            break;
+                        default:
+                            reader.skipField();
+                            break;
+                    }
+                }
+                return msg;
+            };
+            /**
+             * Serializes the message to binary data (in protobuf wire format).
+             * @return {!Uint8Array}
+             */
+            proto.stream.SetRoomPropertyRsp.prototype.serializeBinary = function () {
+                var writer = new jspb.BinaryWriter();
+                proto.stream.SetRoomPropertyRsp.serializeBinaryToWriter(this, writer);
+                return writer.getResultBuffer();
+            };
+            /**
+             * Serializes the given message to binary data (in protobuf wire
+             * format), writing to the given BinaryWriter.
+             * @param {!proto.stream.SetRoomPropertyRsp} message
+             * @param {!jspb.BinaryWriter} writer
+             * @suppress {unusedLocalVariables} f is only used for nested messages
+             */
+            proto.stream.SetRoomPropertyRsp.serializeBinaryToWriter = function (message, writer) {
+                var f = undefined;
+                f = message.getStatus();
+                if (f !== 0.0) {
+                    writer.writeEnum(1, f);
+                }
+                f = message.getRoomid();
+                if (parseInt(f, 10) !== 0) {
+                    writer.writeUint64String(2, f);
+                }
+                f = message.getUserid();
+                if (f !== 0) {
+                    writer.writeUint32(3, f);
+                }
+                f = message.getRoomproperty_asU8();
+                if (f.length > 0) {
+                    writer.writeBytes(4, f);
+                }
+            };
+            /**
+             * optional ErrorCode status = 1;
+             * @return {!proto.stream.ErrorCode}
+             */
+            proto.stream.SetRoomPropertyRsp.prototype.getStatus = function () {
+                return (jspb.Message.getFieldWithDefault(this, 1, 0));
+            };
+            /** @param {!proto.stream.ErrorCode} value */
+            proto.stream.SetRoomPropertyRsp.prototype.setStatus = function (value) {
+                jspb.Message.setProto3EnumField(this, 1, value);
+            };
+            /**
+             * optional uint64 roomID = 2;
+             * @return {string}
+             */
+            proto.stream.SetRoomPropertyRsp.prototype.getRoomid = function () {
+                return (jspb.Message.getFieldWithDefault(this, 2, "0"));
+            };
+            /** @param {string} value */
+            proto.stream.SetRoomPropertyRsp.prototype.setRoomid = function (value) {
+                jspb.Message.setProto3StringIntField(this, 2, value);
+            };
+            /**
+             * optional uint32 userID = 3;
+             * @return {number}
+             */
+            proto.stream.SetRoomPropertyRsp.prototype.getUserid = function () {
+                return (jspb.Message.getFieldWithDefault(this, 3, 0));
+            };
+            /** @param {number} value */
+            proto.stream.SetRoomPropertyRsp.prototype.setUserid = function (value) {
+                jspb.Message.setProto3IntField(this, 3, value);
+            };
+            /**
+             * optional bytes roomProperty = 4;
+             * @return {!(string|Uint8Array)}
+             */
+            proto.stream.SetRoomPropertyRsp.prototype.getRoomproperty = function () {
+                return (jspb.Message.getFieldWithDefault(this, 4, ""));
+            };
+            /**
+             * optional bytes roomProperty = 4;
+             * This is a type-conversion wrapper around `getRoomproperty()`
+             * @return {string}
+             */
+            proto.stream.SetRoomPropertyRsp.prototype.getRoomproperty_asB64 = function () {
+                return (jspb.Message.bytesAsB64(this.getRoomproperty()));
+            };
+            /**
+             * optional bytes roomProperty = 4;
+             * Note that Uint8Array is not supported on all browsers.
+             * @see http://caniuse.com/Uint8Array
+             * This is a type-conversion wrapper around `getRoomproperty()`
+             * @return {!Uint8Array}
+             */
+            proto.stream.SetRoomPropertyRsp.prototype.getRoomproperty_asU8 = function () {
+                return (jspb.Message.bytesAsU8(this.getRoomproperty()));
+            };
+            /** @param {!(string|Uint8Array)} value */
+            proto.stream.SetRoomPropertyRsp.prototype.setRoomproperty = function (value) {
+                jspb.Message.setProto3BytesField(this, 4, value);
+            };
+            /**
+             * Generated by JsPbCodeGenerator.
+             * @param {Array=} opt_data Optional initial data array, typically from a
+             * server response, or constructed directly in Javascript. The array is used
+             * in place and becomes part of the constructed object. It is not cloned.
+             * If no data is provided, the constructed object will be empty, but still
+             * valid.
+             * @extends {jspb.Message}
+             * @constructor
+             */
+            proto.stream.NoticeRoomProperty = function (opt_data) {
+                jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+            };
+            goog.inherits(proto.stream.NoticeRoomProperty, jspb.Message);
+            if (goog.DEBUG && !COMPILED) {
+                proto.stream.NoticeRoomProperty.displayName = "proto.stream.NoticeRoomProperty";
+            }
+            if (jspb.Message.GENERATE_TO_OBJECT) {
+                /**
+                 * Creates an object representation of this proto suitable for use in Soy templates.
+                 * Field names that are reserved in JavaScript and will be renamed to pb_name.
+                 * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+                 * For the list of reserved names please see:
+                 *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
+                 * @param {boolean=} opt_includeInstance Whether to include the JSPB instance
+                 *     for transitional soy proto support: http://goto/soy-param-migration
+                 * @return {!Object}
+                 */
+                proto.stream.NoticeRoomProperty.prototype.toObject = function (opt_includeInstance) {
+                    return proto.stream.NoticeRoomProperty.toObject(opt_includeInstance, this);
+                };
+                /**
+                 * Static version of the {@see toObject} method.
+                 * @param {boolean|undefined} includeInstance Whether to include the JSPB
+                 *     instance for transitional soy proto support:
+                 *     http://goto/soy-param-migration
+                 * @param {!proto.stream.NoticeRoomProperty} msg The msg instance to transform.
+                 * @return {!Object}
+                 * @suppress {unusedLocalVariables} f is only used for nested messages
+                 */
+                proto.stream.NoticeRoomProperty.toObject = function (includeInstance, msg) {
+                    var f, obj = {
+                        roomid: jspb.Message.getFieldWithDefault(msg, 1, "0"),
+                        userid: jspb.Message.getFieldWithDefault(msg, 2, 0),
+                        roomproperty: msg.getRoomproperty_asB64()
+                    };
+                    if (includeInstance) {
+                        obj.$jspbMessageInstance = msg;
+                    }
+                    return obj;
+                };
+            }
+            /**
+             * Deserializes binary data (in protobuf wire format).
+             * @param {jspb.ByteSource} bytes The bytes to deserialize.
+             * @return {!proto.stream.NoticeRoomProperty}
+             */
+            proto.stream.NoticeRoomProperty.deserializeBinary = function (bytes) {
+                var reader = new jspb.BinaryReader(bytes);
+                var msg = new proto.stream.NoticeRoomProperty;
+                return proto.stream.NoticeRoomProperty.deserializeBinaryFromReader(msg, reader);
+            };
+            /**
+             * Deserializes binary data (in protobuf wire format) from the
+             * given reader into the given message object.
+             * @param {!proto.stream.NoticeRoomProperty} msg The message object to deserialize into.
+             * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+             * @return {!proto.stream.NoticeRoomProperty}
+             */
+            proto.stream.NoticeRoomProperty.deserializeBinaryFromReader = function (msg, reader) {
+                while (reader.nextField()) {
+                    if (reader.isEndGroup()) {
+                        break;
+                    }
+                    var field = reader.getFieldNumber();
+                    switch (field) {
+                        case 1:
+                            var value = (reader.readUint64String());
+                            msg.setRoomid(value);
+                            break;
+                        case 2:
+                            var value = (reader.readUint32());
+                            msg.setUserid(value);
+                            break;
+                        case 3:
+                            var value = (reader.readBytes());
+                            msg.setRoomproperty(value);
+                            break;
+                        default:
+                            reader.skipField();
+                            break;
+                    }
+                }
+                return msg;
+            };
+            /**
+             * Serializes the message to binary data (in protobuf wire format).
+             * @return {!Uint8Array}
+             */
+            proto.stream.NoticeRoomProperty.prototype.serializeBinary = function () {
+                var writer = new jspb.BinaryWriter();
+                proto.stream.NoticeRoomProperty.serializeBinaryToWriter(this, writer);
+                return writer.getResultBuffer();
+            };
+            /**
+             * Serializes the given message to binary data (in protobuf wire
+             * format), writing to the given BinaryWriter.
+             * @param {!proto.stream.NoticeRoomProperty} message
+             * @param {!jspb.BinaryWriter} writer
+             * @suppress {unusedLocalVariables} f is only used for nested messages
+             */
+            proto.stream.NoticeRoomProperty.serializeBinaryToWriter = function (message, writer) {
+                var f = undefined;
+                f = message.getRoomid();
+                if (parseInt(f, 10) !== 0) {
+                    writer.writeUint64String(1, f);
+                }
+                f = message.getUserid();
+                if (f !== 0) {
+                    writer.writeUint32(2, f);
+                }
+                f = message.getRoomproperty_asU8();
+                if (f.length > 0) {
+                    writer.writeBytes(3, f);
+                }
+            };
+            /**
+             * optional uint64 roomID = 1;
+             * @return {string}
+             */
+            proto.stream.NoticeRoomProperty.prototype.getRoomid = function () {
+                return (jspb.Message.getFieldWithDefault(this, 1, "0"));
+            };
+            /** @param {string} value */
+            proto.stream.NoticeRoomProperty.prototype.setRoomid = function (value) {
+                jspb.Message.setProto3StringIntField(this, 1, value);
+            };
+            /**
+             * optional uint32 userID = 2;
+             * @return {number}
+             */
+            proto.stream.NoticeRoomProperty.prototype.getUserid = function () {
+                return (jspb.Message.getFieldWithDefault(this, 2, 0));
+            };
+            /** @param {number} value */
+            proto.stream.NoticeRoomProperty.prototype.setUserid = function (value) {
+                jspb.Message.setProto3IntField(this, 2, value);
+            };
+            /**
+             * optional bytes roomProperty = 3;
+             * @return {!(string|Uint8Array)}
+             */
+            proto.stream.NoticeRoomProperty.prototype.getRoomproperty = function () {
+                return (jspb.Message.getFieldWithDefault(this, 3, ""));
+            };
+            /**
+             * optional bytes roomProperty = 3;
+             * This is a type-conversion wrapper around `getRoomproperty()`
+             * @return {string}
+             */
+            proto.stream.NoticeRoomProperty.prototype.getRoomproperty_asB64 = function () {
+                return (jspb.Message.bytesAsB64(this.getRoomproperty()));
+            };
+            /**
+             * optional bytes roomProperty = 3;
+             * Note that Uint8Array is not supported on all browsers.
+             * @see http://caniuse.com/Uint8Array
+             * This is a type-conversion wrapper around `getRoomproperty()`
+             * @return {!Uint8Array}
+             */
+            proto.stream.NoticeRoomProperty.prototype.getRoomproperty_asU8 = function () {
+                return (jspb.Message.bytesAsU8(this.getRoomproperty()));
+            };
+            /** @param {!(string|Uint8Array)} value */
+            proto.stream.NoticeRoomProperty.prototype.setRoomproperty = function (value) {
+                jspb.Message.setProto3BytesField(this, 3, value);
+            };
+            /**
              * @enum {number}
              */
             proto.stream.CmdId = {
@@ -13447,6 +14614,9 @@ function getHotelUrl(engine) {
                 GETROOMLISTRSP: 1208,
                 ROOMLISTEXREQ: 1215,
                 ROOMLISTEXRSP: 1216,
+                SETROOMPROPERTYREQ: 1219,
+                SETROOMPROPERTYRSP: 1220,
+                NOTICEROOMPROPERTY: 1307,
                 GETROOMDETAILREQ: 1209,
                 GETROOMDETAILRSP: 1210,
                 JOINROOMREQ: 1201,
@@ -13458,6 +14628,9 @@ function getHotelUrl(engine) {
                 JOINOVERREQ: 1213,
                 JOINOVERRSP: 1214,
                 JOINOVERNOTIFY: 1306,
+                JOINOPENREQ: 1221,
+                JOINOPENRSP: 1222,
+                JOINOPENNOTIFY: 1308,
                 DISCONNECTREQ: 1107,
                 DISCONNECTRSP: 1108,
                 KICKPLAYERREQ: 1303,
@@ -13507,32 +14680,32 @@ function getHotelUrl(engine) {
              * @public
              */
             // GENERATED CODE -- DO NOT EDIT!
-            var jspb = _require('google-protobuf');
+            var jspb = _require("google-protobuf");
             var goog = jspb;
             var global = window; // var global = Function('return this')();
-            goog.exportSymbol('proto.stream.Broadcast', null, global);
-            goog.exportSymbol('proto.stream.BroadcastAck', null, global);
-            goog.exportSymbol('proto.stream.CheckIn', null, global);
-            goog.exportSymbol('proto.stream.CheckInAck', null, global);
-            goog.exportSymbol('proto.stream.CheckInNotify', null, global);
-            goog.exportSymbol('proto.stream.FrameBroadcast', null, global);
-            goog.exportSymbol('proto.stream.FrameBroadcastAck', null, global);
-            goog.exportSymbol('proto.stream.FrameDataNotify', null, global);
-            goog.exportSymbol('proto.stream.FrameSyncNotify', null, global);
-            goog.exportSymbol('proto.stream.Heartbeat', null, global);
-            goog.exportSymbol('proto.stream.HeartbeatAck', null, global);
-            goog.exportSymbol('proto.stream.Notify', null, global);
-            goog.exportSymbol('proto.stream.Publish', null, global);
-            goog.exportSymbol('proto.stream.PublishAck', null, global);
-            goog.exportSymbol('proto.stream.PublishNotify', null, global);
-            goog.exportSymbol('proto.stream.SDKHotelCmdID', null, global);
-            goog.exportSymbol('proto.stream.SetFrameSyncRate', null, global);
-            goog.exportSymbol('proto.stream.SetFrameSyncRateAck', null, global);
-            goog.exportSymbol('proto.stream.SetFrameSyncRateNotify', null, global);
-            goog.exportSymbol('proto.stream.SetUseTimeStamp', null, global);
-            goog.exportSymbol('proto.stream.SetUseTimeStampAck', null, global);
-            goog.exportSymbol('proto.stream.Subscribe', null, global);
-            goog.exportSymbol('proto.stream.SubscribeAck', null, global);
+            goog.exportSymbol("proto.stream.Broadcast", null, global);
+            goog.exportSymbol("proto.stream.BroadcastAck", null, global);
+            goog.exportSymbol("proto.stream.CheckIn", null, global);
+            goog.exportSymbol("proto.stream.CheckInAck", null, global);
+            goog.exportSymbol("proto.stream.CheckInNotify", null, global);
+            goog.exportSymbol("proto.stream.FrameBroadcast", null, global);
+            goog.exportSymbol("proto.stream.FrameBroadcastAck", null, global);
+            goog.exportSymbol("proto.stream.FrameDataNotify", null, global);
+            goog.exportSymbol("proto.stream.FrameSyncNotify", null, global);
+            goog.exportSymbol("proto.stream.Heartbeat", null, global);
+            goog.exportSymbol("proto.stream.HeartbeatAck", null, global);
+            goog.exportSymbol("proto.stream.Notify", null, global);
+            goog.exportSymbol("proto.stream.Publish", null, global);
+            goog.exportSymbol("proto.stream.PublishAck", null, global);
+            goog.exportSymbol("proto.stream.PublishNotify", null, global);
+            goog.exportSymbol("proto.stream.SDKHotelCmdID", null, global);
+            goog.exportSymbol("proto.stream.SetFrameSyncRate", null, global);
+            goog.exportSymbol("proto.stream.SetFrameSyncRateAck", null, global);
+            goog.exportSymbol("proto.stream.SetFrameSyncRateNotify", null, global);
+            goog.exportSymbol("proto.stream.SetUseTimeStamp", null, global);
+            goog.exportSymbol("proto.stream.SetUseTimeStampAck", null, global);
+            goog.exportSymbol("proto.stream.Subscribe", null, global);
+            goog.exportSymbol("proto.stream.SubscribeAck", null, global);
             /**
              * Generated by JsPbCodeGenerator.
              * @param {Array=} opt_data Optional initial data array, typically from a
@@ -13548,7 +14721,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.CheckIn, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.CheckIn.displayName = 'proto.stream.CheckIn';
+                proto.stream.CheckIn.displayName = "proto.stream.CheckIn";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -13747,7 +14920,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.CheckInAck, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.CheckInAck.displayName = 'proto.stream.CheckInAck';
+                proto.stream.CheckInAck.displayName = "proto.stream.CheckInAck";
             }
             /**
              * List of repeated fields within this message type.
@@ -13972,7 +15145,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.Heartbeat, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.Heartbeat.displayName = 'proto.stream.Heartbeat';
+                proto.stream.Heartbeat.displayName = "proto.stream.Heartbeat";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -14131,7 +15304,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.HeartbeatAck, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.HeartbeatAck.displayName = 'proto.stream.HeartbeatAck';
+                proto.stream.HeartbeatAck.displayName = "proto.stream.HeartbeatAck";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -14250,7 +15423,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.Broadcast, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.Broadcast.displayName = 'proto.stream.Broadcast';
+                proto.stream.Broadcast.displayName = "proto.stream.Broadcast";
             }
             /**
              * List of repeated fields within this message type.
@@ -14463,7 +15636,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.BroadcastAck, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.BroadcastAck.displayName = 'proto.stream.BroadcastAck';
+                proto.stream.BroadcastAck.displayName = "proto.stream.BroadcastAck";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -14582,7 +15755,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.CheckInNotify, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.CheckInNotify.displayName = 'proto.stream.CheckInNotify';
+                proto.stream.CheckInNotify.displayName = "proto.stream.CheckInNotify";
             }
             /**
              * List of repeated fields within this message type.
@@ -14807,7 +15980,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.Notify, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.Notify.displayName = 'proto.stream.Notify';
+                proto.stream.Notify.displayName = "proto.stream.Notify";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -14984,7 +16157,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.Subscribe, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.Subscribe.displayName = 'proto.stream.Subscribe';
+                proto.stream.Subscribe.displayName = "proto.stream.Subscribe";
             }
             /**
              * List of repeated fields within this message type.
@@ -15189,7 +16362,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.SubscribeAck, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.SubscribeAck.displayName = 'proto.stream.SubscribeAck';
+                proto.stream.SubscribeAck.displayName = "proto.stream.SubscribeAck";
             }
             /**
              * List of repeated fields within this message type.
@@ -15344,7 +16517,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.Publish, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.Publish.displayName = 'proto.stream.Publish';
+                proto.stream.Publish.displayName = "proto.stream.Publish";
             }
             /**
              * List of repeated fields within this message type.
@@ -15557,7 +16730,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.PublishAck, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.PublishAck.displayName = 'proto.stream.PublishAck';
+                proto.stream.PublishAck.displayName = "proto.stream.PublishAck";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -15696,7 +16869,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.PublishNotify, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.PublishNotify.displayName = 'proto.stream.PublishNotify';
+                proto.stream.PublishNotify.displayName = "proto.stream.PublishNotify";
             }
             /**
              * List of repeated fields within this message type.
@@ -15909,7 +17082,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.SetUseTimeStamp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.SetUseTimeStamp.displayName = 'proto.stream.SetUseTimeStamp';
+                proto.stream.SetUseTimeStamp.displayName = "proto.stream.SetUseTimeStamp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -16090,7 +17263,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.SetUseTimeStampAck, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.SetUseTimeStampAck.displayName = 'proto.stream.SetUseTimeStampAck';
+                proto.stream.SetUseTimeStampAck.displayName = "proto.stream.SetUseTimeStampAck";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -16229,7 +17402,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.SetFrameSyncRate, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.SetFrameSyncRate.displayName = 'proto.stream.SetFrameSyncRate';
+                proto.stream.SetFrameSyncRate.displayName = "proto.stream.SetFrameSyncRate";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -16428,7 +17601,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.SetFrameSyncRateAck, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.SetFrameSyncRateAck.displayName = 'proto.stream.SetFrameSyncRateAck';
+                proto.stream.SetFrameSyncRateAck.displayName = "proto.stream.SetFrameSyncRateAck";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -16547,7 +17720,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.SetFrameSyncRateNotify, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.SetFrameSyncRateNotify.displayName = 'proto.stream.SetFrameSyncRateNotify';
+                proto.stream.SetFrameSyncRateNotify.displayName = "proto.stream.SetFrameSyncRateNotify";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -16726,7 +17899,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.FrameBroadcast, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.FrameBroadcast.displayName = 'proto.stream.FrameBroadcast';
+                proto.stream.FrameBroadcast.displayName = "proto.stream.FrameBroadcast";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -16903,7 +18076,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.FrameBroadcastAck, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.FrameBroadcastAck.displayName = 'proto.stream.FrameBroadcastAck';
+                proto.stream.FrameBroadcastAck.displayName = "proto.stream.FrameBroadcastAck";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -17022,7 +18195,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.FrameDataNotify, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.FrameDataNotify.displayName = 'proto.stream.FrameDataNotify';
+                proto.stream.FrameDataNotify.displayName = "proto.stream.FrameDataNotify";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -17239,7 +18412,7 @@ function getHotelUrl(engine) {
             };
             goog.inherits(proto.stream.FrameSyncNotify, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.FrameSyncNotify.displayName = 'proto.stream.FrameSyncNotify';
+                proto.stream.FrameSyncNotify.displayName = "proto.stream.FrameSyncNotify";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -17467,14 +18640,12 @@ function getHotelUrl(engine) {
 }, {}, [3]);
 /* ================ matchvsdefine.js ================= */
 function MsCreateRoomInfo(roomName, maxPlayer, mode, canWatch, visibility, roomProperty) {
-    // this.roomID       =roomID ;
     this.roomName = roomName;
     this.maxPlayer = maxPlayer;
     this.mode = mode;
     this.canWatch = canWatch;
     this.visibility = visibility;
     this.roomProperty = roomProperty;
-    // this.owner        =owner;
     this.toString = function () {
         return "roomName:" + this.roomName
             + " maxPlayer:" + this.maxPlayer
@@ -17491,45 +18662,7 @@ function MsEnum() { }
  *      joinRandomRoom = 3;			//基本接口,param(maxPlayer, userProfile)
  * @type {{NoJoin: number, joinSpecialRoom: number, joinRoomWithProperty: number, joinRandomRoom: number}}
  */
-MsEnum.JoinRoomType = { NoJoin: 0, joinSpecialRoom: 1, joinRoomWithProperty: 2, joinRandomRoom: 3 };
-MsEnum.CmdId = {
-    NoCmd: 0,
-    /*登录*/
-    loginReq: 1101,
-    loginRsp: 1102,
-    /*登出*/
-    logoutReq: 1105,
-    logoutRsp: 1106,
-    /*心跳*/
-    heartBeatReq: 1103,
-    /*网络状态变化*/
-    networkStateReq: 1120,
-    networkStateRsp: 1121,
-    noticeNetworkStateReq: 1122,
-    /*创建房间*/
-    createRoomReq: 1203,
-    createRoomRsp: 1204,
-    /*请求房间列表*/
-    getRoomListReq: 1207,
-    getRoomListRsp: 1208,
-    /*加入房间*/
-    joinRoomReq: 1201,
-    joinRoomRsp: 1202,
-    noticeUserJoinReq: 1301,
-    /*离开房间*/
-    leaveRoomReq: 1205,
-    leaveRoomRsp: 1206,
-    noticeUserLeaveReq: 1302,
-    /*房间停止加人*/
-    joinOverReq: 1213,
-    joinOverRsp: 1214,
-    disconnectReq: 1107,
-    disconnectRsp: 1108,
-    /*踢出玩家*/
-    kickPlayerReq: 1303,
-    kickPlayerRsp: 1304,
-    kickPlayerNotify: 1305
-};
+MsEnum.JoinRoomType = { NoJoin: 0, joinSpecialRoom: 1, joinRoomWithProperty: 2, joinRandomRoom: 3, reconnect: 4 };
 function MsRoomJoin(joinType, userID, roomID, gameID, maxPlayer, mode, canWatch, userProfile, tags) {
     this.joinType = joinType;
     this.userID = userID;
@@ -17689,6 +18822,18 @@ function MsRegistRsp(status, userID, token, name, avatar) {
 function MsLoginRsp(status, roomID) {
     this.status = status; //int
     this.roomID = roomID; //unsigned long long
+}
+function MsPublicMemberArgs(channle, platform, userID, token, gameID, gameVersion, appkey, secretKey, deviceID, gatewayID) {
+    this.userID = userID;
+    this.token = token;
+    this.gameID = gameID;
+    this.gameVersion = gameVersion;
+    this.appKey = appkey;
+    this.secretKey = secretKey;
+    this.deviceID = deviceID;
+    this.gatewayID = gatewayID;
+    this.channel = channle;
+    this.platform = platform;
 }
 /**
  *
@@ -17946,7 +19091,51 @@ function MsNetworkStateNotify(roomID, userID, state, owner) {
     this.userID = userID;
     this.state = state;
     this.owner = owner;
+}
+/**
+ * 设置房间属性返回值
+ * @param status {number}
+ * @param roomID {string}
+ * @param userID {number}
+ * @param roomProperty {string}
+ * @constructor
+ */
+function MsSetRoomPropertyRspInfo(status, roomID, userID, roomProperty) {
+    this.status = status;
+    this.roomID = roomID;
+    this.userID = userID;
+    this.roomProperty = roomProperty;
+}
+/**
+ *
+ * @param roomID {string}
+ * @param userID {number}
+ * @param roomProperty {string}
+ * @constructor
+ */
+function MsRoomPropertyNotifyInfo(roomID, userID, roomProperty) {
+    this.roomID = roomID;
+    this.userID = userID;
+    this.roomProperty = roomProperty;
+}
+function MsHeartBeatResponse(gameid, gsExist) {
+    this.gameID = gameid;
+    this.gsExist = gsExist;
+}
+function MsGatewaySpeedResponse(Status, Seq) {
+    this.status = Status;
+    this.seq = Seq;
+}
+function MsReopenRoomResponse(Status, cpProto) {
+    this.status = Status;
+    this.cpProto = cpProto;
+}
+function MsReopenRoomNotify(roomID, userID, cpProto) {
+    this.roomID = roomID;
+    this.userID = userID;
+    this.cpProto = cpProto;
 } /* ================ matchvsnetwork.js ================= */
+//adapter weixin
 function MatchvsNetWorkCallBack() {
     /**
      *
@@ -17962,120 +19151,227 @@ function MatchvsNetWorkCallBack() {
     this.onErr = function (errCode, errMsg) {
     };
 }
-/**
- * var callback = new MatchvsNetWorkCallBack();
- * @param host String,ex:"127.0.0.1:12345";
- * @param callback MatchvsNetWorkCallBack
- * @constructor
- */
-function MatchvsNetWork(host, callback) {
-    var socket;
-    var mCallBack = callback;
-    var mHost = host;
-    var bufQueue = [];
-    this.send = function (message) {
-        if (!window.WebSocket) {
-            return;
-        }
-        if (isIE()) {
-            var uint8A = new Uint8Array(message.buffer.byteLength);
-            for (var i = 0; i < uint8A.length; i++) {
-                uint8A[i] = (message.getUint8(i));
-            }
-            message = uint8A;
-        }
-        if (socket.readyState === WebSocket.OPEN) {
-            //log(message);
-            socket.send(message);
-        }
-        else {
-            bufQueue.push(message);
-        }
-    };
-    this.close = function () {
-        if (socket) {
-            socket.close();
-        }
-    };
-    if (!window.WebSocket) {
-        window.WebSocket = window.MozWebSocket;
-    }
-    if (window.WebSocket) {
-        socket = new WebSocket(host);
-        socket.onmessage = function (event) {
-            var reader = new FileReader();
-            reader.readAsArrayBuffer(event.data);
-            //  当读取操作成功完成时调用.
-            reader.onload = function (evt) {
-                if (evt.target.readyState === FileReader.DONE) {
-                    var dataView = new DataView(reader.result);
-                    mCallBack.onMsg(dataView);
-                }
-                else {
-                    mCallBack.onErr(1606, "[err]parse fail");
+var MatchvsNetWork;
+var MatchvsHttp;
+try {
+    if (typeof (wx) !== "undefined") {
+        MatchvsNetWork = function MatchvsNetWork(host, callback) {
+            console.log("use wx.socket ");
+            /**
+             * WebSocket 任务，可通过 wx.connectSocket() 接口创建返回。
+             * @type {socket}
+             */
+            var socket = null;
+            var socketOpen = false;
+            var socketMsgQueue = [];
+            var mCallBack = callback;
+            var mHost = host;
+            var that = this;
+            this.close = function () {
+                if (socket) {
+                    socket.close();
                 }
             };
-        };
-        socket.onopen = function (event) {
-            while (bufQueue.length > 0) {
-                socket.send(bufQueue.pop());
+            /**
+             * msg {DataView}
+             */
+            this.send = function (msg) {
+                if (socketOpen) {
+                    socket.send({
+                        data: msg.buffer,
+                    });
+                }
+                else {
+                    //只缓存一百
+                    if (socketMsgQueue.length < 100) {
+                        socketMsgQueue.push(msg);
+                    }
+                }
+            };
+            function connect() {
+                socket = wx.connectSocket({
+                    url: host,
+                    header: {
+                        "engine": "WeiXinGame"
+                    }
+                });
             }
-            mCallBack.onConnect && mCallBack.onConnect(mHost);
+            connect();
+            console.log("SocketTask:" + socket);
+            socket.onOpen(function (res) {
+                console.log("[wx.WebSocket][connect]:" + res);
+                socketOpen = true;
+                while (socketMsgQueue.length > 0) {
+                    that.send(socketMsgQueue.pop());
+                }
+                mCallBack.onConnect && mCallBack.onConnect(mHost);
+            });
+            socket.onClose(function (res) {
+                socketOpen = false;
+                mCallBack.onDisConnect && mCallBack.onDisConnect(mHost);
+            });
+            socket.onMessage(function (res) {
+                var dataView = new DataView(res.data);
+                //console.log("[wx.WebSocket] [recv] size:" + dataView.byteLength);
+                mCallBack.onMsg(dataView);
+            });
         };
-        socket.onclose = function (event) {
-            mCallBack.onDisConnect && mCallBack.onDisConnect(mHost);
-        };
-        socket.onerror = function (event) {
-            if (event.type && event.type === "error") {
-                return;
+        MatchvsHttp = function MatchvsHttp(callback) {
+            this.mCallback = callback;
+            function send(url, callback, isPost, params) {
+                wx.request({
+                    url: url,
+                    data: {
+                        x: "",
+                        y: ""
+                    },
+                    header: {
+                        "content-type": "application/json"
+                    },
+                    success: function (res) {
+                        var rsp = JSON.stringify(res.data);
+                        MatchvsLog.logI("http success:" + rsp);
+                        callback.onMsg(rsp);
+                    },
+                    fail: function (res) {
+                        MatchvsLog.logI("http fail:" + res.errMsg);
+                        callback.onErr(0, res.errMsg);
+                    }
+                });
             }
-            callback.onErr(1606, event);
+            /**
+             * HTTP GET
+             * @param url {String} ex:"http://testpay.matchvs.com/wc3/submitOrder.do?key=fa"
+             */
+            this.get = function (url) {
+                send(url, this.mCallback, false, null);
+            };
+            /**
+             * HTTP POST
+             * @param url {String} ex:"http://testpay.matchvs.com/wc3/submitOrder.do"
+             * @param params {String} ex:"lorem=ipsum&name=binny";
+             */
+            this.post = function (url, params) {
+                send(url, this.mCallback, true, params);
+            };
         };
     }
     else {
-        alert("Not Support the WebSocket！");
-    }
-}
-function MatchvsHttp(callback) {
-    this.mCallback = callback;
-    function send(url, callback, isPost, params) {
-        var http = new XMLHttpRequest();
-        http.open(isPost ? "POST" : "GET", url, true);
-        http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        http.onreadystatechange = function () {
-            if (http.readyState === 4) {
-                if (http.status === 200) {
-                    callback.onMsg(http.responseText);
-                    console.log("[HTTP:](" + url + ")+" + http.responseText);
+        MatchvsNetWork = function MatchvsNetWork(host, callback) {
+            console.log("use web.socket ");
+            var socket;
+            var mCallBack = callback;
+            var mHost = host;
+            var bufQueue = [];
+            this.send = function (message) {
+                if (!window.WebSocket) {
+                    return;
+                }
+                if (isIE()) {
+                    var uint8A = new Uint8Array(message.buffer.byteLength);
+                    for (var i = 0; i < uint8A.length; i++) {
+                        uint8A[i] = (message.getUint8(i));
+                    }
+                    message = uint8A;
+                }
+                if (socket.readyState === WebSocket.OPEN) {
+                    //log(message);
+                    socket.send(message);
                 }
                 else {
-                    callback.onErr(http.status, http.statusText);
+                    bufQueue.push(message);
                 }
+            };
+            this.close = function () {
+                if (socket) {
+                    socket.close();
+                }
+            };
+            if (!window.WebSocket) {
+                window.WebSocket = window.MozWebSocket;
+            }
+            if (window.WebSocket) {
+                socket = new WebSocket(host);
+                socket.onmessage = function (event) {
+                    var reader = new FileReader();
+                    reader.readAsArrayBuffer(event.data);
+                    //  当读取操作成功完成时调用.
+                    reader.onload = function (evt) {
+                        if (evt.target.readyState === FileReader.DONE) {
+                            var dataView = new DataView(reader.result);
+                            mCallBack.onMsg(dataView);
+                        }
+                        else {
+                            mCallBack.onErr(1606, "[err]parse fail");
+                        }
+                    };
+                };
+                socket.onopen = function (event) {
+                    while (bufQueue.length > 0) {
+                        socket.send(bufQueue.pop());
+                    }
+                    mCallBack.onConnect && mCallBack.onConnect(mHost);
+                };
+                socket.onclose = function (event) {
+                    mCallBack.onDisConnect && mCallBack.onDisConnect(mHost);
+                };
+                socket.onerror = function (event) {
+                    if (event.type && event.type === "error") {
+                        return;
+                    }
+                    callback.onErr(1606, event);
+                };
+            }
+            else {
+                alert("Not Support the WebSocket！");
             }
         };
-        if (isPost) {
-            http.send(params);
-        }
-        else {
-            http.send(null);
-        }
+        MatchvsHttp = function MatchvsHttp(callback) {
+            this.mCallback = callback;
+            function send(url, callback, isPost, params) {
+                var http = new XMLHttpRequest();
+                http.open(isPost ? "POST" : "GET", url, true);
+                http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                http.onreadystatechange = function () {
+                    if (http.readyState === 4) {
+                        if (http.status === 200) {
+                            callback.onMsg(http.responseText);
+                            MatchvsLog.logI("[HTTP:](" + url + ")+" + http.responseText);
+                        }
+                        else {
+                            callback.onErr(http.status, http.statusText);
+                        }
+                    }
+                };
+                if (isPost) {
+                    http.send(params);
+                }
+                else {
+                    http.send(null);
+                }
+            }
+            /**
+             * HTTP GET
+             * @param url {String} ex:"http://testpay.matchvs.com/wc3/submitOrder.do?key=fa"
+             */
+            this.get = function (url) {
+                send(url, this.mCallback, false, null);
+            };
+            /**
+             * HTTP POST
+             * @param url {String} ex:"http://testpay.matchvs.com/wc3/submitOrder.do"
+             * @param params {String} ex:"lorem=ipsum&name=binny";
+             */
+            this.post = function (url, params) {
+                send(url, this.mCallback, true, params);
+            };
+        };
     }
-    /**
-     * HTTP GET
-     * @param url {String} ex:"http://testpay.matchvs.com/wc3/submitOrder.do?key=fa"
-     */
-    this.get = function (url) {
-        send(url, this.mCallback, false, null);
-    };
-    /**
-     * HTTP POST
-     * @param url {String} ex:"http://testpay.matchvs.com/wc3/submitOrder.do"
-     * @param params {String} ex:"lorem=ipsum&name=binny";
-     */
-    this.post = function (url, params) {
-        send(url, this.mCallback, true, params);
-    };
-} /* ================ matchvsprotocol.js ================= */
+}
+catch (e) {
+    console.warn("network adapter warning:" + e.message);
+}
+/* ================ matchvsprotocol.js ================= */
 //================== CMD =======================
 var MATCHVS_USER_GATEWAY_SPEED_REQ = 1001;
 var MATCHVS_USER_GATEWAY_SPEED_RSP = 1002;
@@ -18112,6 +19408,9 @@ var CMD_GET_ROOM_DETAIL_REQ = 1209;
 var CMD_GET_ROOM_DETAIL_RSP = 1210;
 var CMD_GET_ROOM_LIST_EX_REQ = 1215;
 var CMD_GET_ROOM_LIST_EX_RSP = 1216;
+var CMD_SET_ROOM_PROPERTY_REQ = 1219;
+var CMD_SET_ROOM_PROPERTY_RSP = 1220;
+var CMD_SET_ROOM_PROPERTY_NOTIFY = 1307;
 var CMD_DISCONNECT_REQ = 1107;
 var CMD_DISCONNECT_RSP = 1108;
 var CMD_KICK_PLAYER_REQ = 1303;
@@ -18131,6 +19430,9 @@ var CMD_FRAME_BROADCAST_CMDID = 1423;
 var CMD_FRAME_BROADCASTACK_CMDID = 1424;
 var CMD_FRAME_DATANOTIFY_CMDID = 1426;
 var CMD_FRAME_SYNCNOTIFY_CMDID = 1428;
+var CMD_ROOM_JOIN_OPEN_REQ = 1221;
+var CMD_ROOM_JOIN_OPEN_RSP = 1222;
+var CMD_ROOM_JOIN_OPEN_NOT = 1308;
 //================== CMD =======================
 var FIXED_HEAD_SIZE = 16;
 var VERSION = 2;
@@ -18153,6 +19455,46 @@ function MatchvsHeader() {
             + " this.userID " + this.userID;
     };
 }
+function MatchvsProtoMap() {
+    return MatchvsProtoMap.prototype;
+}
+var MsProtoMapDesc = new MatchvsProtoMap();
+MsProtoMapDesc[MATCHVS_USER_LOGIN_RSP] = proto.stream.LoginRsp;
+MsProtoMapDesc[MATCHVS_USER_LOGIN_RSP] = proto.stream.LoginRsp;
+MsProtoMapDesc[MATCHVS_ROOM_JOIN_RSP] = proto.stream.JoinRoomRsp;
+MsProtoMapDesc[MATCHVS_ROOM_CREATE_RSP] = proto.stream.CreateRoomRsp;
+MsProtoMapDesc[MATCHVS_ROOM_CHECK_IN_RSP] = proto.stream.CheckInAck;
+MsProtoMapDesc[MATCHVS_ROOM_CHECKIN_NOTIFY] = proto.stream.CheckInNotify;
+MsProtoMapDesc[MATCHVS_ROOM_LEAVE_RSP] = proto.stream.LeaveRoomRsp;
+MsProtoMapDesc[MATCHVS_ROOM_JOIN_OVER_RSP] = proto.stream.JoinOverRsp;
+MsProtoMapDesc[MATCHVS_ROOM_NOTICE_USER_JOIN] = proto.stream.NoticeJoin;
+MsProtoMapDesc[MATCHVS_ROOM_NOTICE_USER_LEAVE] = proto.stream.NoticeLeave;
+MsProtoMapDesc[MATCHVS_HEARTBEAT_HOTEL_RSP] = proto.stream.HeartbeatAck;
+MsProtoMapDesc[MATCHVS_BROADCAST_HOTEL_RSP] = proto.stream.BroadcastAck;
+MsProtoMapDesc[MATCHVS_HOTEL_NOTIFY] = proto.stream.Notify;
+MsProtoMapDesc[CMD_SUBSCRIBE_ACK_CMDID] = proto.stream.SubscribeAck;
+MsProtoMapDesc[CMD_PUBLISH_ACKCMDID] = proto.stream.PublishAck;
+MsProtoMapDesc[CMD_PUBLISH_NOTIFYCMDID] = proto.stream.PublishNotify;
+//MsProtoMapDesc[MATCHVS_USER_GATEWAY_SPEED_RSP      ] = dataView;
+MsProtoMapDesc[MATCHVS_USER_HEARTBEAT_RSP] = proto.stream.HeartbeatRsp;
+MsProtoMapDesc[MATCHVS_USER_LOGOUT_RSP] = proto.stream.LogoutRsp;
+MsProtoMapDesc[CMD_GET_ROOM_LIST_RSP] = proto.stream.GetRoomListRsp;
+MsProtoMapDesc[CMD_DISCONNECT_RSP] = proto.stream.DisconnectRsp;
+MsProtoMapDesc[CMD_KICK_PLAYER_RSP] = proto.stream.KickPlayerRsp;
+MsProtoMapDesc[CMD_KICK_PLAYER_NOTIFY] = proto.stream.KickPlayerNotify;
+MsProtoMapDesc[CMD_SET_FRAME_SYNCRATEACK_CMDID] = proto.stream.SetFrameSyncRateAck;
+MsProtoMapDesc[CMD_SET_FRAME_SYNCRATENOTIFY_CMDID] = proto.stream.SetFrameSyncRateNotify;
+MsProtoMapDesc[CMD_FRAME_BROADCASTACK_CMDID] = proto.stream.FrameBroadcastAck;
+MsProtoMapDesc[CMD_FRAME_DATANOTIFY_CMDID] = proto.stream.FrameDataNotify;
+MsProtoMapDesc[CMD_FRAME_SYNCNOTIFY_CMDID] = proto.stream.FrameSyncNotify;
+MsProtoMapDesc[MATCHVS_NETWORK_STATE_NOTIFY] = proto.stream.NetworkStateNotify;
+MsProtoMapDesc[CMD_GET_ROOM_LIST_EX_RSP] = proto.stream.GetRoomListExRsp;
+MsProtoMapDesc[CMD_GET_ROOM_DETAIL_RSP] = proto.stream.GetRoomDetailRsp;
+MsProtoMapDesc[MATCHVS_ROOM_JOIN_OVER_NOTIFY] = proto.stream.JoinOverNotify;
+MsProtoMapDesc[CMD_SET_ROOM_PROPERTY_RSP] = proto.stream.SetRoomPropertyRsp;
+MsProtoMapDesc[CMD_SET_ROOM_PROPERTY_NOTIFY] = proto.stream.NoticeRoomProperty;
+MsProtoMapDesc[CMD_ROOM_JOIN_OPEN_RSP] = proto.stream.JoinOpenRsp;
+MsProtoMapDesc[CMD_ROOM_JOIN_OPEN_NOT] = proto.stream.JoinOpenNotify;
 /**
  * Encoder && Decoder
  * @constructor
@@ -18160,6 +19502,7 @@ function MatchvsHeader() {
 function MatchvsProtocol() {
     this.seq = 1;
     var mUserID = 0;
+    this.msProtoMap = new MatchvsProtoMap();
     /**
      *
      * @param dataArray uint array
@@ -18208,127 +19551,16 @@ function MatchvsProtocol() {
         for (var i = 0; i < ext.length; i++) {
             ext[i] = msg.getUint8(FIXED_HEAD_SIZE + i);
         }
+        // var protoMap = this.msProtoMap.getValue(header.cmd);
+        var protoMap = MsProtoMapDesc[header.cmd];
         var packet = new Packet();
         packet.header = header;
         packet.buf = dataView;
-        switch (header.cmd) {
-            case MATCHVS_USER_LOGIN_RSP:
-                // packet.payload = mPortoBufRootGW.lookup("stream.LoginRsp").decode(ext);
-                packet.payload = proto.stream.LoginRsp.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case MATCHVS_ROOM_JOIN_RSP:
-                // packet.payload = mPortoBufRootGW.lookup("stream.JoinRoomRsp").decode(ext);
-                packet.payload = proto.stream.JoinRoomRsp.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case MATCHVS_ROOM_CREATE_RSP:
-                packet.payload = proto.stream.CreateRoomRsp.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case MATCHVS_ROOM_CHECK_IN_RSP:
-                //packet.payload = mProtoBufRootHotel.lookup("stream.CheckInAck").decode(ext);
-                packet.payload = proto.stream.CheckInAck.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case MATCHVS_ROOM_CHECKIN_NOTIFY:
-                //packet.payload = mProtoBufRootHotel.lookup("stream.CheckInNotify").decode(ext);
-                packet.payload = proto.stream.CheckInNotify.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case MATCHVS_ROOM_LEAVE_RSP:
-                //packet.payload = mPortoBufRootGW.lookup("stream.LeaveRoomRsp").decode(ext);
-                packet.payload = proto.stream.LeaveRoomRsp.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case MATCHVS_ROOM_JOIN_OVER_RSP:
-                //packet.payload = mPortoBufRootGW.lookup("stream.JoinOverRsp").decode(ext);
-                packet.payload = proto.stream.JoinOverRsp.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case MATCHVS_ROOM_NOTICE_USER_JOIN:
-                //packet.payload = mPortoBufRootGW.lookup("stream.NoticeJoin").decode(ext);
-                packet.payload = proto.stream.NoticeJoin.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case MATCHVS_ROOM_NOTICE_USER_LEAVE:
-                //packet.payload = mPortoBufRootGW.lookup("stream.NoticeLeave").decode(ext);
-                packet.payload = proto.stream.NoticeLeave.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case MATCHVS_HEARTBEAT_HOTEL_RSP:
-                //packet.payload = mProtoBufRootHotel.lookup("stream.HeartbeatAck").decode(ext);
-                packet.payload = proto.stream.HeartbeatAck.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case MATCHVS_BROADCAST_HOTEL_RSP:
-                //packet.payload = mProtoBufRootHotel.lookup("stream.BroadcastAck").decode(ext);
-                packet.payload = proto.stream.BroadcastAck.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case MATCHVS_HOTEL_NOTIFY:
-                //packet.payload = mProtoBufRootHotel.lookup("stream.Notify").decode(ext);
-                packet.payload = proto.stream.Notify.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case CMD_SUBSCRIBE_ACK_CMDID://MATCHVS_SUBSCRIBE_EVENT_GROUP_RSP:
-                //packet.payload = mProtoBufRootHotel.lookup("stream.SubscribeAck").decode(ext);
-                packet.payload = proto.stream.SubscribeAck.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case CMD_PUBLISH_ACKCMDID://MATCHVS_SEND_EVENT_GROUP_RSP:
-                //packet.payload = mProtoBufRootHotel.lookup("stream.PublishAck").decode(ext);
-                packet.payload = proto.stream.PublishAck.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case CMD_PUBLISH_NOTIFYCMDID://SEND_EVENT_GROUP_NOTIFY:
-                //packet.payload = mProtoBufRootHotel.lookup("stream.PublishNotify").decode(ext);
-                packet.payload = proto.stream.PublishNotify.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case MATCHVS_USER_GATEWAY_SPEED_RSP:
-                //TODO  _SPEED暂时先不写
-                var status = dataView.getInt32(4);
-                break;
-            case MATCHVS_USER_HEARTBEAT_RSP:
-                //packet.payload = mPortoBufRootGW.lookup("stream.HeartbeatRsp").decode(ext);
-                packet.payload = proto.stream.HeartbeatRsp.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case MATCHVS_USER_LOGOUT_RSP:
-                //packet.payload =mPortoBufRootGW.lookup("stream.LogoutRsp").decode(ext);
-                packet.payload = proto.stream.LogoutRsp.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case CMD_GET_ROOM_LIST_RSP:
-                //packet.payload =mPortoBufRootGW.lookup("stream.GetRoomListRsp").decode(ext);
-                packet.payload = proto.stream.GetRoomListRsp.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case CMD_DISCONNECT_RSP:
-                //packet.payload = mPortoBufRootGW.lookup("stream.DisconnectRsp").decode(ext);
-                packet.payload = proto.stream.DisconnectRsp.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case CMD_KICK_PLAYER_RSP:
-                //packet.payload = mPortoBufRootGW.lookup("stream.KickPlayerRsp").decode(ext);
-                packet.payload = proto.stream.KickPlayerRsp.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case CMD_KICK_PLAYER_NOTIFY:
-                // packet.payload = mPortoBufRootGW.lookup("stream.KickPlayerNotify").decode(ext);
-                packet.payload = proto.stream.KickPlayerNotify.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case CMD_SET_FRAME_SYNCRATEACK_CMDID:
-                packet.payload = proto.stream.SetFrameSyncRateAck.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case CMD_SET_FRAME_SYNCRATENOTIFY_CMDID:
-                packet.payload = proto.stream.SetFrameSyncRateNotify.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case CMD_FRAME_BROADCASTACK_CMDID:
-                packet.payload = proto.stream.FrameBroadcastAck.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case CMD_FRAME_DATANOTIFY_CMDID:
-                packet.payload = proto.stream.FrameDataNotify.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case CMD_FRAME_SYNCNOTIFY_CMDID:
-                packet.payload = proto.stream.FrameSyncNotify.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case MATCHVS_NETWORK_STATE_NOTIFY:
-                packet.payload = proto.stream.NetworkStateNotify.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case CMD_GET_ROOM_LIST_EX_RSP:
-                packet.payload = proto.stream.GetRoomListExRsp.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case CMD_GET_ROOM_DETAIL_RSP:
-                packet.payload = proto.stream.GetRoomDetailRsp.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            case MATCHVS_ROOM_JOIN_OVER_NOTIFY:
-                packet.payload = proto.stream.JoinOverNotify.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
-                break;
-            default:
-                console.log("[WARN]unknown msg,Head:" + header);
-                break;
+        if (protoMap) {
+            packet.payload = protoMap.deserializeBinary && protoMap.deserializeBinary(msg.buffer.slice(FIXED_HEAD_SIZE, msg.buffer.byteLength));
+        }
+        else {
+            MatchvsLog.logI("[WARN]unknown msg,Head:" + header);
         }
         return packet;
     };
@@ -18350,7 +19582,7 @@ function MatchvsProtocol() {
         var toMd5 = format("%s&UserID=%s&GameID=%s&VersionSdk=%d&%s", app_key, userID, gameID, VERSION, app_secret);
         mUserID = userID;
         var md5 = hex_md5(toMd5);
-        console.log("[Sign]" + toMd5 + "->" + md5);
+        MatchvsLog.logI("[Sign]" + toMd5 + "->" + md5);
         var message = new proto.stream.LoginReq();
         message.setGameid(Number(gameID));
         message.setAppkey(app_key);
@@ -18358,7 +19590,7 @@ function MatchvsProtocol() {
         message.setSign(md5);
         var dataArray = message.serializeBinary();
         //append binary head and proto buffer;
-        console.log("[REQ]login...userID:" + userID);
+        MatchvsLog.logI("[REQ]login...userID:" + userID);
         return this.fillHeader(dataArray, MATCHVS_USER_LOGIN_REQ);
     };
     /**
@@ -18409,7 +19641,7 @@ function MatchvsProtocol() {
         var bytes = message.serializeBinary();
         return this.fillHeader(bytes, MATCHVS_ROOM_CREATE_REQ);
     };
-    this.joinRoom = function (roomJoin) {
+    this.joinRandomRoom = function (roomJoin) {
         var message = new proto.stream.JoinRoomReq();
         message.setGameid(Number(roomJoin.gameID));
         message.setJointype(proto.stream.JoinRoomType.JOINRANDOMROOM);
@@ -18435,7 +19667,7 @@ function MatchvsProtocol() {
     this.joinRoomSpecial = function (roomJoin) {
         var message = new proto.stream.JoinRoomReq();
         message.setGameid(Number(roomJoin.gameID));
-        message.setJointype(proto.stream.JoinRoomType.JOINSPECIALROOM);
+        message.setJointype(roomJoin.joinType);
         message.setCpproto(stringToUtf8ByteArray(roomJoin.userProfile));
         var playInfo = new proto.stream.PlayerInfo();
         playInfo.setUserid(roomJoin.userID);
@@ -18519,7 +19751,7 @@ function MatchvsProtocol() {
         roomFilter.setMode(Number(filter.mode));
         roomFilter.setFull(filter.full);
         roomFilter.setCanwatch(filter.canWatch);
-        roomFilter.setRoomproperty(str2u8array(filter.roomproperty));
+        roomFilter.setRoomproperty(str2u8array(filter.roomProperty));
         roomFilter.setState(filter.state);
         pkg.setGameid(gameID);
         pkg.setRoomfilter(roomFilter);
@@ -18575,7 +19807,6 @@ function PlayerInfo(userID, userProfile) {
     this.userID = userID;
     this.userProfile = userProfile;
 }
-;
 /**
  * message RoomInfo
  *{
@@ -18608,11 +19839,10 @@ function RoomInfo(roomID, roomName, maxPlayer, mode, canWatch, visibility, roomP
     this.roomProperty = roomProperty;
     this.owner = owner;
 }
-;
 /**
  * 心跳
  * @gameID {uint32} value 游戏ID
- * @roomID {unint64} value 房间ID
+ * @roomID {string} value 房间ID
  * @returns {DataView}
  */
 MatchvsProtocol.prototype.heartBeat = function (gameID, roomID) {
@@ -18624,12 +19854,12 @@ MatchvsProtocol.prototype.heartBeat = function (gameID, roomID) {
 };
 /**
  * 注销账号
- * @param string cpProto
+ * @param  cpProto {string}
  * @returns {DataView}
  */
-MatchvsProtocol.prototype.logout = function () {
-    var array = new Uint8Array(0);
-    return this.fillHeader(array, MATCHVS_USER_LOGOUT_REQ);
+MatchvsProtocol.prototype.logout = function (cpProto) {
+    var buf = stringToUtf8ByteArray(cpProto);
+    return this.fillHeader(buf, MATCHVS_USER_LOGOUT_REQ);
 };
 /**
  * file describe : this file include some Submodule control of MatchvsProtocol in matchvsprotocol.js
@@ -18762,33 +19992,39 @@ MatchvsProtocol.prototype.sendFrameEvent = function (roomID, priority, cpProto) 
     var bytes = reqEx.serializeBinary();
     return this.fillHeader(bytes, CMD_FRAME_BROADCAST_CMDID);
 };
-/* ================ matchvs.js ================= */
-var HEART_BEAT_INTERVAL = 3000; //心跳间隔时间
-var ENGIN_ESTATE = {
-    STATE_NONE: 0x0000,
-    STATE_HAVE_INIT: 0x0001,
-    STATE_HAVE_LOGIN: 0x0004,
-    STATE_IN_ROOM: 0x0008,
-    STATE_CREATEROOM: 0x0010,
-    STATE_JOIN_ROOMING: 0x0020,
-    STATE_LOGOUTING: 0x0040 //正在退出房间
+MatchvsProtocol.prototype.setRoomProperty = function (gameID, userID, roomID, roomProperty) {
+    var reqEx = new proto.stream.SetRoomPropertyReq();
+    reqEx.setGameid(gameID);
+    reqEx.setRoomid(roomID);
+    reqEx.setUserid(userID);
+    reqEx.setRoomproperty(stringToUtf8ByteArray(roomProperty));
+    var bytes = reqEx.serializeBinary();
+    return this.fillHeader(bytes, CMD_SET_ROOM_PROPERTY_REQ);
 };
+MatchvsProtocol.prototype.joinOpen = function (gameID, userID, roomID, cpProto) {
+    var reqEx = new proto.stream.JoinOpenReq();
+    reqEx.setRoomid(roomID);
+    reqEx.setGameid(gameID);
+    reqEx.setUserid(userID);
+    reqEx.setCpproto(stringToUtf8ByteArray(cpProto));
+    var bytes = reqEx.serializeBinary();
+    return this.fillHeader(bytes, CMD_ROOM_JOIN_OPEN_REQ);
+}; /* ================ matchvs.js ================= */
 var M_ENGINE;
 function MatchvsEngine() {
-    //console.log("Construct _engine");
     M_ENGINE = this;
     this.mChannel = "MatchVS";
     this.mPlatform = "release";
-    this.mEngineState = ENGIN_ESTATE.STATE_NONE;
-    this.mConfig = MVSConfig(this.mChannel, this.mPlatform);
+    this.mMsPubArgs = new MsPublicMemberArgs();
+    this.mEngineState = ENGE_STATE.NONE;
     this.mAllPlayers = [];
-    this.mUserListForJoinRoomRsp = [];
-    this.mRoomLock = ENGIN_ESTATE.STATE_NONE;
-    this.joinRoomNotifyInfo = new MsRoomUserInfo();
-    this.mNetWork;
-    this.mHotelNetWork;
-    this.mBookInfo;
-    this.mHotelHeartBeatTimer;
+    this.mRecntRoomID = 0;
+    this.mUserListForJoinRoomRsp = []; //加入房间收到回调，等checkin成后作为调用joinRoomResponse参数
+    this.joinRoomNotifyInfo = null; //加入房间收到回调，等checkinNotify成后作为调用joinRoomNotify参数
+    this.mNetWork = null;
+    this.mHotelNetWork = null;
+    this.mBookInfo = null;
+    this.mHotelHeartBeatTimer = null;
     this.mProtocol = new MatchvsProtocol();
     var NetWorkCallBackImp = function (engine) {
         MSExtend(this, MatchvsNetWork);
@@ -18808,55 +20044,82 @@ function MatchvsEngine() {
             switch (packet.header.cmd) {
                 case MATCHVS_USER_LOGIN_RSP:
                     if (packet.payload.getStatus() === 200) {
-                        engine.mEngineState |= ENGIN_ESTATE.STATE_HAVE_LOGIN;
+                        engine.mEngineState |= ENGE_STATE.HAVE_LOGIN;
                     }
-                    var roomID = packet.payload.getRoomid();
-                    engine.mRsp.loginResponse(new MsLoginRsp(packet.payload.getStatus(), roomID));
+                    else {
+                        engine.mEngineState &= ~ENGE_STATE.LOGINING;
+                        engine.mEngineState &= ~ENGE_STATE.RECONNECTING;
+                        engine.mRsp.errorResponse && engine.mRsp.errorResponse(packet.payload.getStatus(), "Server Response Error");
+                    }
+                    engine.mEngineState &= ~ENGE_STATE.LOGINING;
+                    engine.mRecntRoomID = packet.payload.getRoomid();
+                    if (((engine.mEngineState & ENGE_STATE.RECONNECTING) === ENGE_STATE.RECONNECTING)) {
+                        if (engine.mRecntRoomID !== "0") {
+                            var roomJoin = new MsRoomJoin(MsEnum.JoinRoomType.reconnect, engine.mMsPubArgs.userID, engine.mRecntRoomID, engine.mMsPubArgs.gameID, 0, 0, 0, "reconnect", [{ name: "MatchVS" }]);
+                            var reconbuf = engine.mProtocol && engine.mProtocol.joinRoomSpecial(roomJoin);
+                            engine.mNetWork && engine.mNetWork.send(reconbuf);
+                        }
+                        else {
+                            engine.mEngineState &= ~ENGE_STATE.RECONNECTING;
+                            //201 重连成功但是不在房间
+                            engine.mRsp.reconnectResponse && engine.mRsp.reconnectResponse(201, null, null);
+                        }
+                    }
+                    else {
+                        engine.mRsp.loginResponse(new MsLoginRsp(packet.payload.getStatus(), engine.mRecntRoomID));
+                    }
                     break;
                 case MATCHVS_ROOM_JOIN_RSP:
                     if (packet.payload.getStatus() === 200) {
-                        engine.mEngineState |= ENGIN_ESTATE.STATE_IN_ROOM;
+                        engine.mEngineState |= ENGE_STATE.IN_ROOM;
                         engine.mBookInfo = packet.payload.getBookinfo();
                         engine.mRoomInfo = packet.payload.getRoominfo();
                         engine.mUserListForJoinRoomRsp = packet.payload.getUsersList();
-                        engine.mHotelNetWork = new MatchvsNetWork(getHotelUrl(engine), engine.mNetWorkCallBackImp);
+                        HttpConf.HOST_HOTEL_ADDR = getHotelUrl(engine);
+                        engine.mHotelNetWork = new MatchvsNetWork(HttpConf.HOST_HOTEL_ADDR, engine.mNetWorkCallBackImp);
                         engine.mNetWorkCallBackImp.onConnect = function (host) {
                             engine.roomCheckIn(engine.mHotelNetWork, engine.mBookInfo, engine.mRoomInfo);
                             engine.mRsp.onConnect && engine.mRsp.onConnect(host);
                         };
                         if (engine.mHotelHeartBeatTimer == null) {
-                            engine.mHotelHeartBeatTimer = setInterval(engine.hotelHeartBeat, HEART_BEAT_INTERVAL, engine);
+                            engine.mHotelHeartBeatTimer = setInterval(engine.hotelHeartBeat, HEART_BEAT_INTERVAL);
                         }
                     }
                     else {
-                        engine.mRoomLock &= ~ENGIN_ESTATE.STATE_JOIN_ROOMING;
+                        engine.mEngineState &= ~ENGE_STATE.JOIN_ROOMING;
+                        engine.mEngineState &= ~ENGE_STATE.RECONNECTING;
                         engine.mRsp.errorResponse && engine.mRsp.errorResponse(packet.payload.getStatus(), "Server Response Error");
+                        engine.mRsp.joinRoomResponse && engine.mRsp.joinRoomResponse(packet.payload.getStatus(), null, null);
                     }
                     break;
                 case MATCHVS_ROOM_CREATE_RSP:
                     if (packet.payload.getStatus() === 200) {
-                        engine.mEngineState |= ENGIN_ESTATE.STATE_IN_ROOM;
+                        engine.mEngineState |= ENGE_STATE.IN_ROOM;
                         engine.mBookInfo = packet.payload.getBookinfo();
                         var roomid = packet.payload.getRoomid();
                         roomInfo.setRoomid(roomid);
                         roomInfo.setOwner(packet.payload.getOwner());
                         engine.mRoomInfo = roomInfo;
-                        engine.mHotelNetWork = new MatchvsNetWork(getHotelUrl(engine), engine.mNetWorkCallBackImp);
+                        HttpConf.HOST_HOTEL_ADDR = getHotelUrl(engine);
+                        engine.mHotelNetWork = new MatchvsNetWork(HttpConf.HOST_HOTEL_ADDR, engine.mNetWorkCallBackImp);
                         engine.mNetWorkCallBackImp.onConnect = function (host) {
                             engine.roomCheckIn(engine.mHotelNetWork, engine.mBookInfo, engine.mRoomInfo);
                             engine.mRsp.onConnect && engine.mRsp.onConnect(host);
                         };
                         if (engine.mHotelHeartBeatTimer == null) {
-                            engine.mHotelHeartBeatTimer = setInterval(engine.hotelHeartBeat, HEART_BEAT_INTERVAL, engine);
+                            engine.mHotelHeartBeatTimer = setInterval(engine.hotelHeartBeat, HEART_BEAT_INTERVAL);
                         }
                     }
                     else {
-                        engine.mRoomLock &= ~ENGIN_ESTATE.STATE_JOIN_ROOMING;
+                        engine.mEngineState &= ~ENGE_STATE.CREATEROOM;
                         engine.mRsp.errorResponse && engine.mRsp.errorResponse(packet.payload.getStatus(), "Server Response Error");
                     }
                     break;
                 case MATCHVS_ROOM_CHECK_IN_RSP:
                     {
+                        if (packet.payload.getStatus() !== 200) {
+                            engine.mRsp.errorResponse && engine.mRsp.errorResponse(packet.payload.getStatus(), "Server Response Error");
+                        }
                         engine.mAllPlayers = packet.payload.getCheckinsList(); //checkins;
                         var roomUserList = [];
                         engine.mUserListForJoinRoomRsp.forEach(function (user) {
@@ -18865,30 +20128,46 @@ function MatchvsEngine() {
                         });
                         //房间信息
                         var roominfo = new MsRoomInfo(engine.mRoomInfo.getRoomid(), utf8ByteArrayToString(engine.mRoomInfo.getRoomproperty()), engine.mRoomInfo.getOwner());
-                        if ((engine.mRoomLock & ENGIN_ESTATE.STATE_CREATEROOM) === ENGIN_ESTATE.STATE_CREATEROOM) {
+                        if ((engine.mEngineState & ENGE_STATE.CREATEROOM) === ENGE_STATE.CREATEROOM) {
                             //创建房间
-                            engine.mRoomLock &= ~ENGIN_ESTATE.STATE_CREATEROOM;
+                            engine.mEngineState &= ~ENGE_STATE.CREATEROOM;
                             engine.mRsp.createRoomResponse && engine.mRsp.createRoomResponse(new MsCreateRoomRsp(packet.payload.getStatus(), engine.mRoomInfo.getRoomid(), engine.mRoomInfo.getOwner()));
                         }
-                        else if ((engine.mRoomLock & ENGIN_ESTATE.STATE_JOIN_ROOMING) === ENGIN_ESTATE.STATE_JOIN_ROOMING) {
+                        else if ((engine.mEngineState & ENGE_STATE.JOIN_ROOMING) === ENGE_STATE.JOIN_ROOMING) {
                             //加入房间
-                            engine.mRoomLock &= ~ENGIN_ESTATE.STATE_JOIN_ROOMING;
+                            engine.mEngineState &= ~ENGE_STATE.JOIN_ROOMING;
                             engine.mRsp.joinRoomResponse && engine.mRsp.joinRoomResponse(packet.payload.getStatus(), roomUserList, roominfo);
+                        }
+                        else if ((engine.mEngineState & ENGE_STATE.RECONNECTING) === ENGE_STATE.RECONNECTING) {
+                            engine.mEngineState &= ~ENGE_STATE.RECONNECTING;
+                            engine.mRsp.reconnectResponse && engine.mRsp.reconnectResponse(packet.payload.getStatus(), roomUserList, roominfo);
                         }
                     }
                     break;
                 case MATCHVS_ROOM_CHECKIN_NOTIFY:
-                    engine.mRsp.joinRoomNotify && engine.mRsp.joinRoomNotify(engine.joinRoomNotifyInfo);
+                    if (engine.joinRoomNotifyInfo) {
+                        engine.mRsp.joinRoomNotify && engine.mRsp.joinRoomNotify(engine.joinRoomNotifyInfo);
+                    }
                     engine.mAllPlayers = packet.payload.getCheckinsList();
                     engine.mRsp.roomCheckInNotify && engine.mRsp.roomCheckInNotify(new MsCheckInNotify(packet.payload.getUserid(), packet.payload.getCheckinsList(), packet.payload.getPlayersList(), packet.payload.getMaxplayers()));
+                    engine.joinRoomNotifyInfo = null;
                     break;
                 case MATCHVS_ROOM_LEAVE_RSP:
-                    roomInfo.setRoomid(0);
+                    //退出房间状态取消
+                    engine.mEngineState &= ~ENGE_STATE.LEAVE_ROOMING;
+                    if (packet.payload.getStatus() !== 200) {
+                        engine.mRsp.errorResponse && engine.mRsp.errorResponse(packet.payload.getStatus(), "Server Response Error");
+                    }
+                    roomInfo.setRoomid("0");
                     engine.mRoomInfo = roomInfo;
                     var leaveRoomRsp = new MsLeaveRoomRsp(packet.payload.getStatus(), packet.payload.getRoomid(), packet.payload.getUserid(), packet.payload.getCpproto());
                     engine.mRsp.leaveRoomResponse && engine.mRsp.leaveRoomResponse(leaveRoomRsp);
+                    engine.mEngineState &= ~ENGE_STATE.IN_ROOM;
                     break;
                 case MATCHVS_ROOM_JOIN_OVER_RSP:
+                    if (packet.payload.getStatus() !== 200) {
+                        engine.mRsp.errorResponse && engine.mRsp.errorResponse(packet.payload.getStatus(), "Server Response Error");
+                    }
                     engine.mRsp.joinOverResponse && engine.mRsp.joinOverResponse(new MsJoinOverRsp(packet.payload.getStatus(), utf8ByteArrayToString(packet.payload.getCpproto())));
                     break;
                 case MATCHVS_ROOM_NOTICE_USER_JOIN:
@@ -18903,6 +20182,9 @@ function MatchvsEngine() {
                     engine.mRsp.hotelHeartBeatRsp && engine.mRsp.hotelHeartBeatRsp(packet.payload.getStatus());
                     break;
                 case MATCHVS_BROADCAST_HOTEL_RSP:
+                    if (packet.payload.getStatus() !== 200) {
+                        engine.mRsp.errorResponse && engine.mRsp.errorResponse(packet.payload.getStatus(), "Server Response Error");
+                    }
                     engine.mRsp.sendEventResponse && engine.mRsp.sendEventResponse(new MsSendEventRsp(packet.payload.getStatus(), packet.header.seq));
                     break;
                 case MATCHVS_HOTEL_NOTIFY:
@@ -18926,16 +20208,17 @@ function MatchvsEngine() {
                 case MATCHVS_USER_GATEWAY_SPEED_RSP:
                     var status = packet.payload.getStatus();
                     var seq = packet.payload.getSeq();
-                    engine.mRsp.gatewaySpeedResponse && engine.mRsp.gatewaySpeedResponse(new gatewaySpeedResponse(status, seq));
+                    engine.mRsp.gatewaySpeedResponse && engine.mRsp.gatewaySpeedResponse(new MsGatewaySpeedResponse(status, seq));
                     break;
                 case MATCHVS_USER_HEARTBEAT_RSP:
                     var gameid = packet.payload.getGameid();
                     var gsExist = packet.payload.getGsexist();
                     //如果心跳存在视为已登录状态
-                    engine.mEngineState |= ENGIN_ESTATE.STATE_HAVE_LOGIN;
+                    engine.mEngineState |= ENGE_STATE.HAVE_LOGIN;
                     engine.mRsp.heartBeatResponse && engine.mRsp.heartBeatResponse(new MsHeartBeatResponse(gameid, gsExist));
                     break;
                 case MATCHVS_USER_LOGOUT_RSP:
+                    engine.mNetWork.close();
                     engine.mRsp.logoutResponse && engine.mRsp.logoutResponse(packet.payload.getStatus());
                     break;
                 case MATCHVS_NETWORK_STATE_NOTIFY:
@@ -18956,30 +20239,31 @@ function MatchvsEngine() {
                     engine.mRsp.kickPlayerResponse && engine.mRsp.kickPlayerResponse(new MsKickPlayerRsp(packet.payload.getStatus(), packet.payload.getOwner(), packet.payload.getUserid()));
                     break;
                 case CMD_KICK_PLAYER_NOTIFY:
-                    if (packet.payload.getUserid() === engine.mUserID && engine.mHotelHeartBeatTimer != null) {
+                    if (packet.payload.getUserid().toString() === ("" + engine.mUserID) && engine.mHotelHeartBeatTimer != null) {
                         clearInterval(engine.mHotelHeartBeatTimer);
                         engine.mHotelHeartBeatTimer = null;
-                        engine.mEngineState &= ~ENGIN_ESTATE.STATE_IN_ROOM;
+                        engine.mEngineState &= ~ENGE_STATE.IN_ROOM;
+                        engine.mEngineState |= ENGE_STATE.HAVE_LOGIN;
                     }
                     engine.mRsp.kickPlayerNotify && engine.mRsp.kickPlayerNotify(new MsKickPlayerNotify(packet.payload.getUserid(), packet.payload.getSrcuserid(), utf8ByteArrayToString(packet.payload.getCpproto()), packet.payload.getOwner()));
                     break;
                 case CMD_SET_FRAME_SYNCRATEACK_CMDID:
-                    console.log("SetFrameSyncRateAck:" + packet.payload);
+                    MatchvsLog.logI("SetFrameSyncRateAck:" + packet.payload);
                     engine.mRsp.setFrameSyncResponse && engine.mRsp.setFrameSyncResponse(new MsSetChannelFrameSyncRsp(packet.payload.getStatus()));
                     break;
                 case CMD_SET_FRAME_SYNCRATENOTIFY_CMDID:
-                    //console.log("SetFrameSyncRateNotify:"+packet.payload);
+                    //MatchvsLog.logI("SetFrameSyncRateNotify:"+packet.payload);
                     break;
                 case CMD_FRAME_BROADCASTACK_CMDID:
-                    //console.log("FrameBroadcastAck:"+packet.payload);
+                    //MatchvsLog.logI("FrameBroadcastAck:"+packet.payload);
                     engine.mRsp.sendFrameEventResponse && engine.mRsp.sendFrameEventResponse(new MsSendFrameEventRsp(packet.payload.getStatus()));
                     break;
                 case CMD_FRAME_DATANOTIFY_CMDID:
-                    //console.log("FrameDataNotify:"+packet.payload);
+                    //MatchvsLog.logI("FrameDataNotify:"+packet.payload);
                     frameCache.push(new MsFrameItem(packet.payload.getSrcuid(), utf8ByteArrayToString(packet.payload.getCpproto()), packet.payload.getTimestamp()));
                     break;
                 case CMD_FRAME_SYNCNOTIFY_CMDID:
-                    //console.log("FrameSyncNotify:"+packet.payload);
+                    //MatchvsLog.logI("FrameSyncNotify:"+packet.payload);
                     var frameData = [];
                     while (frameCache.length > 0) {
                         frameData.push(frameCache.pop());
@@ -18991,13 +20275,17 @@ function MatchvsEngine() {
                     var roomInfoList = packet.payload.getRoominfoexList();
                     var roomAttrs = [];
                     roomInfoList.forEach(function (roominfo) {
-                        var roomAttr = new MsRoomAttribute(roominfo.getRoomid(), roominfo.getRoomname(), roominfo.getMaxplayer(), roominfo.getGameplayer(), roominfo.getWatchplayer(), roominfo.getMode(), roominfo.getCanwatch(), utf8ByteArrayToString(roominfo.getRoomproperty()), roominfo.getOwner(), roominfo.getState(), roominfo.getCreatetime());
+                        var roomAttr = new MsRoomAttribute(roominfo.getRoomid(), roominfo.getRoomname(), roominfo.getMaxplayer(), roominfo.getGameplayer(), roominfo.getWatchplayer(), roominfo.getMode(), roominfo.getCanwatch(), utf8ByteArrayToString(roominfo.getRoomproperty()), roominfo.getOwner(), roominfo.getState(), roominfo.getCreatetime().toString());
                         roomAttrs.push(roomAttr);
                     });
                     var roomListExInfo = new MsGetRoomListExRsp(packet.payload.getStatus(), packet.payload.getTotal(), roomAttrs);
                     engine.mRsp.getRoomListExResponse && engine.mRsp.getRoomListExResponse(roomListExInfo);
                     break;
                 case CMD_GET_ROOM_DETAIL_RSP:
+                    if (packet.payload.getStatus() !== 200) {
+                        engine.mRsp.getRoomDetailResponse && engine.mRsp.getRoomDetailResponse(new MsGetRoomDetailRsp(packet.payload.getStatus()));
+                        engine.mRsp.errorResponse && engine.mRsp.errorResponse(packet.payload.getStatus(), "Server error");
+                    }
                     var roomDetail = packet.payload.getRoomdetail();
                     var userInfos = [];
                     var playerlist = roomDetail.getPlayerinfosList();
@@ -19005,12 +20293,27 @@ function MatchvsEngine() {
                         var userinfo = new MsRoomUserInfo(player.getUserid(), utf8ByteArrayToString(player.getUserprofile()));
                         userInfos.push(userinfo);
                     });
-                    var roomDetailRsp = new MsGetRoomDetailRsp(packet.payload.getStatus(), roomDetail.getState(), roomDetail.getMaxplayer(), roomDetail.getMode(), roomDetail.getCanwatch(), roomDetail.getRoomproperty(), roomDetail.getOwner(), roomDetail.getCreateflag(), userInfos);
+                    var roomDetailRsp = new MsGetRoomDetailRsp(packet.payload.getStatus(), roomDetail.getState(), roomDetail.getMaxplayer(), roomDetail.getMode(), roomDetail.getCanwatch(), utf8ByteArrayToString(roomDetail.getRoomproperty()), roomDetail.getOwner(), roomDetail.getCreateflag(), userInfos);
                     engine.mRsp.getRoomDetailResponse && engine.mRsp.getRoomDetailResponse(roomDetailRsp);
                     break;
                 case MATCHVS_ROOM_JOIN_OVER_NOTIFY:
                     var joinoverNotifyInfo = new MsJoinOverNotifyInfo(packet.payload.getRoomid(), packet.payload.getSrcuserid(), utf8ByteArrayToString(packet.payload.getCpproto()));
                     engine.mRsp.joinOverNotify && engine.mRsp.joinOverNotify(joinoverNotifyInfo);
+                    break;
+                case CMD_SET_ROOM_PROPERTY_RSP:
+                    if (packet.payload.getStatus() !== 200) {
+                        engine.errorResponse && engine.errorResponse(packet.payload.getStatus(), "Server response error");
+                    }
+                    engine.mRsp.setRoomPropertyResponse && engine.mRsp.setRoomPropertyResponse(new MsSetRoomPropertyRspInfo(packet.payload.getStatus(), packet.payload.getRoomid(), packet.payload.getUserid(), utf8ByteArrayToString(packet.payload.getRoomproperty())));
+                    break;
+                case CMD_SET_ROOM_PROPERTY_NOTIFY:
+                    engine.mRsp.setRoomPropertyNotify && engine.mRsp.setRoomPropertyNotify(new MsRoomPropertyNotifyInfo(packet.payload.getRoomid(), packet.payload.getUserid(), utf8ByteArrayToString(packet.payload.getRoomproperty())));
+                    break;
+                case CMD_ROOM_JOIN_OPEN_RSP:
+                    engine.mRsp.joinOpenResponse && engine.mRsp.joinOpenResponse(new MsReopenRoomResponse(packet.payload.getStatus(), utf8ByteArrayToString(packet.payload.getCpproto())));
+                    break;
+                case CMD_ROOM_JOIN_OPEN_NOT:
+                    engine.mRsp.joinOpenNotify && engine.mRsp.joinOpenNotify(new MsReopenRoomNotify(packet.payload.getRoomid(), packet.payload.getUserid(), utf8ByteArrayToString(packet.payload.getCpproto())));
                     break;
                 default:
                     break;
@@ -19021,38 +20324,81 @@ function MatchvsEngine() {
         };
         this.onConnect = function (host) {
             engine.mRsp.onConnect && engine.mRsp.onConnect(host);
-            timer = setInterval(engine.heartBeat, HEART_BEAT_INTERVAL, engine);
+            timer = setInterval(engine.heartBeat, HEART_BEAT_INTERVAL);
         };
         this.onDisConnect = function (host) {
             engine.mRsp.onDisConnect && engine.mRsp.onDisConnect(host);
             if (host.endsWith(HttpConf.HOST_GATWAY_ADDR)) {
-                if ((engine.mEngineState &= ENGIN_ESTATE.STATE_LOGOUTING) !== ENGIN_ESTATE.STATE_LOGOUTING) {
+                if ((engine.mEngineState & ENGE_STATE.LOGOUTING) !== ENGE_STATE.LOGOUTING) {
                     //如果gateway 异常断开连接了就返回错误消息
-                    engine.mRsp.errorResponse && engine.mRsp.errorResponse(1000, "gateway disconnect");
+                    engine.mRsp.errorResponse && engine.mRsp.errorResponse(1001, "gateway network error");
                 }
-                //gateway 心跳停止，设置为初始化状态
-                engine.mEngineState = ENGIN_ESTATE.STATE_NONE;
-                engine.mEngineState |= ENGIN_ESTATE.STATE_HAVE_INIT;
-                //engine.mEngineState |= ENGIN_ESTATE.STATE_HAVE_LOGIN;
+                engine.mEngineState = ENGE_STATE.NONE;
+                engine.mEngineState |= ENGE_STATE.HAVE_INIT;
                 clearInterval(timer);
             }
-            // else{
-            //     //如果在房间里面，就是hotel 自动断开连接
-            //     if((this.mEngineState & ENGIN_ESTATE.STATE_IN_ROOM) === ENGIN_ESTATE.STATE_IN_ROOM){
-            //         this.mEngineState &= ~ENGIN_ESTATE.STATE_IN_ROOM;
-            //         engine.mRsp.errorResponse && engine.mRsp.errorResponse(1001,"hotel disconnect");
-            //     }
-            // }
+            else if (host.endsWith(HttpConf.HOST_HOTEL_ADDR)) {
+                MatchvsLog.logI("hotel disconnect");
+                if ((engine.mEngineState & ENGE_STATE.LEAVE_ROOMING) !== ENGE_STATE.LEAVE_ROOMING) {
+                    //针对，如果直接退出房间，没有调用 leaveRoom接口
+                    engine.mRsp.errorResponse && engine.mRsp.errorResponse(1001, "hotel network error");
+                }
+                //如果房间服务器断开了(包括异常断开情况)就把定时器关掉
+                if (engine.mHotelHeartBeatTimer != null) {
+                    clearInterval(engine.mHotelHeartBeatTimer);
+                    engine.mHotelHeartBeatTimer = null;
+                }
+                //退出房间状态取消
+                engine.mEngineState &= ~ENGE_STATE.LEAVE_ROOMING;
+                engine.mEngineState &= ~ENGE_STATE.IN_ROOM;
+            }
         };
     };
     this.init = function (response, channel, platform, gameID) {
+        if (!(("Matchvs" === channel) || ("MatchVS" === channel) || ("MatchVS-Test" === channel) || ("MatchVS-Test1" === channel)))
+            return -25; //非法channel
+        if (!("alpha" === platform || "Alpha" === platform || "release" === platform || "Release" === platform))
+            return -26; //非法Environment
         this.mRsp = response;
         this.mChannel = channel;
         this.mPlatform = platform;
         this.mGameID = gameID;
-        this.mConfig = MVSConfig(this.mChannel, this.mPlatform);
+        this.mMsPubArgs.channel = channel;
+        this.mMsPubArgs.platform = platform;
+        this.mEngineState |= ENGE_STATE.INITING;
         this.mProtocol.init();
         this.getHostList();
+        return 0;
+    };
+    this.reconnect = function () {
+        if ((this.mEngineState & ENGE_STATE.HAVE_INIT) !== ENGE_STATE.HAVE_INIT)
+            return -2;
+        if ((this.mEngineState & ENGE_STATE.RECONNECTING) === ENGE_STATE.RECONNECTING)
+            return -9;
+        if (this.mRecntRoomID !== "0" && (this.mEngineState & ENGE_STATE.HAVE_LOGIN) === ENGE_STATE.HAVE_LOGIN) {
+            this.mEngineState |= ENGE_STATE.RECONNECTING;
+            var roomJoin = new MsRoomJoin(MsEnum.JoinRoomType.reconnect, this.mMsPubArgs.userID, this.mRecntRoomID, this.mMsPubArgs.gameID, 0, 0, 0, "reconnect", [{ name: "MatchVS" }]);
+            var buf = this.mProtocol.joinRoomSpecial(roomJoin);
+            this.mNetWork.send(buf);
+            this.mRecntRoomID = "0";
+            return 0;
+        }
+        if (undefined === this.mMsPubArgs.gameID || undefined === this.mMsPubArgs.secretKey || undefined === this.mMsPubArgs.appKey) {
+            return -1;
+        }
+        if ((this.mEngineState & ENGE_STATE.HAVE_LOGIN) === ENGE_STATE.HAVE_LOGIN)
+            return -6;
+        if (!(undefined === this.mNetWork || null === this.mNetWork)) {
+            this.mNetWork.close();
+        }
+        //登录状态
+        this.mEngineState |= ENGE_STATE.LOGINING;
+        //重连状态
+        this.mEngineState |= ENGE_STATE.RECONNECTING;
+        this.mNetWorkCallBackImp = new NetWorkCallBackImp(this);
+        this.mNetWork = new MatchvsNetWork(HttpConf.HOST_GATWAY_ADDR, this.mNetWorkCallBackImp);
+        var loginbuf = this.mProtocol.login(this.mMsPubArgs.userID, this.mMsPubArgs.token, this.mMsPubArgs.gameID, this.mMsPubArgs.gameVersion, this.mMsPubArgs.appKey, this.mMsPubArgs.secretKey, this.mMsPubArgs.deviceID, this.mMsPubArgs.gatewayID);
+        this.mNetWork.send(loginbuf);
         return 0;
     };
     /**
@@ -19067,19 +20413,36 @@ function MatchvsEngine() {
      * @pGatewayID pGatewayID
      */
     this.login = function (userID, token, pGameID, pGameVersion, pAppKey, pSecretKey, deviceID, gatewayID) {
+        if ((this.mEngineState & ENGE_STATE.HAVE_INIT) !== ENGE_STATE.HAVE_INIT)
+            return -2; //未初始化
+        if ((this.mEngineState & ENGE_STATE.INITING) === ENGE_STATE.INITING)
+            return -3; //正在初始化
+        if ((this.mEngineState & ENGE_STATE.LOGINING) === ENGE_STATE.LOGINING)
+            return -5; //正在登录
+        if ((this.mEngineState & ENGE_STATE.HAVE_LOGIN) === ENGE_STATE.HAVE_LOGIN)
+            return -6; // 已经登录，请勿重复登录
+        if ((this.mEngineState & ENGE_STATE.LOGOUTING) === ENGE_STATE.LOGOUTING)
+            return -11; // 正在登出
         if (!(undefined === this.mNetWork || null === this.mNetWork)) {
             this.mNetWork.close();
         }
         this.mNetWorkCallBackImp = new NetWorkCallBackImp(this);
-        this.mNetWork = new MatchvsNetWork(this.mConfig.HOST_GATWAY_ADDR, this.mNetWorkCallBackImp);
+        this.mNetWork = new MatchvsNetWork(HttpConf.HOST_GATWAY_ADDR, this.mNetWorkCallBackImp);
         this.mUserID = userID;
         this.mToken = token;
         this.mGameID = pGameID;
         this.mGameVersion = pGameVersion;
         this.mAppKey = pAppKey;
-        this.mSecretKey = pSecretKey;
-        this.mDeviceID = deviceID;
+        this.mMsPubArgs.userID = userID;
+        this.mMsPubArgs.token = token;
+        this.mMsPubArgs.gameID = pGameID;
+        this.mMsPubArgs.gameVersion = pGameVersion;
+        this.mMsPubArgs.appKey = pAppKey;
+        this.mMsPubArgs.deviceID = deviceID;
+        this.mMsPubArgs.gatewayID = gatewayID;
+        this.mMsPubArgs.secretKey = pSecretKey;
         var buf = this.mProtocol.login(userID, token, pGameID, pGameVersion, pAppKey, pSecretKey, deviceID, gatewayID);
+        this.mEngineState |= ENGE_STATE.LOGINING;
         this.mNetWork.send(buf);
         return 0;
     };
@@ -19087,7 +20450,7 @@ function MatchvsEngine() {
      * 用户网关速度，暂时先不使用
      */
     this.speed = function () {
-        if ((this.mEngineState & ENGIN_ESTATE.STATE_HAVE_LOGIN) !== ENGIN_ESTATE.STATE_HAVE_LOGIN) {
+        if ((this.mEngineState & ENGE_STATE.HAVE_LOGIN) !== ENGE_STATE.HAVE_LOGIN) {
             return -4; //未登录
         }
         var buf = this.mProtocol.speed(this.mUserID, this.mGameID, this.mToken, VERSION, this.mGameVersion);
@@ -19101,22 +20464,25 @@ function MatchvsEngine() {
      * @returns {number}
      */
     this.createRoom = function (createRoomInfo, userProfile) {
-        if ((this.mEngineState & ENGIN_ESTATE.STATE_HAVE_LOGIN) !== ENGIN_ESTATE.STATE_HAVE_LOGIN)
-            return -4; //未登录
-        //正在加入房间不允许创建房间
-        if ((this.mRoomLock & ENGIN_ESTATE.STATE_JOIN_ROOMING) === ENGIN_ESTATE.STATE_JOIN_ROOMING)
-            return -7;
-        //设置用户正在创建房间
-        this.mRoomLock = ENGIN_ESTATE.STATE_CREATEROOM;
+        var ret = commEngineStateCheck(this.mEngineState, this.mEngineState, 2);
+        if (ret !== 0)
+            return ret;
+        if (userProfile.length > 512)
+            return -21;
         var roomInfo = new RoomInfo(0, createRoomInfo.roomName, createRoomInfo.maxPlayer, createRoomInfo.mode, createRoomInfo.canWatch, createRoomInfo.visibility, createRoomInfo.roomProperty, 0);
         var playInfo = new PlayerInfo(this.mUserID, userProfile);
-        this.mNetWork.send(this.mProtocol.roomCreate(createRoomInfo.maxPlayer, 0, this.mGameID, roomInfo, playInfo));
+        var buf = this.mProtocol.roomCreate(createRoomInfo.maxPlayer, 0, this.mGameID, roomInfo, playInfo);
+        if (buf.byteLength > 1024 || userProfile.length > 512)
+            return -21;
+        this.mEngineState |= ENGE_STATE.CREATEROOM; //设置用户正在创建房间
+        this.mNetWork.send(buf);
         return 0;
     };
     this.getVersion = function () {
-        return "MatchVS-SDK-JS_v1.2.1.beta.20180302.0";
+        return "MatchVS-SDK-JS_v1.3.0.beta.201805016";
     };
     this.uninit = function () {
+        engine.mEngineState = ENGE_STATE.NONE;
         return 0;
     };
     /**
@@ -19124,13 +20490,12 @@ function MatchvsEngine() {
      * @param filter {MsRoomFilter}
      */
     this.getRoomList = function (filter) {
-        if ((this.mEngineState & ENGIN_ESTATE.STATE_HAVE_INIT) !== ENGIN_ESTATE.STATE_HAVE_INIT)
-            return -2; //初始化
-        if ((this.mEngineState & ENGIN_ESTATE.STATE_HAVE_LOGIN) !== ENGIN_ESTATE.STATE_HAVE_LOGIN)
-            return -4; //未登录
-        if ((this.mEngineState & ENGIN_ESTATE.STATE_JOIN_ROOMING) === ENGIN_ESTATE.STATE_JOIN_ROOMING)
-            return -7; //加入房间中
+        var ret = commEngineStateCheck(this.mEngineState, this.mEngineState, 2);
+        if (ret !== 0)
+            return ret;
         var buf = this.mProtocol.getRoomList(this.mGameID, filter);
+        if (buf.byteLength > 1024)
+            return -21;
         this.mNetWork.send(buf);
         return 0;
     };
@@ -19149,16 +20514,16 @@ function MatchvsEngine() {
      * int joinRandomRoom(int iMaxPlayer, const MsString userProfile);
      */
     this.joinRandomRoom = function (maxPlayer, userProfile) {
-        if ((this.mEngineState & ENGIN_ESTATE.STATE_HAVE_LOGIN) !== ENGIN_ESTATE.STATE_HAVE_LOGIN)
-            return -4; //未登录
-        //正在加入房间设置用户正在
-        if ((this.mRoomLock & ENGIN_ESTATE.STATE_CREATEROOM) === ENGIN_ESTATE.STATE_CREATEROOM)
-            return -1;
-        if (maxPlayer > MVSCONFIG.MAXPLAYER_LIMIT)
+        var ret = commEngineStateCheck(this.mEngineState, this.mEngineState, 2);
+        if (ret !== 0)
+            return ret;
+        if (maxPlayer > MVSCONFIG.MAXPLAYER_LIMIT || maxPlayer <= 0)
             return -20;
-        this.mRoomLock = ENGIN_ESTATE.STATE_JOIN_ROOMING;
+        if (userProfile.length > 512)
+            return -21;
         var roomJoin = new MsRoomJoin(MsEnum.JoinRoomType.joinRandomRoom, this.mUserID, 0, this.mGameID, maxPlayer, 0, 0, userProfile, [{ name: "matchvs" }]);
-        var buf = this.mProtocol.joinRoom(roomJoin);
+        var buf = this.mProtocol.joinRandomRoom(roomJoin);
+        this.mEngineState |= ENGE_STATE.JOIN_ROOMING;
         this.mNetWork.send(buf);
         return 0;
     };
@@ -19169,18 +20534,18 @@ function MatchvsEngine() {
      * @returns {number}
      */
     this.joinRoomWithProperties = function (matchinfo, userProfile) {
-        if ((this.mEngineState & ENGIN_ESTATE.STATE_HAVE_LOGIN) !== ENGIN_ESTATE.STATE_HAVE_LOGIN) {
-            return -4;
-        }
-        if ((this.mRoomLock & ENGIN_ESTATE.STATE_CREATEROOM) === ENGIN_ESTATE.STATE_CREATEROOM)
-            return 1;
-        this.mRoomLock = ENGIN_ESTATE.STATE_JOIN_ROOMING;
-        if (typeof matchinfo !== 'object')
-            return 1;
-        if (typeof userProfile !== 'string')
-            return 1;
+        var ret = commEngineStateCheck(this.mEngineState, this.mEngineState, 2);
+        if (ret !== 0)
+            return ret;
+        if (userProfile.length > 512)
+            return -21;
+        if (typeof matchinfo !== "object")
+            return -1;
+        if (typeof userProfile !== "string")
+            return -1;
         var roomJoin = new MsRoomJoin(MsEnum.JoinRoomType.joinRoomWithProperty, this.mUserID, 1, this.mGameID, matchinfo.maxPlayer, matchinfo.mode, matchinfo.canWatch, userProfile, matchinfo.tags);
         var buf = this.mProtocol.joinRoomWithProperties(roomJoin);
+        this.mEngineState |= ENGE_STATE.JOIN_ROOMING;
         this.mNetWork.send(buf);
         return 0;
     };
@@ -19191,17 +20556,17 @@ function MatchvsEngine() {
      * @returns {number}
      */
     this.joinRoom = function (roomID, userProfile) {
-        if ((this.mEngineState & ENGIN_ESTATE.STATE_HAVE_LOGIN) !== ENGIN_ESTATE.STATE_HAVE_LOGIN) {
-            return -4;
-        }
-        if ((this.mRoomLock & ENGIN_ESTATE.STATE_CREATEROOM) === ENGIN_ESTATE.STATE_CREATEROOM)
-            return 1;
-        this.mRoomLock = ENGIN_ESTATE.STATE_JOIN_ROOMING;
-        var roomId = String(roomID);
-        if (0 === roomId || roomId === " " || roomId === "")
-            return 1;
+        var ret = commEngineStateCheck(this.mEngineState, this.mEngineState, 2);
+        if (ret !== 0)
+            return ret;
+        if (!(/^[0-9]+$/.test(roomID)))
+            return -1; //判断必须是全为数字
+        var roomId = String(roomID).trim();
+        if (0 === roomId || roomId === "")
+            return -1;
         var roomJoin = new MsRoomJoin(MsEnum.JoinRoomType.joinSpecialRoom, this.mUserID, roomID, this.mGameID, 0, 0, 0, userProfile, [{ name: "MatchVS" }]);
         var buf = this.mProtocol.joinRoomSpecial(roomJoin);
+        this.mEngineState |= ENGE_STATE.JOIN_ROOMING;
         this.mNetWork.send(buf);
         return 0;
     };
@@ -19211,10 +20576,12 @@ function MatchvsEngine() {
      * @returns {number}
      */
     this.joinOver = function (cpProto) {
-        if ((this.mEngineState & ENGIN_ESTATE.STATE_IN_ROOM) !== ENGIN_ESTATE.STATE_IN_ROOM) {
-            return -5;
-        }
+        var ret = commEngineStateCheck(this.mEngineState, this.mEngineState, 1);
+        if (ret !== 0)
+            return ret;
         var buf = this.mProtocol.joinOver(this.mGameID, this.mRoomInfo.getRoomid(), stringToUtf8ByteArray(cpProto), this.mUserID);
+        if (buf.byteLength > 1024)
+            return -21;
         this.mNetWork.send(buf);
         return 0;
     };
@@ -19224,16 +20591,17 @@ function MatchvsEngine() {
      * @returns {number}
      */
     this.leaveRoom = function (cpProto) {
-        if ((this.mEngineState & ENGIN_ESTATE.STATE_IN_ROOM) !== ENGIN_ESTATE.STATE_IN_ROOM) {
-            return -5;
+        var ret = commEngineStateCheck(this.mEngineState, this.mEngineState, 3);
+        if (ret !== 0)
+            return ret;
+        var roomid = this.mRecntRoomID;
+        if (this.mRoomInfo && this.mRoomInfo.getRoomid) {
+            roomid = this.mRoomInfo.getRoomid();
         }
-        var buf = this.mProtocol.leaveRoom(this.mGameID, this.mUserID, this.mRoomInfo.getRoomid(), cpProto);
-        if (this.mHotelHeartBeatTimer != null) {
-            clearInterval(this.mHotelHeartBeatTimer);
-            this.mHotelHeartBeatTimer = null;
-            this.mEngineState &= ~ENGIN_ESTATE.STATE_IN_ROOM;
-        }
+        var buf = this.mProtocol.leaveRoom(this.mGameID, this.mUserID, roomid, cpProto);
         this.mNetWork.send(buf);
+        //设置为正在退出房间
+        this.mEngineState |= ENGE_STATE.LEAVE_ROOMING;
         if (this.mHotelNetWork) {
             this.mHotelNetWork.close();
         }
@@ -19246,10 +20614,12 @@ function MatchvsEngine() {
      * @returns {number} 0 成功，1失败
      */
     this.kickPlayer = function (userID, cpProto) {
-        if ((this.mEngineState & ENGIN_ESTATE.STATE_IN_ROOM) !== ENGIN_ESTATE.STATE_IN_ROOM) {
-            return -5;
-        }
+        var ret = commEngineStateCheck(this.mEngineState, this.mEngineState, 1);
+        if (ret !== 0)
+            return ret;
         var buf = this.mProtocol.kickPlayer(userID, this.mUserID, this.mRoomInfo.getRoomid(), cpProto);
+        if (buf.byteLength > 1024)
+            return -21;
         this.mNetWork.send(buf);
         return 0;
     };
@@ -19259,6 +20629,11 @@ function MatchvsEngine() {
      * @returns {number}
      */
     this.setFrameSync = function (frameRate) {
+        var ret = commEngineStateCheck(this.mEngineState, this.mEngineState, 1);
+        if (ret !== 0)
+            return ret;
+        if (frameRate > 20 || frameRate < 0)
+            return -20;
         var buf = this.mProtocol.setFrameSync(Number(frameRate), this.mRoomInfo.getRoomid(), this.mGameID, 0, 1);
         this.mHotelNetWork.send(buf);
         return 0;
@@ -19269,8 +20644,21 @@ function MatchvsEngine() {
      * @returns {number}
      */
     this.sendFrameEvent = function (cpProto) {
+        var ret = commEngineStateCheck(this.mEngineState, this.mEngineState, 1);
+        if (ret !== 0)
+            return ret;
+        if (cpProto.length > 1024)
+            return -21;
         var buf = this.mProtocol.sendFrameEvent(this.mRoomInfo.getRoomid(), 0, cpProto);
         this.mHotelNetWork.send(buf);
+        return 0;
+    };
+    this.joinOpen = function (cpProto) {
+        var ret = commEngineStateCheck(this.mEngineState, this.mEngineState, 1);
+        if (ret !== 0)
+            return ret;
+        var buf = this.mProtocol.joinOpen(this.mGameID, this.mUserID, this.mRoomInfo.getRoomid(), cpProto);
+        this.mNetWork.send(buf);
         return 0;
     };
 }
@@ -19410,8 +20798,9 @@ function MatchvsResponse() {
      *
      * @param int
      */
-    this.networkDelay = function (delay) {
-    };
+    // this.networkDelay = function (delay) {
+    //
+    // };
     /**
      *
      * @param notify{MsNetworkStateNotify}
@@ -19466,7 +20855,7 @@ function MatchvsResponse() {
     };
     /**
      *
-     * @param rsp
+     * @param rsp {MsGatewaySpeedResponse}
      */
     this.gatewaySpeedResponse = function (rsp) {
     };
@@ -19500,17 +20889,30 @@ function MatchvsResponse() {
      */
     this.getRoomListExResponse = function (rsp) {
     };
-}
-function MsLogoutRsp(status) {
-    this.status = status;
-}
-function MsHeartBeatResponse(gameid, gsExist) {
-    this.gameID = gameid;
-    this.gsExist = gsExist;
-}
-function gatewaySpeedResponse(Status, Seq) {
-    this.status = Status;
-    this.seq = Seq;
+    /**
+     *
+     * @param rsp {MsSetRoomPropertyRspInfo}
+     */
+    this.setRoomPropertyResponse = function (rsp) {
+    };
+    /**
+     *
+     * @param notify
+     */
+    this.setRoomPropertyNotify = function (notify) {
+    };
+    /**
+     *
+     * @param status
+     * @param roomUserInfoList
+     * @param roomInfo
+     */
+    this.reconnectResponse = function (status, roomUserInfoList, roomInfo) {
+    };
+    this.joinOpenNotify = function (rsp) {
+    };
+    this.joinOpenResponse = function (notify) {
+    };
 }
 /**
  * 注销登录
@@ -19518,29 +20920,25 @@ function gatewaySpeedResponse(Status, Seq) {
  * @returns {number}
  */
 MatchvsEngine.prototype.logout = function (cpProto) {
-    if (this.mHotelHeartBeatTimer != null) {
-        clearInterval(this.mHotelHeartBeatTimer);
-        this.mHotelHeartBeatTimer = null;
-        this.mEngineState &= ~ENGIN_ESTATE.STATE_IN_ROOM;
-    }
-    if ((this.mEngineState & ENGIN_ESTATE.STATE_HAVE_LOGIN) !== ENGIN_ESTATE.STATE_HAVE_LOGIN) {
+    if ((this.mEngineState & ENGE_STATE.HAVE_LOGIN) !== ENGE_STATE.HAVE_LOGIN)
         return -4;
+    if ((this.mEngineState & ENGE_STATE.IN_ROOM) === ENGE_STATE.IN_ROOM) {
+        this.mEngineState |= ENGE_STATE.LEAVE_ROOMING;
+        this.mHotelNetWork && this.mHotelNetWork.close();
     }
-    //设置状态为正在退出
-    this.mEngineState |= ENGIN_ESTATE.STATE_LOGOUTING;
-    var buf = this.mProtocol.logout();
+    var buf = this.mProtocol.logout(cpProto);
+    this.mEngineState |= ENGE_STATE.LOGOUTING;
     this.mNetWork.send(buf);
     return 0;
 };
 /**
  * 心跳
  */
-MatchvsEngine.prototype.heartBeat = function (Instance) {
-    Instance = M_ENGINE;
-    if (Instance.mGameID === undefined || Instance.mGameID === '' || Instance.mGameID === 0) {
+MatchvsEngine.prototype.heartBeat = function () {
+    var Instance = M_ENGINE;
+    if (Instance.mGameID === undefined || Instance.mGameID === "" || Instance.mGameID === 0) {
         return;
     }
-    console.log("heartBeat_engine" + Instance);
     var roomID;
     if (Instance.mRoomInfo === undefined) {
         roomID = 0;
@@ -19560,10 +20958,37 @@ MatchvsEngine.prototype.heartBeat = function (Instance) {
  * @data        : cp 数据
  */
 MatchvsEngine.prototype.sendEvent = function (data) {
-    if ((this.mEngineState & ENGIN_ESTATE.STATE_IN_ROOM) !== ENGIN_ESTATE.STATE_IN_ROOM) {
-        return { sequence: this.mProtocol.seq - 1, result: -5 };
-    }
-    if (typeof data !== 'string')
+    if ((this.mEngineState & ENGE_STATE.HAVE_INIT) !== ENGE_STATE.HAVE_INIT)
+        return {
+            sequence: this.mProtocol.seq - 1,
+            result: -2
+        }; //未初始化
+    if ((this.mEngineState & ENGE_STATE.HAVE_LOGIN) !== ENGE_STATE.HAVE_LOGIN)
+        return {
+            sequence: this.mProtocol.seq - 1,
+            result: -4
+        }; //未登录
+    if ((this.mEngineState & ENGE_STATE.IN_ROOM) !== ENGE_STATE.IN_ROOM)
+        return {
+            sequence: this.mProtocol.seq - 1,
+            result: -6
+        }; //没有进入房间
+    if ((this.mEngineState & ENGE_STATE.INITING) === ENGE_STATE.INITING)
+        return {
+            sequence: this.mProtocol.seq - 1,
+            result: -3
+        }; //正在初始化
+    if ((this.mEngineState & ENGE_STATE.CREATEROOM) === ENGE_STATE.CREATEROOM)
+        return {
+            sequence: this.mProtocol.seq - 1,
+            result: -7
+        }; //在创建房间
+    if ((this.mEngineState & ENGE_STATE.JOIN_ROOMING) === ENGE_STATE.JOIN_ROOMING)
+        return {
+            sequence: this.mProtocol.seq - 1,
+            result: -7
+        }; //正在加入房间
+    if (typeof data !== "string")
         return { sequence: this.mProtocol.seq - 1, result: -1 };
     var destType = 0;
     var msgType = 0;
@@ -19574,7 +20999,11 @@ MatchvsEngine.prototype.sendEvent = function (data) {
             userids[num++] = this.mAllPlayers[i];
         }
     }
+    if (userids.length > MVSCONFIG.MAXPLAYER_LIMIT)
+        return -20;
     var buf = this.mProtocol.broadCast(this.mRoomInfo.getRoomid(), userids, destType, msgType, stringToUtf8ByteArray(data));
+    if (buf.byteLength > 1024)
+        return -21;
     this.mHotelNetWork.send(buf);
     // this.mProtocol.seq-1 因为发送后会加1所以需要减1
     return { sequence: this.mProtocol.seq - 1, result: 0 };
@@ -19588,12 +21017,45 @@ MatchvsEngine.prototype.sendEvent = function (data) {
  * @returns {*}
  */
 MatchvsEngine.prototype.sendEventEx = function (msgType, data, desttype, userids) {
-    if ((this.mEngineState & ENGIN_ESTATE.STATE_IN_ROOM) !== ENGIN_ESTATE.STATE_IN_ROOM) {
-        return { sequence: this.mProtocol.seq - 1, result: -5 };
-    }
-    if (typeof data !== 'string')
-        return { sequence: this.mProtocol.seq - 1, result: 1 };
+    if ((this.mEngineState & ENGE_STATE.HAVE_INIT) !== ENGE_STATE.HAVE_INIT)
+        return {
+            sequence: this.mProtocol.seq - 1,
+            result: -2
+        }; //未初始化
+    if ((this.mEngineState & ENGE_STATE.HAVE_LOGIN) !== ENGE_STATE.HAVE_LOGIN)
+        return {
+            sequence: this.mProtocol.seq - 1,
+            result: -4
+        }; //未登录
+    if ((this.mEngineState & ENGE_STATE.IN_ROOM) !== ENGE_STATE.IN_ROOM)
+        return {
+            sequence: this.mProtocol.seq - 1,
+            result: -6
+        }; //没有进入房间
+    if ((this.mEngineState & ENGE_STATE.INITING) === ENGE_STATE.INITING)
+        return {
+            sequence: this.mProtocol.seq - 1,
+            result: -3
+        }; //正在初始化
+    if ((this.mEngineState & ENGE_STATE.CREATEROOM) === ENGE_STATE.CREATEROOM)
+        return {
+            sequence: this.mProtocol.seq - 1,
+            result: -7
+        }; //在创建房间
+    if ((this.mEngineState & ENGE_STATE.JOIN_ROOMING) === ENGE_STATE.JOIN_ROOMING)
+        return {
+            sequence: this.mProtocol.seq - 1,
+            result: -7
+        }; //正在加入房间
+    if (typeof data !== "string")
+        return { sequence: this.mProtocol.seq - 1, result: -1 };
+    if (!(msgType === 0 || msgType === 1 || msgType === 2))
+        return { sequence: this.mProtocol.seq - 1, result: -23 };
+    if (!(desttype === 0 || desttype === 1))
+        return { sequence: this.mProtocol.seq - 1, result: -24 };
     var buf = this.mProtocol.broadCast(this.mRoomInfo.getRoomid(), userids, desttype, msgType, stringToUtf8ByteArray(data));
+    if (data.length > 1024)
+        return -21;
     this.mHotelNetWork.send(buf);
     // this.mProtocol.seq-1 因为发送后会加1所以需要减1
     return { sequence: this.mProtocol.seq - 1, result: 0 };
@@ -19605,9 +21067,11 @@ MatchvsEngine.prototype.sendEventEx = function (msgType, data, desttype, userids
  * @param cancels {!Array.<string>} value  要取消的分组集合
  */
 MatchvsEngine.prototype.subscribeEventGroup = function (confirms, cancels) {
-    if ((this.mEngineState & ENGIN_ESTATE.STATE_IN_ROOM) !== ENGIN_ESTATE.STATE_IN_ROOM) {
-        return -5;
-    }
+    var ret = commEngineStateCheck(this.mEngineState, this.mEngineState, 1);
+    if (ret !== 0)
+        return ret;
+    if (confirms.length === 0 && cancels.length === 0)
+        return -20;
     var buf = this.mProtocol.subscribeEventGroup(this.mGameID, this.mRoomInfo.getRoomid(), confirms, cancels);
     this.mHotelNetWork.send(buf);
     return 0;
@@ -19617,9 +21081,13 @@ MatchvsEngine.prototype.subscribeEventGroup = function (confirms, cancels) {
  * @cpproto { !Array.<string> } value 发送的信息
  */
 MatchvsEngine.prototype.sendEventGroup = function (data, groups) {
-    if ((this.mEngineState & ENGIN_ESTATE.STATE_IN_ROOM) !== ENGIN_ESTATE.STATE_IN_ROOM) {
-        return -5;
-    }
+    var ret = commEngineStateCheck(this.mEngineState, this.mEngineState, 1);
+    if (ret !== 0)
+        return ret;
+    if (groups.length <= 0)
+        return -20;
+    if (data.length > 1024)
+        return -21;
     var priority = 1; // 要设置的消息通道优先级
     var buf = this.mProtocol.sendEventGroup(this.mGameID, this.mRoomInfo.getRoomid(), priority, groups, data);
     this.mHotelNetWork.send(buf);
@@ -19630,10 +21098,10 @@ MatchvsEngine.prototype.sendEventGroup = function (data, groups) {
  * @roomID { string } value 房间号
  * @userID { number } value  要订阅的分组集合
  */
-MatchvsEngine.prototype.hotelHeartBeat = function (_engine) {
-    console.log("hotelHeartBeat_engine" + _engine);
-    _engine = M_ENGINE;
-    this.mEngineState |= ENGIN_ESTATE.STATE_IN_ROOM;
+MatchvsEngine.prototype.hotelHeartBeat = function () {
+    var _engine = M_ENGINE;
+    this.mEngineState |= ENGE_STATE.IN_ROOM;
+    this.mEngineState |= ENGE_STATE.HAVE_LOGIN;
     var buf = _engine.mProtocol.hotelHeartBeat(_engine.mGameID, _engine.mRoomInfo.getRoomid(), _engine.mUserID);
     _engine.mHotelNetWork.send(buf);
 };
@@ -19642,9 +21110,8 @@ MatchvsEngine.prototype.hotelHeartBeat = function (_engine) {
  * @returns {number}
  */
 MatchvsEngine.prototype.registerUser = function () {
-    if ((this.mEngineState & ENGIN_ESTATE.STATE_HAVE_INIT) !== ENGIN_ESTATE.STATE_HAVE_INIT) {
-        return 1;
-    }
+    if ((this.mEngineState & ENGE_STATE.HAVE_INIT) !== ENGE_STATE.HAVE_INIT)
+        return -2; //未初始化
     var deviceid = "javascript";
     var channel = this.mChannel;
     var cacheKey = "regUserInfo" + channel + this.mPlatform;
@@ -19652,12 +21119,12 @@ MatchvsEngine.prototype.registerUser = function () {
     var cacheUserInfo = LocalStore_Load(cacheKey);
     if (cacheUserInfo) {
         var obj = JSON.parse(cacheUserInfo);
-        this.mRsp.registerUserResponse(new MsRegistRsp(obj.code, obj.data.userid, obj.data.token, obj.data.nickname, obj.data.avatar));
-        console.log("load user info from cache:" + obj);
+        this.mRsp.registerUserResponse(new MsRegistRsp(obj.status, obj.data.userid, obj.data.token, obj.data.nickname, obj.data.avatar));
+        MatchvsLog.logI("load user info from cache:" + obj);
         return 0;
     }
     var uri = "/wc3/regit.do";
-    var url = this.mConfig.REGISTER_USER_URL + uri + "?mac=0" + "&deviceid=" + deviceid + "&channel=" + channel + "&pid=13" + "&version=" + gameVersion;
+    var url = HttpConf.REGISTER_USER_URL + uri + "?mac=0" + "&deviceid=" + deviceid + "&channel=" + channel + "&pid=13" + "&version=" + gameVersion;
     var rep = new MatchvsNetWorkCallBack();
     new MatchvsHttp(rep).get(url);
     rep.rsp = this.mRsp.registerUserResponse;
@@ -19685,19 +21152,21 @@ MatchvsEngine.prototype.getHostList = function () {
     var channel = this.mChannel;
     var platform = this.mPlatform;
     var uri = "/v1/gateway/query";
-    var url = "https://sdk.matchvs.com" + uri + "?mac=0" + "&gameid=" + gameId
-        + "&channel=" + channel + "&platform=" + platform + "&useWSSProxy=1";
+    var url = "https://sdk.matchvs.com" + uri + "?mac=0" + "&gameid=" + gameId + "&channel=" + channel + "&platform=" + platform + "&useWSSProxy=1";
     var rep = new MatchvsNetWorkCallBack();
     var engine = this;
     new MatchvsHttp(rep).get(url);
     rep.onMsg = function (buf) {
         var obj = JSON.parse(buf);
         if (obj.status === 200) {
-            engine.mEngineState |= ENGIN_ESTATE.STATE_HAVE_INIT;
+            engine.mEngineState |= ENGE_STATE.HAVE_INIT;
+            engine.mEngineState &= ~ENGE_STATE.INITING;
             var http = "https://";
             var port = "";
             HttpConf.REGISTER_USER_URL = http + obj.data.vsuser;
-            HttpConf.HOST_GATWAY_ADDR = "wss://" + obj.data.wssProxy;
+            var websocket = "wss://";
+            // var wss = (obj.data.wssProxy == "192.168.8.7")?"ws://":"wss://";
+            HttpConf.HOST_GATWAY_ADDR = websocket + obj.data.wssProxy;
             HttpConf.CMSNS_URL = http + obj.data.cmsns;
             HttpConf.VS_OPEN_URL = http + obj.data.vsopen;
             HttpConf.VS_PAY_URL = http + obj.data.vspay;
@@ -19706,7 +21175,7 @@ MatchvsEngine.prototype.getHostList = function () {
         engine.mRsp.initResponse(obj.status);
     };
     rep.onErr = function (errCode, errMsg) {
-        console.error("getHostListErrCode" + errCode + "getHostListErrMsg" + errMsg);
+        console.error("getHostListErrCode" + errCode + " getHostListErrMsg" + errMsg);
         engine.mRsp.errorResponse(errCode, errMsg);
     };
     return 0;
@@ -19716,12 +21185,9 @@ MatchvsEngine.prototype.getHostList = function () {
  * @param filter {MsRoomFilterEx}
  */
 MatchvsEngine.prototype.getRoomListEx = function (filter) {
-    if ((this.mEngineState & ENGIN_ESTATE.STATE_HAVE_INIT) !== ENGIN_ESTATE.STATE_HAVE_INIT)
-        return -2; //初始化
-    if ((this.mEngineState & ENGIN_ESTATE.STATE_HAVE_LOGIN) !== ENGIN_ESTATE.STATE_HAVE_LOGIN)
-        return -4; //未登录
-    if ((this.mEngineState & ENGIN_ESTATE.STATE_JOIN_ROOMING) === ENGIN_ESTATE.STATE_JOIN_ROOMING)
-        return -7; //加入房间中
+    var ret = commEngineStateCheck(this.mEngineState, this.mEngineState, 0);
+    if (ret !== 0)
+        return ret;
     var buf = this.mProtocol.getRoomListEx(this.mGameID, filter);
     this.mNetWork.send(buf);
     return 0;
@@ -19732,15 +21198,29 @@ MatchvsEngine.prototype.getRoomListEx = function (filter) {
  * @returns {number}
  */
 MatchvsEngine.prototype.getRoomDetail = function (roomID) {
-    if ((this.mEngineState & ENGIN_ESTATE.STATE_HAVE_INIT) !== ENGIN_ESTATE.STATE_HAVE_INIT)
-        return -2; //初始化
-    if ((this.mEngineState & ENGIN_ESTATE.STATE_HAVE_LOGIN) !== ENGIN_ESTATE.STATE_HAVE_LOGIN)
-        return -4; //未登录
-    if ((this.mEngineState & ENGIN_ESTATE.STATE_JOIN_ROOMING) === ENGIN_ESTATE.STATE_JOIN_ROOMING)
-        return -7; //加入房间中
+    var ret = commEngineStateCheck(this.mEngineState, this.mEngineState, 0);
+    if (ret !== 0)
+        return ret;
     var buf = this.mProtocol.getRoomDetail(this.mGameID, roomID);
     this.mNetWork.send(buf);
     return 0;
+};
+/**
+ *
+ * @param roomID {string}
+ * @param roomProperty {Array<string>}
+ * @returns {*}
+ */
+MatchvsEngine.prototype.setRoomProperty = function (roomID, roomProperty) {
+    if (roomProperty.length === 0)
+        return -1;
+    if (roomProperty.length > 1024)
+        return -21;
+    var ret = commEngineStateCheck(this.mEngineState, this.mEngineState, 1);
+    if (ret !== 0)
+        return ret;
+    var buf = this.mProtocol.setRoomProperty(this.mGameID, this.mUserID, roomID, roomProperty);
+    this.mNetWork.send(buf);
 };
 /**
  * 断开网络连接
@@ -19762,11 +21242,11 @@ MatchvsEngine.prototype.hashSet = function (gameID, userID, key, value) {
     var httpReq = new MatchvsHttp(callback);
     //请求成功回调
     callback.onMsg = function (rsp) {
-        console.log("hashSetRsp:", rsp);
+        MatchvsLog.logI("hashSetRsp:", rsp);
     };
     //请求失败回调
     callback.onErr = function (errCode, errMsg) {
-        console.log("hashSetRsp:errCode=" + errCode + " errMsg=" + errMsg);
+        MatchvsLog.logI("hashSetRsp:errCode=" + errCode + " errMsg=" + errMsg);
     };
     //执行请求
     httpReq.get(url);
@@ -19783,11 +21263,11 @@ MatchvsEngine.prototype.hashGet = function (gameID, userID, key) {
     var httpReq = new MatchvsHttp(callback);
     //请求成功回调
     callback.onMsg = function (rsp) {
-        console.log("hashGetRsp:", rsp);
+        MatchvsLog.logI("hashGetRsp:", rsp);
     };
     //请求失败回调
     callback.onErr = function (errCode, errMsg) {
-        console.log("hashGetRsp:errCode=" + errCode + " errMsg=" + errMsg);
+        MatchvsLog.logI("hashGetRsp:errCode=" + errCode + " errMsg=" + errMsg);
     };
     //执行请求
     httpReq.get(url);
@@ -19895,3 +21375,32 @@ function Base64() {
         return string;
     };
 }
+try {
+    if (module && module.exports) {
+        module.exports = {
+            MatchvsLog: MatchvsLog,
+            MatchvsEngine: MatchvsEngine,
+            MatchvsResponse: MatchvsResponse,
+            MsMatchInfo: MsMatchInfo,
+            MsCreateRoomInfo: MsCreateRoomInfo,
+            MsRoomFilter: MsRoomFilter,
+            MsRoomFilterEx: MsRoomFilterEx,
+            LocalStore_Clear: LocalStore_Clear,
+            MsReopenRoomResponse: MsReopenRoomResponse,
+            MsReopenRoomNotify: MsReopenRoomNotify
+        };
+    }
+}
+catch (error) {
+    console.log(error);
+}
+window.MatchvsLog = MatchvsLog;
+window.MatchvsEngine = MatchvsEngine;
+window.MatchvsResponse = MatchvsResponse;
+window.MsMatchInfo = MsMatchInfo;
+window.MsCreateRoomInfo = MsCreateRoomInfo;
+window.MsRoomFilter = MsRoomFilter;
+window.MsRoomFilterEx = MsRoomFilterEx;
+window.LocalStore_Clear = LocalStore_Clear;
+window.MsReopenRoomResponse = MsReopenRoomResponse;
+window.MsReopenRoomNotify = MsReopenRoomNotify;

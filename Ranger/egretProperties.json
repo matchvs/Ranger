@@ -1,32 +1,36 @@
 {
-	"engineVersion": "5.1.5",
-	"compilerVersion": "5.1.5",
-	"target": {
-		"current": "web"
-	},
-	"template": {},
-	"modules": [
-		{
-			"name": "egret"
-		},
-		{
-			"name": "game"
-		},
-		{
-			"name": "tween"
-		},
-		{
-			"name": "socket"
-		},
-		{
-			"name": "promise"
-		},
-		{
-			"name": "res"
-		},
-		{
-			"name": "matchvs",
-			"path": "../matchvs_wx"
-		}
-	]
+  "engineVersion": "5.1.5",
+  "compilerVersion": "5.1.5",
+  "target": {
+    "current": "web"
+  },
+  "template": {},
+  "modules": [
+    {
+      "name": "egret"
+    },
+    {
+      "name": "game"
+    },
+    {
+      "name": "tween"
+    },
+    {
+      "name": "socket"
+    },
+    {
+      "name": "promise"
+    },
+    {
+      "name": "res"
+    },
+    {
+      "name": "matchvs",
+      "path": "../matchvs"
+    },
+    {
+      "name": "wxshare",
+      "path": "../wxshare"
+    }
+  ]
 }

@@ -6,7 +6,7 @@ class Main extends egret.DisplayObjectContainer {
     private _loadTimes: number = 0;
     public constructor() {
         super();
-        
+
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
 
         // 扩展资源加载模块文件解析器
@@ -26,7 +26,7 @@ class Main extends egret.DisplayObjectContainer {
             console.log(e);
         })
     }
-  
+
     private init() {
         if (GameData.initStatus === 6) {
             return;
@@ -58,13 +58,13 @@ class Main extends egret.DisplayObjectContainer {
     }
 
 
-  private async runGame() {
+    private async runGame() {
         await this.loadResource();
         LocalStore_Clear();
         Const.SCENT_WIDTH = this.stage.stageWidth;
         Const.SCENT_HEIGHT = this.stage.stageHeight;
-        console.log(" ============== Screen Size:"+Const.SCENT_WIDTH +","+ Const.SCENT_HEIGHT );
-        console.log(" ============== Display Size:"+this.stage.width+","+this.stage.height  );
+        console.log(" ============== Screen Size:" + Const.SCENT_WIDTH + "," + Const.SCENT_HEIGHT);
+        console.log(" ============== Display Size:" + this.stage.width + "," + this.stage.height);
         this.init();
         this.createGameScene();
 
