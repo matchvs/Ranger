@@ -64,9 +64,6 @@ class GameData {
     public static isInEnterView: Boolean = false;
 
     // 状态
-    public static initStatus: number = 1;
-    public static registerStatus: number = 1;
-    public static loginStatus: number = 1;
     public static createRoomStatus: number = 1;
     public static joinRandomRoomStatus: number = 1;
     public static joinRoomStatus: number = 1;
