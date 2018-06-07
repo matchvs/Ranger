@@ -6,12 +6,12 @@
 4.  修复大厅界面不能返回的问题 
 
 ### 游戏简介:
-![shotscreen-1](.\shotscreen-1.png)
-![shotscreen0](.\shotscreen0.png)
+![shotscreen-1](shotscreen-1.png)
+![shotscreen0](shotscreen0.png)
 
-![shotscreen](.\shotscreen.png)
+![shotscreen](shotscreen.png)
 
-![shotscreen1](.\shotscreen1.png)
+![shotscreen1](shotscreen1.png)
 
 
 
