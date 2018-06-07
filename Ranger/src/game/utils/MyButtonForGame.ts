@@ -17,7 +17,6 @@ class MyButtonForGame extends egret.Sprite {
 
         this.sp.addChild(this.bg);
 
-        // ???
         this.title = ResourceUtils.createBitmapByName(titleName);
         if (this.title.texture == null) {
             this.title.texture = RES.getRes(titleName);

@@ -5,19 +5,15 @@ class GameStartView extends egret.Sprite {
     private gameSoundPop: MusicView;
     private optionView: OptionView;
     private prompt: Prompt;
+    private loading: Loading;
 
     constructor() {
         super();
         this.initView();
 
         this.mvsBind();
-
-        if (Const.userId === 0) {
-            this.registerUser();
-        } else {
-            // 不需要重复登陆
-            // this.login();
-        }
+        Toast.initRes(this, "resource/assets/toast-bg.png");
+        this.loading = Loading.create(this);
     }
 
     public mvsBind() {
@@ -25,13 +21,18 @@ class GameStartView extends egret.Sprite {
         MvsManager.response.loginResponse = this.mvsLoginResponse.bind(this);
         MvsManager.response.errorResponse = this.mvsErrorResponse.bind(this);
     }
-
+    private mvsInitResponse(status: number): void {
+        console.log('response init ok', status);
+        this.registerUser();
+    }
     public mvsErrorResponse(code, errMsg) {
         console.error('mvsErrorResponse', arguments);
         if (code === 1000) {
             GameData.isServerErrorCode1000 = true;
             this.showPromptOfError("你已掉线 请刷新 重开");
         }
+        this.loading.close();
+        Toast.show("请求失败,请重试");
     }
 
     public showPromptOfError(value) {
@@ -40,31 +41,12 @@ class GameStartView extends egret.Sprite {
     }
 
     public registerUser() {
-        if (GameData.registerStatus === 2 || GameData.registerStatus === 5) {
-            console.warn('sdk registering or waiting response');
-            console.warn('GameData.registerStatus', GameData.registerStatus);
-            return;
-        }
-
-        GameData.registerStatus = 2;
-        this.mvsRegisterUser();
+        MvsManager.getInstance().registerUser();
     }
 
-    mvsRegisterUser() {
-        let result = MvsManager.getInstance().registerUser();
-        if (result === 0) {
-            GameData.registerStatus = 3;
-            console.log('sdk registerUser ok', result);
-        } else {
-            GameData.registerStatus = 4;
-            console.error('sdk registerUser error', result);
-            return;
-        }
-
-        GameData.registerStatus = 5;
-    }
 
     private initView(): void {
+        console.log("init GameStartView");
         var bg: egret.Bitmap = ResourceUtils.createBitmapByName("bgImage");
         bg.width = Const.SCENT_WIDTH;
         bg.height = Const.SCENT_HEIGHT;
@@ -74,7 +56,7 @@ class GameStartView extends egret.Sprite {
 
         this.addChild(startBtn);
         startBtn.x = Const.SCENT_WIDTH / 2 - startBtn.width / 2;
-        startBtn.y = Const.SCENT_HEIGHT - startBtn.height - Utils.wYScale() * 30;
+        startBtn.y = Const.SCENT_HEIGHT - startBtn.height - Utils.wYScale() * 50;
         startBtn.setClick(this.onStartGameHandler.bind(this));
 
         var music_btn: MyButtonForGame = new MyButtonForGame("musicBtnImage", "musicBtnImage");
@@ -97,6 +79,10 @@ class GameStartView extends egret.Sprite {
         this.prompt.visible = false;
 
 
+        var footerView: egret.Bitmap = ResourceUtils.createBitmapByName("footer_text_white_png");
+        footerView.x = Const.SCENT_WIDTH / 2 - footerView.width / 2;
+        footerView.y = Const.SCENT_HEIGHT - footerView.height - 8;
+        this.addChild(footerView);
     }
 
     private showGameSoundHandler(e: egret.TouchEvent): void {
@@ -110,47 +96,13 @@ class GameStartView extends egret.Sprite {
     }
     private showGameInfoHandler(e: egret.TouchEvent): void {
         this.removeAll();
-        // var gameInfo: GameInfoView = new GameInfoView();
-        // this.addChild(gameInfo);
     }
 
     private onStartGameHandler(): void {
-        if (GameData.isServerErrorCode1000) {
-            return;
-        }
-        // if (GameData.loginStatus === 2 || GameData.loginStatus === 5) {
-        //     // AlertPanel.i().
-        //     console.warn('please wait matchvs init');
-        //     return
-        // }
-        // else if (GameData.loginStatus === 6) {
-        //     // GameSceneView._gameScene.play();
-        //     GameSceneView._gameScene.enter();
-        //     this.removeAll();
-        // }
-        // else {
-        //     console.error('matchvs 登录状态异常');
-        //     console.error('GameData.loginStatus', GameData.loginStatus);
-        // }
-
-        if (GameData.loginStatus === 1) {
-            console.error('还未开始登录');
-        }
-        else if (GameData.loginStatus === 2 || GameData.loginStatus === 5) {
-            console.warn('please wait matchvs init');
-            console.warn('GameData.loginStatus', GameData.loginStatus);
-        }
-        else if (GameData.loginStatus === 3) {
-
-        }
-        else if (GameData.loginStatus === 4 || GameData.loginStatus === 7) {
-            console.error('登录失败');
-            console.error('GameData.loginStatus', GameData.loginStatus);
-        }
-        else if (GameData.loginStatus === 6) {
-            GameSceneView._gameScene.enter();
-            this.removeAll();
-        }
+        MvsManager.getInstance().uninit();
+        MvsManager.response.initResponse = this.mvsInitResponse.bind(this);
+        MvsManager.getInstance().init();
+        this.loading.show();
     }
 
     private onLeaveGameHandler(): void {
@@ -159,58 +111,27 @@ class GameStartView extends egret.Sprite {
     }
 
     private mvsRegisterUserResponse(data): void {
-        // test:
-        // if (data.status === 0) {
-        if (data) {
-            GameData.registerStatus = 6;
-            console.log('response register user ok', data);
-        } else {
-            GameData.registerStatus = 7;
-            console.error('response register user error', data);
-            return;
-        }
-
         Const.userId = data.id;
         Const.token = data.token;
         Const.userName = data.name;
         Const.avatarUrl = data.avatar;
-
-        this.login();
-    }
-
-    private login() {
-        if (GameData.loginStatus === 2 || GameData.loginStatus === 5) {
-            console.warn('sdk logining or waiting response');
-            console.warn('GameData.loginStatus', GameData.loginStatus);
-            return;
-        }
-
-        GameData.loginStatus = 2;
-
-        this.mvsLogin();
-    }
-
-    private mvsLogin() {
         let result = MvsManager.getInstance().login();
-        if (result === 0) {
-            GameData.loginStatus = 3;
-            console.log('sdk login ok', result);
-        } else {
-            GameData.loginStatus = 4;
-            console.error('sdk login error', result);
-            return;
-        }
+        console.log("login," + new Date());
 
-        GameData.loginStatus = 5;
     }
+
+
 
     private mvsLoginResponse(data): void {
         if (data.status === 200) {
-            GameData.loginStatus = 6;
-            console.log('response login  ok', data);
+            console.log('response login  ok' + data + new Date());
+            Toast.show("登录成功");
+            Delay.run(function () {
+                GameSceneView._gameScene.enter();
+                this.removeAll();
+            }.bind(this), 1500);
         } else {
-            GameData.loginStatus = 7;
-            console.error('response login error', data);
+            Toast.show("登录失败,服务器拒绝");
             return;
         }
         // {status: 200, roomID: "0"}

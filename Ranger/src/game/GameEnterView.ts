@@ -247,7 +247,7 @@ class GameEnterView extends egret.Sprite {
         this.addChild(this.roomView);
         this.roomView.visible = false;
 
-        this.dMask = ResourceUtils.createBitmapByName("maskImage");
+        this.dMask = ResourceUtils.createBitmapByName("mask_png");
         this.dMask.width *= Utils.wWidthScale();
         this.dMask.height *= Utils.wHeightScale();
         this.addChild(this.dMask);
@@ -431,35 +431,11 @@ class GameEnterView extends egret.Sprite {
     // }
 
     public backToStartView(): void {
-        if (GameData.isServerErrorCode1000) {
-            return;
-        }
-
-        if (GameData.isShowProfileView === true) {
-            return;
-        }
-        if (GameData.isShowJoinRoomView === true) {
-            return;
-        }
-        if (GameData.isQuickJoinBtnClick === true) {
-            return;
-        }
-        if (GameData.isCreateRoomBtnClick === true) {
-            return;
-        }
-        if (GameData.isRoomItemClick === true) {
-            return;
-        }
-        if (GameData.isJoinRoomBtn1Click === true) {
-            return;
-        }
-
         console.log('backToStartView');
-
         this.resetSomeGameData();
         GameData.isInEnterView = false;
-
         GameSceneView._gameScene.start();
+        MvsManager.getInstance().logout("");
         this.removeAll();
     }
 

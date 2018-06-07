@@ -13,49 +13,14 @@ class Main extends egret.DisplayObjectContainer {
         // http://edn.egret.com/cn/article/index/id/551
         RES.registerAnalyzer("starlingswf_sheet", starlingswf.StarlingSwfSheetAnalyzer);
 
-        MvsManager.response.initResponse = this.mvsInitResponse.bind(this);
     }
 
     private onAddToStage(event: egret.Event) {
-        // var title = "愤怒的小红帽";
-        // var content = "是时候给灰狼哥来一发了! 要来么？不要掉队哟~";
-        // var link = "http://static.egret-labs.org/h5game/62/v20/index.html";
-        // var ico = "http://static.egret-labs.org/h5game/icons/10000062.jpg";
-
         this.runGame().catch(e => {
             console.log(e);
         })
     }
 
-    private init() {
-        if (GameData.initStatus === 6) {
-            return;
-        }
-
-        if (GameData.initStatus === 2 || GameData.initStatus === 5) {
-            console.warn('sdk initing or waiting response');
-            console.warn('GameData.initStatus:', GameData.initStatus);
-            return;
-        }
-
-        GameData.initStatus = 2;
-        this.mvsInit();
-    }
-
-    private mvsInit() {
-        let result: number = MvsManager.getInstance().init();
-        if (result === 0) {
-            GameData.initStatus = 3;
-            console.log('sdk init ok', result);
-        } else {
-            GameData.initStatus = 4;
-            console.error('sdk init error', result);
-            return;
-            // TODO: 修改showErr中的逻辑
-            // AlertPanel.i().showErr("matchvs初始化失败");
-        }
-        GameData.initStatus = 5;
-    }
 
 
     private async runGame() {
@@ -65,7 +30,6 @@ class Main extends egret.DisplayObjectContainer {
         Const.SCENT_HEIGHT = this.stage.stageHeight;
         console.log(" ============== Screen Size:" + Const.SCENT_WIDTH + "," + Const.SCENT_HEIGHT);
         console.log(" ============== Display Size:" + this.stage.width + "," + this.stage.height);
-        this.init();
         this.createGameScene();
 
     }
@@ -76,10 +40,10 @@ class Main extends egret.DisplayObjectContainer {
         RES.addEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
         // 加载配置文件并解析
         await RES.loadConfig("resource/default.res.json", "resource/");
-        this.stage.removeChild(this.loadingView);
     }
 
     private onConfigComplete(event: RES.ResourceEvent): void {
+        console.log("Read Config is Complete");
         RES.removeEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
 
         RES.addEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onResourceLoadComplete, this);
@@ -88,12 +52,19 @@ class Main extends egret.DisplayObjectContainer {
 
         RES.createGroup("initLoad", ["preload", "bgPic", "animation", "sound"]);
         RES.loadGroup("initLoad");
+        console.log("Download Resource");
     }
 
     private onResourceLoadComplete(event: RES.ResourceEvent): void {
         if (event.groupName == "initLoad") {
             this.loadingView.onLoadComplete(this.onStartGame, this);
         }
+
+        RES.removeEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onResourceLoadComplete, this);
+        RES.removeEventListener(RES.ResourceEvent.GROUP_PROGRESS, this.onResourceProgress, this);
+        RES.removeEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR, this.onResourceLoadError, this);
+        console.log("remove  loadingView");
+        this.stage.removeChild(this.loadingView);
     }
 
     private onResourceProgress(event: RES.ResourceEvent): void {
@@ -113,21 +84,8 @@ class Main extends egret.DisplayObjectContainer {
         }
     }
 
-    private mvsInitResponse(status: number): void {
-        if (status === 200) {
-            GameData.initStatus = 6;
-            console.log('response init ok', status);
-        } else {
-            GameData.initStatus = 7;
-            console.error('response init error', status);
-        }
-    }
 
     private onStartGame(): void {
-        // this.stage.removeChild(this.loadingView);
-        RES.removeEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onResourceLoadComplete, this);
-        RES.removeEventListener(RES.ResourceEvent.GROUP_PROGRESS, this.onResourceProgress, this);
-        RES.removeEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR, this.onResourceLoadError, this);
 
         this.initAnimationData();
         this.createGameScene();

@@ -11,7 +11,7 @@ class MusicView extends egret.Sprite {
         var spMask: egret.Sprite = new egret.Sprite();
         this.addChild(spMask);
 
-        var mask: egret.Bitmap = ResourceUtils.createBitmapByName("maskImage");
+        var mask: egret.Bitmap = ResourceUtils.createBitmapByName("mask_png");
         spMask.addChild(mask);
         spMask.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchThis, this);
 

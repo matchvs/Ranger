@@ -16,7 +16,7 @@ class OptionView extends egret.Sprite {
     private initView(type: string): void {
         var spMask: egret.Sprite = new egret.Sprite();
         this.addChild(spMask);
-        var mask: egret.Bitmap = ResourceUtils.createBitmapByName("maskImage");
+        var mask: egret.Bitmap = ResourceUtils.createBitmapByName("mask_png");
         mask.width *= Utils.wWidthScale();
         mask.height *= Utils.wHeightScale();
 

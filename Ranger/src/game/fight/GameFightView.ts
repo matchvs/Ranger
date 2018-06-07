@@ -133,7 +133,7 @@ class GameFightView extends egret.Sprite {
     }
 
     public initLayer(): void {
-        // this.dmask = ResourceUtils.createBitmapByName("maskImage");
+        // this.dmask = ResourceUtils.createBitmapByName("mask_png");
         // this.addChild(this.dmask);
         // this.dmask.visible = false; // ???
 
