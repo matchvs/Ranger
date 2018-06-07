@@ -4,17 +4,17 @@
 2.  修复微信且后台后不能继续匹配的问题
 3.  优化帐号登录注册流程
 4.  修复大厅界面不能返回的问题 
+### 体验地址
+
+微信小游戏体验地址:
+![shotscreen-1](weixingame.jpg)
 
 ### 游戏简介:
 ![shotscreen-1](shotscreen-1.png)
 ![shotscreen0](shotscreen0.png)
 
 ![shotscreen](shotscreen.png)
-
 ![shotscreen1](shotscreen1.png)
-
-
-
 
 
 游戏中，在屏幕中的大灰狼走到游侠姐妹的弓箭准星之中时，点击对应的准星进行射击，打中大灰狼加分。
