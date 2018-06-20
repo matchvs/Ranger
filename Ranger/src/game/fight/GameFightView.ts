@@ -230,7 +230,6 @@ class GameFightView extends egret.Sprite {
 
             // 因为是add listener, 不能主动添加参数
             fightButton.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.onBegin, this);
-            fightButton.addEventListener(egret.TouchEvent.TOUCH_END, this.onEnd, this);
 
             this.uiSp.addChild(fightButton);
             fightButton.x = (i * (fightButton.width + 14) + 10) * Utils.wXScale();
@@ -517,17 +516,6 @@ class GameFightView extends egret.Sprite {
     }
 
     public mvsFrameUpdate(data) {
-        if (!GameData.isGameStart) {
-            return
-        }
-
-        // test
-        // if (GameData.gameTime >= 600) {
-        if (GameData.gameTime <= 0) {
-            // if (GameData.gameTime >= 100) {
-            GameData.isGameOver = true
-            return
-        }
 
         this.gameTime.setValue(Math.floor(GameData.gameTime / 10) + "");
         this.gameTime.x = Const.SCENT_WIDTH / 2 - this.gameTime.width / 2;
@@ -589,32 +577,23 @@ class GameFightView extends egret.Sprite {
      */
     public onBegin(e: egret.TouchEvent): void {
         e.preventDefault();
+        GameData.players.forEach(function (item) {
+            if (GameData.type === "r" && item.isDie && item.isDie === true) {
+                return;
+            }
+        });
 
-        if (GameData.type === "r" && GameData.players[0].isDie === true) {
-            return;
-        }
-        if (GameData.type === "b" && GameData.players[1].isDie === true) {
-            return;
-        }
 
         let curNum: number = <number>e.currentTarget.name;
         let curIndex: number = curNum;
 
-
-
-        // bug
-        for (let i = 0; i < 4; i++) {
-            if (i !== curNum && this.btnClickArr[i] === 1) {
-                this.btnArr[i].goPlay(0);
-            }
-        }
-
         this.btnClickArr[curNum] = 1;
 
-        this.fire(e.currentTarget);
+        this.fire(this.redGirl1, e.currentTarget);
         this.hitTestObj(curNum, curIndex);
+        (<FightButton>e.currentTarget).goPlay();
+        console.log("onbegin   1!!");
 
-        (<FightButton>e.currentTarget).goPlay(1);
     }
 
 
@@ -863,13 +842,6 @@ class GameFightView extends egret.Sprite {
                     }
                     this.reliveBtn.setValue(value);
 
-                    // 防止有按钮没有goPlay(0)
-                    for (let i = 0; i < 4; i++) {
-                        if (this.btnClickArr[i] === 1) {
-                            this.btnArr[i].goPlay(0);
-                        }
-                    }
-
                     this.showReliveBtnView();
                 }
             }
@@ -915,13 +887,6 @@ class GameFightView extends egret.Sprite {
                             value = "复活" + gold + "金币";
                         }
                         this.reliveBtn.setValue(value);
-
-                        // 防止有按钮没有goPlay(0)
-                        for (let i = 0; i < 4; i++) {
-                            if (this.btnClickArr[i] === 1) {
-                                this.btnArr[i].goPlay(0);
-                            }
-                        }
 
                         this.showReliveBtnView()
                     }
@@ -1031,55 +996,23 @@ class GameFightView extends egret.Sprite {
             this.score2.setValue(GameData.players[1].score + "");
         }
 
-
-
-
-
-        // console.error('---------------------')
-        // console.error('GameData.players', GameData.players)
-        // console.error('---------------------')
     }
 
 
-    public onEnd(e: egret.TouchEvent): void {
-        e.preventDefault();
 
-        if (GameData.type === "r" && GameData.players[0].isDie === true) {
-            return;
-        }
-        if (GameData.type === "b" && GameData.players[1].isDie === true) {
-            return;
-        }
-
-        var curNum: number = <number>e.currentTarget.name;
-
-        this.btnClickArr[curNum] = 0;
-
-        // if (curNum == this.onlockNum) return;
-        (<FightButton>e.currentTarget).goPlay(0);
-    }
-
-    public fire(btn: FightButton): void {
-        let length: number = this.bombArr.length; // 10
-        let i: number = 0;
+    public fire(src: egret.DisplayObject, dst: egret.DisplayObject): void {
 
         // 没有对象池
         // 而是固定个数10个
         // 
-        for (; i < length; i++) {
+        for (var i = 0; i < this.bombArr.length; i++) {
             if (this.bombArr[i].visible == false) {
                 this.isFire = true;
                 // 每次都重新设置原点
-                if (GameData.type === "r") {
-                    (<Bomb>this.bombArr[i]).x = Const.SCENT_WIDTH / 2 - 60 * Utils.wXScale();
-                } else if (GameData.type === "b") {
-                    (<Bomb>this.bombArr[i]).x = Const.SCENT_WIDTH / 2 + 60 * Utils.wXScale();
-                }
-                (<Bomb>this.bombArr[i]).y = 750 * Utils.wYScale();
-
-                // 中心点
-                (<Bomb>this.bombArr[i]).lastX = btn.x + this.widthPoint;
-                (<Bomb>this.bombArr[i]).lastY = btn.y + this.widthPoint;
+                (<Bomb>this.bombArr[i]).x = src.x;
+                (<Bomb>this.bombArr[i]).y = src.y - this.widthPoint;
+                (<Bomb>this.bombArr[i]).lastX = dst.x + this.widthPoint;
+                (<Bomb>this.bombArr[i]).lastY = dst.y + this.widthPoint;
 
                 (<Bomb>this.bombArr[i]).move();
                 (<Bomb>this.bombArr[i]).visible = true;
@@ -1089,19 +1022,15 @@ class GameFightView extends egret.Sprite {
     }
 
     public onFrameHandler(e: egret.Event): void {
-        if (!GameData.isGameStart) {
-            return
+        if (GameData.gameTime <= 0) {
+            GameData.gameStatus = GameData.GAME_STATUS_OVER;
+            return;
         }
-
-        if (GameData.isGameStart && GameData.isGameOver) {
+        if (GameData.gameStatus === GameData.GAME_STATUS_OVER) {
             SoundUtils.instance().stopBg();
-
             this.shouldGameOver()
-            return
+            return;
         }
-
-
-
         if (this.streakWin == 0) {
             this.streakWinNum.visible = false;
         } else {

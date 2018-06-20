@@ -20,7 +20,7 @@ class GameData {
     public static isShowRandomMatchView: Boolean = false;
 
     // room
-    public static isAddRobot: Boolean = false;
+    public static isAddRobot: Boolean = true;
 
     public static isOwner: Boolean = false;
     public static ownerId: Number = 0;
@@ -51,7 +51,7 @@ class GameData {
     public static winValue: number = 0;
 
     // public static type: string = ""; // r b
-    public static type: string = ""; // r b
+    public static type: string = "r"; // r b
 
     // 刚进入游戏时
     // public static isGameStartClickOption: Boolean = false;
@@ -79,7 +79,11 @@ class GameData {
     // public static isJoinOver: Boolean = false;
 
     // 状态 用于状态标识 
-    public static isGameStart: Boolean = false;
+    public static GAME_STATUS_PLAY: Number = 5;
+    public static GAME_STATUS_OVER: Number = 6;
+    public static GAME_STATUS_PLAY_DEAD: Number = 7;
+    public static gameStatus: Number = GameData.GAME_STATUS_PLAY;
+    
     public static isGameOver: Boolean = false;
     // public static isPause: Boolean = true;
     public static isWin: Boolean = false;

@@ -11,7 +11,10 @@ class FightButton extends egret.Sprite {
         this.button.gotoAndStop(0);
     }
 
-    public goPlay(num: number): void {
-        this.button.gotoAndStop(num);
+    public goPlay(): void {
+        this.button.gotoAndStop(1);
+        setTimeout(function(){
+            this.button.gotoAndStop(0);
+        }.bind(this),200);
     }
 }
