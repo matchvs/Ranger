@@ -29,16 +29,11 @@ class GameFightView extends egret.Sprite {
     public timeBoo: number = 0;
     public timeBooRobot: number = 0;
 
-    // enemy
-    public oneEnemyArr: Array<Enemy> = [];
-    public twoEnemyArr: Array<Enemy> = [];
-    public threeEnemyArr: Array<Enemy> = [];
-    public fourEnemyArr: Array<Enemy> = [];
-    public static allArr: Array<any> = [];
+    //保存所有敌人的数组,二维数组
+    public allEnemyArr: Array<Array<Enemy>> = [[], [], [], []];
 
     // fight button
-    public btnArr: Array<FightButton> = [];
-    public btnClickArr: Array<any> = [];
+    public fightButtonArr: Array<FightButton> = [];
     public isFire: Boolean = false;
     public btnY: number = 0;
     public widthPoint: number = 0;
@@ -79,11 +74,7 @@ class GameFightView extends egret.Sprite {
             this.timeBooRobot = -30 * Utils.wYScale();
         }
 
-        GameFightView.allArr = [this.oneEnemyArr, this.twoEnemyArr, this.threeEnemyArr, this.fourEnemyArr];
 
-        // bug
-        // TOUCH_BEGIN TOUCH_END
-        this.btnClickArr = [0, 0, 0, 0];
 
         this.initView();
         this.initLayer();
@@ -241,7 +232,7 @@ class GameFightView extends egret.Sprite {
             // this.widthPoint 半
             this.widthPoint = fightButton.width / 2;
             this.btnY = fightButton.y + this.widthPoint * 2;
-            this.btnArr.push(fightButton);
+            this.fightButtonArr.push(fightButton);
         }
 
         /**
@@ -372,7 +363,9 @@ class GameFightView extends egret.Sprite {
         let result = MvsManager.getInstance().sendFrameEvent(data);
         if (result === 0) {
         } else {
-            console.error('sendFrameEvent WILL_INIT_ENEMY_EVENT error', result)
+            this.mvsFrameUpdate(data);
+            console.error('sendFrameEvent WILL_INIT_ENEMY_EVENT error', result);
+
         }
 
         // for test
@@ -414,7 +407,9 @@ class GameFightView extends egret.Sprite {
         }
     }
 
-
+    /**
+     * 生成一个敌人
+     */
     public initEnemy(data) {
         let name = data.name;
         let nameArr = name.split("_");
@@ -423,44 +418,23 @@ class GameFightView extends egret.Sprite {
         var enemy: Enemy = new Enemy(type);
         enemy.scaleX = 1 * Utils.wXScale();
         enemy.scaleY = 1 * Utils.wYScale();
-
         this.enemySp.addChild(enemy);
 
         let row_n = Number(row);
-
         enemy.row = row_n;
-        enemy.x = this.btnArr[row_n].x + this.widthPoint;
+        enemy.x = this.fightButtonArr[row_n].x + this.widthPoint;
         enemy.y = 0;
         enemy.type = type;
 
         enemy.name = name;
-        this.pushEnemy(row_n, enemy)
-    }
+        // console.log("initEnemy [" + name + "] (x" + enemy.x + " y:" + enemy.y + " wh:" + enemy.width + "," + enemy.height);
 
-    public pushEnemy(row: number, enemy: Enemy): void {
-        if (row === 0) {
-            this.oneEnemyArr.push(enemy);
-        }
-        else if (row === 1) {
-            this.twoEnemyArr.push(enemy);
-        }
-        else if (row == 2) {
-            this.threeEnemyArr.push(enemy);
-        }
-        else if (row == 3) {
-            this.fourEnemyArr.push(enemy);
-        }
+        this.allEnemyArr[row].push(enemy);
     }
-
     public enemiesMoveOrStop() {
-        if (!GameData.isGameStart || GameData.isGameOver) {
-            return
+        for (var i = 0; i < this.allEnemyArr.length; i++) {
+            this.enemyMoveOrStop(this.allEnemyArr[i]);
         }
-
-        this.enemyMoveOrStop(this.oneEnemyArr);
-        this.enemyMoveOrStop(this.twoEnemyArr);
-        this.enemyMoveOrStop(this.threeEnemyArr);
-        this.enemyMoveOrStop(this.fourEnemyArr);
     }
 
     public enemyMoveOrStop(arr: Array<Enemy>): void {
@@ -478,7 +452,7 @@ class GameFightView extends egret.Sprite {
             // x
             if ((<Enemy>arr[i - 1]).x < -(<Enemy>arr[i - 1]).width ||
                 (<Enemy>arr[i - 1]).x > (<Enemy>arr[i - 1]).width / 2 + Const.SCENT_WIDTH) {
-
+                    console.log("over "+(<Enemy>arr[i - 1]).x);
                 (<Enemy>arr[i - 1]).over = true;
             }
 
@@ -523,7 +497,7 @@ class GameFightView extends egret.Sprite {
         GameData.gameTime--;
         // console.log('GameData.gameTime', GameData.gameTime)
 
-        let items = data.frameItems;
+        let items = data.frameItems ? data.frameItems : [{ "cpProto": data }];
         for (let i = 0; i < items.length; i++) {
             let jsonItems = JSON.parse(items[i].cpProto);
             let event = jsonItems.event;
@@ -553,8 +527,7 @@ class GameFightView extends egret.Sprite {
 
         }
 
-        // update enemies status
-        this.enemiesMoveOrStop();
+       
     }
 
     // public tickTock() {
@@ -584,42 +557,37 @@ class GameFightView extends egret.Sprite {
         });
 
 
-        let curNum: number = <number>e.currentTarget.name;
-        let curIndex: number = curNum;
-
-        this.btnClickArr[curNum] = 1;
-
         this.fire(this.redGirl1, e.currentTarget);
-        this.hitTestObj(curNum, curIndex);
+        this.colliderCheck(e.currentTarget);
         (<FightButton>e.currentTarget).goPlay();
         console.log("onbegin   1!!");
 
     }
 
-
-    public hitTestObj(num: number, index: number): void {
-        let arr: Array<any> = GameFightView.allArr[index];
-        let btn: FightButton = <FightButton>this.btnArr[num];
-
-        let length: number = arr.length;
-
-        let i: number = 0;
-
-        for (; i < length; i++) {
-            // die
-            // stopMove
-            // over
-
-            if ((<Enemy>arr[i]).y < btn.y) continue;
-
-            if ((<Enemy>arr[i]).y <= btn.y + this.widthPoint * 2) {
-                this.bTitTest(btn, <Enemy>arr[i], arr, index)
-                break;
+    /**
+     * 碰撞检测
+     * @src 触发碰撞检查的源头
+     */
+    private colliderCheck(src: egret.DisplayObject): void {
+        let enemyOnOneRoad: Array<any> = this.allEnemyArr[Number(src.name)];
+        for (var i = 0; i < enemyOnOneRoad.length; i++) {
+            var e = enemyOnOneRoad[i];
+            if (src.hitTestPoint(e.x, e.y + e.height / 3)) {
+                console.error(" hit!! s:" + src.x + "," + src.y + "  d:" + e.x + "," + e.y);
+                this.boardcastColliderEvent(e.name,e.type,i, 30, 1);
+                break;//one tap one check
             }
+
         }
     }
+    /**
+     *  die
+     *  stopMove
+     *  over
+     */
+    private bTitTest(b: egret.DisplayObject, e: Enemy, arr: Array<any> = [], index: number): void {
 
-    public bTitTest(b: FightButton, e: Enemy, arr: Array<any> = [], index: number): void {
+        //碰撞检测
         let eY: number = e.y;
         let bY: number = b.y - this.widthPoint / 2;
         // b.y - this.widthPoint / 2 + this.widthPoint * 2 + this.widthPoint
@@ -630,28 +598,26 @@ class GameFightView extends egret.Sprite {
 
         if (eY >= bY) {
             if (eY < circle) {
-
-
                 if (GameData.type === type) {
                     // this.hitFun(name, type, index, 30);
 
                     if (eY >= (circle - this.widthPoint * 1.2) && eY < (circle - this.widthPoint * 0.8)) {
                         // this.hitFun(e, 1, arr, index);
-                        this.hitFun(name, type, index, 30, 1);
+                        this.boardcastColliderEvent(name, type, index, 30, 1);
                     }
                     else if (eY >= circle - this.widthPoint * 1.6 && eY < circle - this.widthPoint * 1.2 || eY >= circle - this.widthPoint * 0.8 && eY < circle - this.widthPoint * 0.4) {
                         // this.hitFun(e, 1, arr, index);
-                        this.hitFun(name, type, index, 30, 1);
+                        this.boardcastColliderEvent(name, type, index, 30, 1);
                     }
                     // eY >= circle - this.widthPoint * 2 && eY < circle - this.widthPoint * 1.6
                     // eY >= circle - this.widthPoint * 0.4 && eY < circle + this.widthPoint * 0.2
                     else if (eY >= circle - this.widthPoint * 2 && eY < circle - this.widthPoint * 1.6 || eY >= circle - this.widthPoint * 0.4 && eY < circle + this.widthPoint * 0.2) {
                         // this.hitFun(e, 2, arr, index);
-                        this.hitFun(name, type, index, 30, 2);
+                        this.boardcastColliderEvent(name, type, index, 30, 2);
                     }
                     else {
                         // this.hitFun(e, 2, arr, index);
-                        this.hitFun(name, type, index, 30, 2);
+                        this.boardcastColliderEvent(name, type, index, 30, 2);
                     }
 
                 } else {
@@ -664,7 +630,6 @@ class GameFightView extends egret.Sprite {
             else {
                 this.streakWin = 0;
             }
-
         }
     }
 
@@ -681,7 +646,8 @@ class GameFightView extends egret.Sprite {
         let result = MvsManager.getInstance().sendFrameEvent(data);
         if (result === 0) {
         } else {
-            console.error('sendFrameEvent MISS_FUN_EVENT error', result)
+            // console.error('sendFrameEvent MISS_FUN_EVENT error', result);
+            this.mvsFrameUpdate(data);    
         }
     }
 
@@ -699,11 +665,10 @@ class GameFightView extends egret.Sprite {
             console.error('sendFrameEvent accHitFun error', result)
         }
     }
-
-    public hitFun(name: string, type: string, index: number, score: number, rank: number) {
-
-
-        // let type = 
+    /**
+     * 广播碰撞事件
+     */
+    public boardcastColliderEvent(name: string, type: string, index: number, score: number, rank: number) {
         let data = JSON.stringify({
             event: Const.HIT_FUN_EVENT,
             name: name,
@@ -716,41 +681,16 @@ class GameFightView extends egret.Sprite {
         let result = MvsManager.getInstance().sendFrameEvent(data);
         if (result === 0) {
         } else {
-            console.error('sendFrameEvent HIT_FUN_EVEN error', result)
+            console.error('sendFrameEvent HIT_FUN_EVEN error', result);
+            this.mvsFrameUpdate(data);
         }
-
-        // for test
-        // this.hitOver(JSON.parse(data))
-
-        // if (GameData.isAddRobot) {
-        //     if (Math.random() > 0.5) {
-        //         setTimeout(() => {
-        //             let data = JSON.stringify({
-        //                 event: Const.HIT_FUN_EVENT,
-        //                 // name: name.replace('r','b'),
-        //                 type: 'b',
-        //                 index: index,
-        //                 score: score,
-        //                 rank: rank
-        //             })
-
-        //             let result = MvsManager.getInstance().sendFrameEvent(data);
-        //             if (result === 0) {
-        //             } else {
-        //                 console.error('sendFrameEvent HIT_FUN_EVEN error', result)
-        //             }
-        //         }, 1500);
-        //     } else {
-
-        //     }
-        // }
     }
 
     public missOver(data) {
         let name = data.name;
         let type = data.type;
         let index = data.index;
-        let arr = GameFightView.allArr[index];
+        let arr = this.allEnemyArr[index];
         let enemy;
 
         let i: number = 0;
@@ -800,28 +740,29 @@ class GameFightView extends egret.Sprite {
     public changeBlood(data, action) {
         if (action === Const.DROP_ACTION) {
             let type = data.type;
-            this.dropBlood(type);
+            this.dropBlood(GameData.getPlayer(type),type);
         }
         else if (action === Const.RELIVE_ACTION) {
             let type = data.type;
-            this.relive(type);
+            this.relive(GameData.getPlayer(type),type);
         }
     }
 
-    public dropBlood(type: string): void {
+    public dropBlood(player,type: string): void {
         if (type === "r" && GameData.players[0].blood > 0) {
             if (GameData.type === type) {
                 this.shanBoo = true
 
                 this.shan.visible = true;
                 this.shan.alpha = 1;
+                //TODO 添加掉血动画
                 egret.Tween.get(this.shan).to({ "alpha": 0, "visible": false }, 300).call(function () {
                     this.shanBoo = false
                 }, this);
             }
 
             GameData.players[0].blood--;
-            this.blodBar1.scaleBlodX()
+            this.blodBar1.scaleBlodX(player.blood ,GameData.MAX_BLOOD);
 
             // TODO: 修改UI
             if (GameData.players[0].blood <= 0) {
@@ -859,7 +800,7 @@ class GameFightView extends egret.Sprite {
             }
 
             GameData.players[1].blood--;
-            this.blodBar2.scaleBlodX()
+            this.blodBar1.scaleBlodX(player.blood ,GameData.MAX_BLOOD);
 
             if (GameData.players[1].blood <= 0) {
                 GameData.players[1].blood = 0
@@ -912,19 +853,19 @@ class GameFightView extends egret.Sprite {
     public hideReliveBtnView() {
         this.reliveBtn.visible = false;
     }
-
-    public relive(type: string): void {
+    /**复活 */
+    public relive(player,type: string): void {
         if (type === "r" && GameData.players[0].blood === 0) {
-            GameData.players[0].blood = 5
+            GameData.players[0].blood =  GameData.MAX_BLOOD;
             GameData.players[0].isDie = false
 
-            this.blodBar1.scaleBlodX()
+           this.blodBar1.scaleBlodX(player.blood ,GameData.MAX_BLOOD);
         }
         else if (type === "b" && GameData.players[1].blood === 0) {
-            GameData.players[1].blood = 5
+            GameData.players[1].blood =  GameData.MAX_BLOOD;
             GameData.players[1].isDie = false
 
-            this.blodBar2.scaleBlodX()
+            this.blodBar1.scaleBlodX(player.blood ,GameData.MAX_BLOOD);
         }
     }
 
@@ -952,26 +893,37 @@ class GameFightView extends egret.Sprite {
         let index = data.index;
         let rank = data.rank;
         let score = Number(data.score);
-        let arr = GameFightView.allArr[index];
-        let enemy;
+        let arr = this.allEnemyArr[index];
 
         let i: number = 0;
         let n: number = arr.length;
         for (; i < n; i++) {
             if (arr[i].name == name) {
+                let enemy:Enemy;
                 enemy = arr[i];
-                break;
+                if (enemy.die) {
+                    return;
+                } else {
+                    // 加分
+                    if (enemy.type === "r") {
+                        GameData.players[0].score += score;
+                        this.score1.setValue(GameData.players[0].score + "");
+                    }
+                    else if (enemy.type === "b") {
+                        GameData.players[1].score += score;
+                        this.score2.setValue(GameData.players[1].score + "");
+                    }
+                    enemy.gotoDie();
+                    enemy.stopMove = true;
+                    enemy.die = true;
+                    break;
+                }
+
             }
         }
 
         // 不可重复
-        if (enemy.die) {
-            return;
-        }
 
-        enemy.gotoDie();
-        enemy.stopMove = true;
-        enemy.die = true;
 
         if (GameData.type === type) {
             GameData.langNum++;
@@ -984,16 +936,6 @@ class GameFightView extends egret.Sprite {
             } else if (rank === 2) {
                 this.popProm("pop2");
             }
-        }
-
-        // 加分
-        if (enemy.type === "r") {
-            GameData.players[0].score += score;
-            this.score1.setValue(GameData.players[0].score + "");
-        }
-        else if (enemy.type === "b") {
-            GameData.players[1].score += score;
-            this.score2.setValue(GameData.players[1].score + "");
         }
 
     }
@@ -1053,7 +995,7 @@ class GameFightView extends egret.Sprite {
                 this.willInitEnemyByRobot();
             }
         }
-        // this.enemiesMoveOrStop();
+        this.enemiesMoveOrStop();
     }
 
     public dispose(): void {

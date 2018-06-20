@@ -88,7 +88,8 @@ class Main extends egret.DisplayObjectContainer {
     private onStartGame(): void {
 
         this.initAnimationData();
-        this.createGameScene();
+        // this.createGameScene();
+        this.addChild(new GameFightView());
     }
 
     private initAnimationData(): void {

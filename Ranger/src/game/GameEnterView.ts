@@ -594,7 +594,7 @@ class GameEnterView extends egret.Sprite {
                 userName: Const.userName,
                 type: "r",
                 score: 0,
-                blood: 5,
+                blood: GameData.MAX_BLOOD,
                 isDie: false
             }
             GameData.type = "r";
@@ -720,7 +720,7 @@ class GameEnterView extends egret.Sprite {
                     userName: Const.userName,
                     type: "r",
                     score: 0,
-                    blood: 5,
+                    blood: GameData.MAX_BLOOD,
                     isDie: false
                 }
 
@@ -740,7 +740,7 @@ class GameEnterView extends egret.Sprite {
                     userName: userInfoList[0].userProfile,
                     type: "r",
                     score: 0,
-                    blood: 5,
+                    blood: GameData.MAX_BLOOD,
                     isDie: false
                 }
 
@@ -750,7 +750,7 @@ class GameEnterView extends egret.Sprite {
                     userName: Const.userName,
                     type: 'b',
                     score: 0,
-                    blood: 5,
+                    blood: GameData.MAX_BLOOD,
                     isDie: false
                 }
 
@@ -774,7 +774,7 @@ class GameEnterView extends egret.Sprite {
                     userName: userInfoList[0].userProfile,
                     type: "r",
                     score: 0,
-                    blood: 5,
+                    blood: GameData.MAX_BLOOD,
                     isDie: false
                 }
 
@@ -784,7 +784,7 @@ class GameEnterView extends egret.Sprite {
                     userName: Const.userName,
                     type: 'b',
                     score: 0,
-                    blood: 5,
+                    blood: GameData.MAX_BLOOD,
                     isDie: false
                 }
 
@@ -821,7 +821,7 @@ class GameEnterView extends egret.Sprite {
                     userName: userInfo.userProfile,
                     type: 'b',
                     score: 0,
-                    blood: 5,
+                    blood: GameData.MAX_BLOOD,
                     isDie: false
                 }
             }
@@ -853,7 +853,7 @@ class GameEnterView extends egret.Sprite {
                     userName: userInfo.userProfile,
                     type: 'b',
                     score: 0,
-                    blood: 5,
+                    blood: GameData.MAX_BLOOD,
                     isDie: false
                 }
 

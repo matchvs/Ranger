@@ -20,29 +20,30 @@ class GameData {
     public static isShowRandomMatchView: Boolean = false;
 
     // room
-    public static isAddRobot: Boolean = true;
+    public static isAddRobot: Boolean = false;
 
     public static isOwner: Boolean = false;
     public static ownerId: Number = 0;
+    public static MAX_BLOOD: Number = 100;
     public static lastRoomId: string = "";
     public static roomId: string = "";
     public static players: Array<any> = [
-        // {
-        //     userId: 1,
-        //     userName: '我的名字',
-        //     type: 'r', // red
-        //     score: 0,
-        //     blood: 5,
-        //     isDie: 0, // false, 1 true
-        // },
-        // {
-        //     userId: 2,
-        //     userName: '你的名字',
-        //     type: 'b', // blue
-        //     score: 0,
-        //     blood: 5,
-        //     isDie: 0
-        // }
+        {
+            userId: 1,
+            userName: '我的名字',
+            type: 'r', // red
+            score: 0,
+            blood: GameData.MAX_BLOOD,
+            isDie: 0, // false, 1 true
+        },
+        {
+            userId: 2,
+            userName: '你的名字',
+            type: 'b', // blue
+            score: 0,
+            blood: GameData.MAX_BLOOD,
+            isDie: 0
+        }
     ];
 
     // 成长数据
@@ -106,7 +107,7 @@ class GameData {
     public static bgSpeed: number = 3;
     // public static enemySpeed: number = 6;
     public static enemySpeed: number = 36;
-    public static createEnemyTime: number = 60; // 渲染帧, 30帧的时间
+    public static createEnemyTime: number = 30; 
     // public static stopCreateEnemy: number = 0;
     // public static stopEnemyBoo: Boolean = false;
     // public static count: number = 0;
@@ -142,4 +143,7 @@ class GameData {
 
     // server error
     public static isServerErrorCode1000: Boolean = false
+    public static getPlayer(type:string){
+        return GameData.players[type === "r"?0:1];
+    }
 }

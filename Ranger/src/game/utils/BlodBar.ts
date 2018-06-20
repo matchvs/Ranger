@@ -47,9 +47,9 @@ class BlodBar extends egret.Sprite {
         blodBar.mask = this.r;
     }
 
-    public scaleBlodX(): void {
-        let blood = this.type === "r" ? GameData.players[0].blood : GameData.players[1].blood
-        this.r.x = -(this.w - this.w * (blood / 5));
+    public scaleBlodX(blood:any,max:any): void {
+
+        this.r.x = -(this.w - this.w * (blood / max));
         this.blodBar.mask = this.r
     }
 }
