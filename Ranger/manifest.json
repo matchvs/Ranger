@@ -15,6 +15,7 @@
 		"bin-debug/starlingswf/SwfFrameInfo.js",
 		"bin-debug/starlingswf/display/SwfMovieClip.js",
 		"bin-debug/game/utils/MyButtonForGame.js",
+		"bin-debug/game/utils/Hinder.js",
 		"bin-debug/game/utils/JoinRoomView.js",
 		"bin-debug/game/utils/MusicView.js",
 		"bin-debug/game/utils/MyButton.js",
@@ -38,7 +39,6 @@
 		"bin-debug/game/utils/Bomb.js",
 		"bin-debug/game/utils/Enemy.js",
 		"bin-debug/game/utils/FightButton.js",
-		"bin-debug/game/utils/GoldView.js",
 		"bin-debug/starlingswf/SwfAnimationInfo.js",
 		"bin-debug/Const.js",
 		"bin-debug/game/utils/ProfileView.js",
@@ -66,6 +66,6 @@
 		"bin-debug/Loading.js",
 		"bin-debug/starlingswf/game/StarlingSwfFactory.js",
 		"bin-debug/starlingswf/game/StarlingSwfMovieClip.js",
-		"bin-debug/game/utils/Hinder.js"
+		"bin-debug/game/utils/GoldView.js"
 	]
 }

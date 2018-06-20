@@ -336,20 +336,13 @@ class GameEnterView extends egret.Sprite {
             console.error('response getRoomList error', status, roomInfo);
             return;
         }
-
         if (GameData.isInRoomView === true) {
             return;
         }
-
         // 防止回调延迟,导致异常
-        if (GameData.isGameStart === true) {
+        if (GameData.gameStatus === GameData.GAME_STATUS_OVER) {
             return;
         }
-        // TODO: 游戏界面也是
-        // return
-
-
-        // console.log("roomInfo", roomInfo);
         this.roomList.freshRoomItem(roomInfo);
     }
 
@@ -1133,7 +1126,6 @@ class GameEnterView extends egret.Sprite {
         GameData.kickPlayerStatus = 1;
         GameData.setFrameStatus = 1;
 
-        GameData.isGameStart = false;
         GameData.isGameOver = false;
         GameData.isWin = false;
     }

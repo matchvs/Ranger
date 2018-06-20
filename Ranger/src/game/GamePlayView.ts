@@ -86,8 +86,6 @@ class GamePlayView extends egret.Sprite {
 
     // public showGame(index: number): void {
     public showGame(): void {
-        // GameData.isGameStartClickOption = true;
-        GameData.isGameStart = false;
 
         this.sp.removeChildren();
 
@@ -160,10 +158,7 @@ class GamePlayView extends egret.Sprite {
     }
 
     private showOptionView(): void {
-        // if (GameData.isGameStartClickOption) {
         this.optionView.visible = true;
-        // GameData.isPause = true;
-        // }
     }
     private complete1(): void {
         this.ready.goToPlay("2");
@@ -171,8 +166,6 @@ class GamePlayView extends egret.Sprite {
         egret.setTimeout(this.complete2.bind(this), this, 300);
     }
     private complete2(): void {
-        // GameData.isGameStartClickOption = true;
-        GameData.isGameStart = true;
         // GameData.isPause = false;
         SoundUtils.instance().playBg();
         // this.target.redGirl.run();
@@ -259,7 +252,6 @@ class GamePlayView extends egret.Sprite {
         GameData.kickPlayerStatus = 1;
         GameData.setFrameStatus = 1;
 
-        GameData.isGameStart = false;
         GameData.isGameOver = false;
         GameData.isWin = false;
 

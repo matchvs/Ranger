@@ -210,9 +210,6 @@ class OptionView extends egret.Sprite {
     }
     private closePop(e: egret.TouchEvent): void {
         this.visible = false;
-        // if (GameData.isGameStart) {
-        //     GameData.isPause = false;
-        // }
     }
 
     private leaveRoom() {

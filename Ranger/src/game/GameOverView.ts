@@ -224,7 +224,6 @@ class GameOverView extends egret.Sprite {
         GameData.kickPlayerStatus = 1;
         GameData.setFrameStatus = 1;
 
-        GameData.isGameStart = false;
         GameData.isGameOver = false;
         GameData.isWin = false;
 

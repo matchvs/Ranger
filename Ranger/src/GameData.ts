@@ -54,9 +54,6 @@ class GameData {
     // public static type: string = ""; // r b
     public static type: string = "r"; // r b
 
-    // 刚进入游戏时
-    // public static isGameStartClickOption: Boolean = false;
-
     // 游戏中
     public static curScene: number = 1;
     public static gameTime: number = 600; // 帧数

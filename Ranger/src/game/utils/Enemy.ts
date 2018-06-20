@@ -1,5 +1,6 @@
 class Enemy extends egret.Sprite {
     public row: number = 0;
+    public id: number = 0;
 
     // r. 红
     // b. 蓝
@@ -122,5 +123,12 @@ class Enemy extends egret.Sprite {
 
     public dispose(): void {
         this.removeChildren();
+    }
+    public static create(): any {
+        let type = GameData.type;
+        let row = Math.floor(Math.random() * 4);
+        let num = ++GameData.enemyNum;
+        let name = type + "_" + row + "_" + num;
+        return {"name":name,"id":num,"row":row};
     }
 }
