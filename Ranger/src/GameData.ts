@@ -13,7 +13,7 @@ class GameData {
     public static isRoomItemClick: Boolean = false;
     public static isLeaveRoomBtnClick: Boolean = false;
     public static isLeaveRoomBtn2Click: Boolean = false;
-    
+
 
     public static isShowProfileView: Boolean = false;
     public static isShowJoinRoomView: Boolean = false;
@@ -23,8 +23,9 @@ class GameData {
     public static isAddRobot: Boolean = false;
 
     public static isOwner: Boolean = false;
-    public static ownerId: Number = 0;
-    public static MAX_BLOOD: Number = 100;
+    public static ownerId: number = 0;
+    public static MAX_BLOOD: number = 100;
+    public static BASE_SCORE: number = 10;
     public static lastRoomId: string = "";
     public static roomId: string = "";
     public static players: Array<any> = [
@@ -51,12 +52,12 @@ class GameData {
     public static allValue: number = 0;
     public static winValue: number = 0;
 
-    // public static type: string = ""; // r b
-    public static type: string = "r"; // r b
+    public static type: string = "b"; // r b
+    // public static type: string = "r"; // r b
 
     // 游戏中
     public static curScene: number = 1;
-    public static gameTime: number = 600; // 帧数
+    public static gameTime: number = 60*60; // 帧数
 
     public static isInRoomView: Boolean = false;
     public static isInEnterView: Boolean = false;
@@ -77,70 +78,36 @@ class GameData {
     // public static isJoinOver: Boolean = false;
 
     // 状态 用于状态标识 
-    public static GAME_STATUS_PLAY: Number = 5;
-    public static GAME_STATUS_OVER: Number = 6;
-    public static GAME_STATUS_PLAY_DEAD: Number = 7;
-    public static gameStatus: Number = GameData.GAME_STATUS_PLAY;
-    
+    public static GAME_STATUS_PLAY: number = 5;
+    public static GAME_STATUS_SINGLE: number = -1;
+    public static GAME_STATUS_OVER: number = 6;
+    public static GAME_STATUS_PLAY_DEAD: number = 7;
+    public static gameStatus: number = GameData.GAME_STATUS_SINGLE;
+
     public static isGameOver: Boolean = false;
-    // public static isPause: Boolean = true;
     public static isWin: Boolean = false;
-
-
     public static enemyNum: number = 0; // forName
-
-    // public static sheDie: Boolean = false;
-    // public static score: number = 0;
-    // public static blod: number = 5;
 
     public static closeMusic: Boolean = false;
     public static closeBgMusic: Boolean = false;
-
     public static isClickBtn: Boolean = false;
 
-    // public static num: Array<any> = ["1", "0", ".", "0", ".", "4", ".", "1", "8", "0", ":", "3", "0", "0", "0"];
-    // public static redGirlDistance: number = 0;
 
     public static bgSpeed: number = 3;
-    // public static enemySpeed: number = 6;
     public static enemySpeed: number = 36;
-    public static createEnemyTime: number = 30; 
-    // public static stopCreateEnemy: number = 0;
-    // public static stopEnemyBoo: Boolean = false;
-    // public static count: number = 0;
+    public static createEnemyTime: number = 30;
 
     public static profectNum: number = 0;
 
     /**
      * 杀的怪数量
      */
-    public static langNum: number = 0
-    // public static huliNum: number = 0
-    // public static bianfuNum: number = 0
-
-    // public static dazhaoTime: number = 50;
-
-
-    // public static dubleSorce: Boolean = false;
-    // public static curTimeNum: number = 0;
-    // public static sheTimeNum: number = 0;
-
-    // GameData.curScene = 1;
-    // GameData.score = 0;
-    // GameData.langNum = 0;
-    // GameData.huliNum = 0;
-    // GameData.bianfuNum = 0;
-    // GameData.isPause = true;
-    // GameData.count = 0;
-    // GameData.profectNum = 0;
-    // GameData.stopCreateEnemy = 0;
-    // GameData.redGirlDistance = 0;
-    // GameData.blod = 5;
+    public static langNum: number = 0;
 
 
     // server error
     public static isServerErrorCode1000: Boolean = false
-    public static getPlayer(type:string){
-        return GameData.players[type === "r"?0:1];
+    public static getPlayer(type: string) {
+        return GameData.players[type === "r" ? 0 : 1];
     }
 }

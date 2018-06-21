@@ -6,9 +6,18 @@ class Enemy extends egret.Sprite {
     // b. 蓝
     public type: string;
     public name: string = "";
-
+    ///
+    /**
+     * 是否是被杀死且没死透
+     */
     public over: Boolean = false;
+    /**
+     * 是否躲避逃生
+     */
     public guo: Boolean = false;
+    /**
+     * 是否已经死亡
+     */
     public die: Boolean = false;
 
     public stopMove: Boolean = false;

@@ -31,6 +31,8 @@ class Const {
     public static GAME_WILL_PLAY_EVENT: string = "game_will_play_event";
     public static RELIVE_EVENT: string = "relive_event";
 
+    public static NEXT_STEP_EVENT: string = "next_step_event";
+
     public static ADD_ACTION: string = "add_action";
     public static DROP_ACTION: string = "drop_action";
     public static RELIVE_ACTION: string = "relive_action";
