@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<e:Skin class="LoginButton" states="up,down,disabled" minHeight="50" minWidth="100" currentState="up"
+        xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+    <e:Image width="121" height="100%" scale9Grid="1,3,8,8" alpha.disabled="0.5" source="button_up_png"
+             source.down="button_down_png" anchorOffsetX="0" includeIn="up,down,disabled" />
+    <e:Label id="labelDisplay" top="8" bottom="8" left="8" right="8" size="32" textColor="0xFFFFFF"
+             verticalAlign="middle" textAlign="center" fontFamily="Microsoft YaHei" text="" includeIn="up,down,disabled" />
+    <e:Image id="iconDisplay" horizontalCenter="0" verticalCenter="0" includeIn="up,down,disabled" source="" />
+    <e:Image id="src" width="43.67" height="40.8" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="2.5"
+             verticalCenter="-3.5" includeIn="up,down,disabled" fillMode="scale" source="0" />
+</e:Skin>

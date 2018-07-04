@@ -4,14 +4,6 @@
  */
 type ResourceManagerConfig = {
     /**
-     * 配置文件生成路径
-     */
-    configPath: string,
-    /**
-     * 资源根目录路径
-     */
-    resourceRoot: () => string,
-    /**
      * 构建与发布配置
      */
     buildConfig: (param: BuildConfigParam) => UserConfig,
@@ -70,6 +62,36 @@ type BuildConfigParam = {
      * 项目路径
      */
     readonly projectRoot: string;
+
+    /**
+     * 项目配置
+     */
+    readonly projectConfig: ProjectConfig;
+}
+
+type ProjectConfig = {
+    entryClassName: string;
+    orientation: string;
+    frameRate: number;
+    scaleMode: string;
+    contentWidth: number;
+    contentHeight: number;
+    showFPS: boolean;
+    fpsStyles: string;
+    showLog: boolean;
+    maxTouches: number;
+}
+/**
+   * 匹配机制，将满足 from 的文件输出为 to 格式的文件
+   * from 采用 glob 表达式 , to 包含 [path][name][hash][ext]四个变量
+   * 示例：{ from:"resource/**.*" , to:"[path][name]_[hash].[ext]" }
+   */
+type Matcher = {
+
+    from: string,
+
+    to: string
+
 }
 
 
@@ -85,7 +107,17 @@ declare namespace plugins {
         /**
          * 构建配置
          */
-        buildConfig: BuildConfigParam
+        buildConfig: BuildConfigParam;
+
+        /** 
+         * 项目绝对路径
+         */
+        projectRoot: string;
+
+        /** 
+         * 项目输出绝对路径
+         */
+        outputDir: string;
 
     }
 
@@ -198,7 +230,7 @@ declare module 'built-in' {
 
     type LibraryType = "debug" | "release";
 
-    type CompilePluginOptions = { libraryType: LibraryType };
+    type CompilePluginOptions = { libraryType: LibraryType, defines?: any };
     /**
      * 编译命令
      */
@@ -223,8 +255,9 @@ declare module 'built-in' {
      * * contents : 将 EXML 的内容写入到主题文件中
      * * gjs : 将生成的JS文件写入到主题文件中
      * * commonjs : 将EXML合并为一个 CommonJS 风格的文件
+     * * commonjs2 : 将EXML合并为一个含有解析方法和皮肤定义的文件，且皮肤抽离为一份配置
      */
-    type EXML_Publish_Policy = "default" | "debug" | "contents" | "gjs" | "commonjs"
+    type EXML_Publish_Policy = "default" | "debug" | "contents" | "gjs" | "commonjs" | "commonjs2"
 
 
 
@@ -244,7 +277,12 @@ declare module 'built-in' {
 
         output: string,
 
-        hash?: "crc32"
+        hash?: "crc32",
+
+        /**
+         * 是否输出转换过程
+         */
+        verbose?: boolean
 
 
     }
@@ -273,6 +311,20 @@ declare module 'built-in' {
 
     }
 
+    export type ConvertResourceConfigPluginOption = {
+
+        resourceConfigFiles: { filename: string, root: string }[];
+
+        nameSelector: (url: string) => string
+
+
+    }
+
+    export class ConvertResConfigFilePlugin implements plugins.Command {
+
+        constructor(options: ConvertResourceConfigPluginOption);
+    }
+
 
     /**
      * 增量编译
@@ -290,6 +342,74 @@ declare module 'built-in' {
 
         constructor();
 
+    }
+
+    type CleanPluginOptions = {
+
+        matchers: string[]
+    }
+
+
+    export class CleanPlugin implements plugins.Command {
+        constructor(options: CleanPluginOptions);
+    }
+
+
+    type RenamePluginOptions = {
+
+        /**
+         * 是否输出日志
+         */
+        verbose?: boolean
+
+        /**
+         * 采用何种 hash 算法，目前暂时只支持 crc32
+         */
+        hash?: "crc32"
+
+
+        /**
+         * 设置匹配规则，将指定文件进行改名
+         * 该参数是个数组，允许设置多个匹配规则
+         */
+        matchers: Matcher[]
+    }
+
+
+    /**
+     * 修改文件名插件
+     */
+    export class RenamePlugin implements plugins.Command {
+        constructor(options: RenamePluginOptions);
+    }
+
+    type ResSplitPluginOptions = {
+
+        /**
+         * 是否输出日志
+         */
+        verbose?: boolean
+
+        /**
+         * 设置匹配规则，将指定文件拷贝至其他文件夹
+         * 该参数是个数组，允许设置多个匹配规则
+         */
+        matchers: Matcher[]
+    }
+
+    export class ResSplitPlugin implements plugins.Command {
+        constructor(options: ResSplitPluginOptions);
+    }
+
+
+    type ZipPluginOptions = {
+
+        mergeSelector: (p: string) => string
+    }
+
+    export class ZipPlugin implements plugins.Command {
+
+        constructor(option: ZipPluginOptions);
     }
 
 }

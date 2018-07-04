@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="EnemySkin" width="120" height="120" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:tween="egret.tween.*" >
+	<w:Declarations>
+		<tween:TweenGroup id="run">
+			<tween:TweenItem target="{image}">
+				<tween:Set/>
+			</tween:TweenItem>
+		</tween:TweenGroup>
+	</w:Declarations>
+	<w:Config id="1643b8386fa" ></w:Config>
+	<e:Image id="image" width="100%" height="100%" x="0" y="0" source="img_honglang-sc/honglangzou001"/>
+</e:Skin>

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<e:Skin class="ImageButtonSkin" states="up,down,disabled" minHeight="50" minWidth="100" currentState="up"
+        xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+    <e:Image width="316" height="100%" alpha.disabled="0.5"
+             source.down="button_down_png" anchorOffsetX="0" includeIn="up,down,disabled"  source="btn_relive_png" horizontalCenter="0" verticalCenter="0" scale9Grid="22,23,125,3"/>
+    <e:Label id="labelDisplay" size="32" textColor="0xFFFFFF"
+             verticalAlign="middle" textAlign="center" fontFamily="Microsoft YaHei" text="" includeIn="up,down,disabled"  horizontalCenter="0.5" width="316" height="100%" verticalCenter="-5"/>
+    <e:Image id="iconDisplay" horizontalCenter="0.5" verticalCenter="0.5" includeIn="up,down,disabled" source=""  anchorOffsetY="-1" width="316" height="100%"/>
+    
+    <e:Image id="src" width="316" height="100%" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0.5"
+             verticalCenter="-4.5" includeIn="up,down,disabled" source="handle_png" fillMode="clip" />
+</e:Skin>

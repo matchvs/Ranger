@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="skins.AnimationSkin" width="480" height="800" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing" xmlns:tween="egret.tween.*" xmlns:ns1="*">
+	<e:Image id="bg" left="0" right="0" top="0" bottom="0" source="load_bg_png" />
+	<e:Button id="music" label="" x="408" y="726.67" width="60" height="56">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="music_btn_png" />
+				<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" />
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Button id="login" label="" x="134.5" y="661.34" width="211" height="68">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="start_btn_png" />
+				<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" />
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Image width="270" height="32" x="105" y="754.67" source="footer_text_white_png" />
+	<e:Image id="help" width="60" height="56" x="408" y="661.34" anchorOffsetX="0" anchorOffsetY="0" source="help_btn_png"/>
+</e:Skin>

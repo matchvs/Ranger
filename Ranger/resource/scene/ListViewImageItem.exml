@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ListViewImageItemSkin" width="360.33" height="99" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing">
+	<w:Config id="1645f403c86"></w:Config>
+	<e:Group anchorOffsetX="0" width="360" anchorOffsetY="0" height="100">
+		<e:Image width="70" height="70" x="11.67" y="13.5" source="avatar_png"  anchorOffsetX="0" anchorOffsetY="0"/>
+		<e:Label id="labelDisplay" text="1654197896855162911" size="22" textAlign="center"  horizontalCenter="43.5" verticalCenter="-23"/>
+		<e:Image width="354" height="1" x="3" y="0.6" anchorOffsetX="0" anchorOffsetY="0" source="track_sb_png" fillMode="repeat"/>
+		<e:Image id="joinroombyid" width="120" height="40" x="223.31" y="44.14" anchorOffsetX="0" anchorOffsetY="0" source="btn_joinRoom2_png"/>
+	</e:Group>
+</e:Skin>
+
+

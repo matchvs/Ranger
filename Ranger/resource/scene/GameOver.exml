@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GameOverSkin" width="480" height="800" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing">
+	<w:Config id="164442b3597"></w:Config>
+	<e:Image width="480" height="800" x="0" y="0" anchorOffsetX="0" anchorOffsetY="0" source="mask_png" touchEnabled="false"/>
+	<e:Image width="400" height="556" source="overBg_png" anchorOffsetX="0" horizontalCenter="0" verticalCenter="0" />
+	<e:Button id="leave" label="" x="134.5" y="590.67">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="btn_leaveRoom_png" />
+				<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" />
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Image x="98.5" y="460" width="102.85" height="27.82" source ="img_pre_1" anchorOffsetX="0" anchorOffsetY="0"/>
+	<e:Image x="97.17" y="428.19" width="72.19" height="27.82" anchorOffsetX="0" anchorOffsetY="0" source="combo_png"/>
+	<e:Image x="98.5" y="490" width="60" height="30" source ="img_good_1"/>
+	<e:Image x="98.5" y="522" width="60" height="30" source ="img_miss_1"/>
+	<e:Image width="130" height="44" x="175" y="326" anchorOffsetX="0" anchorOffsetY="0" source="icon_win_png" />
+	<e:Label id="score" text="999" x="319.83" y="394.81" fontFamily="KaiTi" size="30" italic="true"
+	         bold="true" width="85.34" height="30"  anchorOffsetX="0" anchorOffsetY="0" textColor="0x000000"/>
+	<e:Label id="perfect" text="999" x="318.5" y="457.34" fontFamily="KaiTi" size="30" italic="true" bold="true"
+	         textColor="0x0078d6" />
+	<e:Label id="comob" text="999" x="320.67" y="427.34" fontFamily="KaiTi" size="30" italic="true" bold="true" textColor="0xc1c1c1"/>
+	<e:Label id="good" text="999" x="318.5" y="488.67" fontFamily="KaiTi" size="30" italic="true" bold="true"
+	         textColor="0x6bb402" />
+	<e:Label id="miss" text="999" x="318.5" y="520.67" fontFamily="KaiTi" size="30" italic="true" bold="true"
+	         textColor="0xff0327" />
+</e:Skin>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin width="480" height="800" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing"
+        xmlns:tween="egret.tween.*">
+    <w:Config id="1631fb6b00e"></w:Config>
+    <e:Group id="bg1" width="480" height="1640" x="0" y="0">
+        <e:Image width="480" height="1640" x="0" y="0" scaleX="1" scaleY="1" source="fight1Bg_png" />
+        <e:Image width="108" height="1636" x="0" y="0" source="wall1_1_png" />
+        <e:Image width="108" height="1636" x="368" y="-2" source="wall1_2_png" />
+    </e:Group>
+    <e:Group id="bg0" width="480" height="1640" x="0" y="-1640">
+        <e:Image width="480" height="1640" x="0" y="0" scaleX="1" scaleY="1" source="fight1Bg_png" />
+        <e:Image width="108" height="1636" x="0" y="0" source="wall1_1_png" />
+        <e:Image width="108" height="1636" x="368" y="-2" source="wall1_2_png" />
+    </e:Group>
+	<e:Group id="fight" width="480" height="800" x="0" y="0" touchEnabled="false" touchChildren="true" touchThrough="false">
+
+
+		<e:Group width="120" height="309" x="0" y="490" anchorOffsetX="0" anchorOffsetY="0">
+		<e:Image id="btnfight0bg" width="100" height="309" source="btnfight1" scaleX="1" scaleY="1" anchorOffsetX="0" verticalCenter="0" horizontalCenter="1.5"/>
+		<e:Button id="btnfight0" width="100" height="100" x="12" y="0" anchorOffsetX="0" anchorOffsetY="0">
+			<e:skinName>
+			<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="btnfight3" source.down="btnfight2"/>
+				<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+			</e:skinName>
+		</e:Button>
+		</e:Group>
+		<e:Group width="120" height="309" x="120" y="490" anchorOffsetX="0" anchorOffsetY="0">
+		<e:Image id="btnfight1bg" width="100" height="309" source="btnfight1" scaleX="1" scaleY="1" anchorOffsetX="0" verticalCenter="0" horizontalCenter="1.5"/>
+		<e:Button id="btnfight1" width="100" height="100" x="12" y="0" anchorOffsetX="0" anchorOffsetY="0">
+			<e:skinName>
+			<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="btnfight3" source.down="btnfight2"/>
+				<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+			</e:skinName>
+		</e:Button>
+		</e:Group>
+		<e:Group width="120" height="309" x="240" y="490" anchorOffsetX="0" anchorOffsetY="0">
+		<e:Image id="btnfight2bg" width="100" height="309" source="btnfight1" scaleX="1" scaleY="1" anchorOffsetX="0" verticalCenter="0" horizontalCenter="1.5"/>
+		<e:Button id="btnfight2" width="100" height="100" x="12" y="0" anchorOffsetX="0" anchorOffsetY="0">
+			<e:skinName>
+			<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="btnfight3" source.down="btnfight2"/>
+				<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+			</e:skinName>
+		</e:Button>
+		</e:Group>
+		<e:Group width="120" height="309" x="360" y="490" anchorOffsetX="0" anchorOffsetY="0">
+		<e:Image id="btnfight3bg" width="100" height="309" source="btnfight1" scaleX="1" scaleY="1" anchorOffsetX="0" verticalCenter="0" horizontalCenter="1.5"/>
+		<e:Button id="btnfight3" width="100" height="100" x="12" y="0" anchorOffsetX="0" anchorOffsetY="0">
+			<e:skinName>
+			<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="btnfight3" source.down="btnfight2"/>
+				<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+			</e:skinName>
+		</e:Button>
+		</e:Group>
+		<e:Image id="blue" width="120" height="120" x="240" y="640" source="img_xiaolanmao-sc/xiaolanmao001" touchEnabled="false"/>
+		<e:Image id="red" width="120" height="120" x="120" y="640" source="img_xiaohongmao-sc/xiaohongmao001" touchEnabled="false"/>
+	</e:Group>
+	<e:Image id="shan" width="480" height="800" x="0" y="0" source="shan_png" touchEnabled="false" visible="false"/>
+	<e:Group id="ui" width="480" height="800" x="0" y="0" touchEnabled="false" touchThrough="true" touchChildren="true">
+		<e:Group id="bloodbar1" width="170" height="29" x="10" y="61" scaleX="1" scaleY="1" anchorOffsetX="0" anchorOffsetY="0">
+		<e:Image width="167" height="30" y="0" source="rBlodBarBg_png" anchorOffsetY="0" id="null1"/>
+		<e:Image width="132" height="17" y="6.5" source="rBlodBar_png" anchorOffsetY="0" id="full1" x="31.02"/>
+		<e:Group id="score1" width="120" height="28" y="-33" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" x="33">
+			<e:Image id="score11000" width="30" height="28" source="number-02" scaleX="1" scaleY="1" x="0" y="0"/>
+			<e:Image id="score10100" width="30" height="28" source="number-02" scaleX="1" scaleY="1" x="30" y="0"/>
+			<e:Image id="score10010" width="30" height="28" source="number-09" scaleX="1" scaleY="1" x="60" y="0"/>
+			<e:Image id="score10001" width="30" height="28" source="number-09" scaleX="1" scaleY="1" x="90" y="0"/>
+		</e:Group>
+		</e:Group>
+		<e:Group id="bloodbar2" width="170" height="29" x="298" y="61" scaleX="1" scaleY="1" anchorOffsetX="0" anchorOffsetY="0">
+		<e:Image id="null2" width="167" height="30" y="0" anchorOffsetY="0" source="bBlodBarBg_png" left="0"/>
+		<e:Image id="full2" width="132" height="14" anchorOffsetY="0" source="bBlodBar_png" x="32" y="7"/>
+
+		</e:Group>
+		<e:Group id="timer" width="120" height="48" x="177.34" y="48" anchorOffsetX="0" anchorOffsetY="0">
+		<e:Image id="time100" width="40" height="100%" x="0" y="0" source="number-02" scaleX="1" scaleY="1"/>
+		<e:Image id="time010" width="40" height="100%" x="40" y="0" source="number-02" scaleX="1" scaleY="1"/>
+		<e:Image id="time001" width="40" height="100%" x="80" y="0" scaleX="1" scaleY="1" source="number-02"/>
+		</e:Group>
+		<e:Button id="relive" width="168" height="54" horizontalCenter="0" verticalCenter="0" label="复活10金币" visible="false">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_relive_png"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" borderColor="0xfcfcfc" strokeColor="0xa06b1b" textColor="0xffffff" stroke="2" size="24"/>
+			</e:Skin>
+		</e:skinName>
+		</e:Button>
+		<e:Image id="back" width="71" height="38" x="394" y="106.5" source="btn_back_png" anchorOffsetX="0" anchorOffsetY="0"/>
+		<e:Image width="137" height="40" x="10.69" y="111.99" source="bg_list_png"/>
+		<e:Image width="30" height="30" x="15.58" y="116.99" source="gold_png"/>
+		<e:Label id="gold" text="10" x="27.77" y="119.5" textColor="0xfaab1c" anchorOffsetX="0" width="76.42" anchorOffsetY="0" height="26.97" bold="true" textAlign="center" size="26" touchEnabled="false" fontFamily="KaiTi"/>
+		<e:Image id="arrow" width="24" height="24" x="165.67" y="607" source="arrow_png"/>
+		<e:Group id="score2" width="120" height="28" y="29" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" x="339">
+			<e:Image id="score21000" width="30" height="28" source="number-02" scaleX="1" scaleY="1" y="0" x="0"/>
+			<e:Image id="score20100" width="30" height="28" source="number-02" scaleX="1" scaleY="1" x="30" y="0"/>
+			<e:Image id="score20010" width="30" height="28" source="number-09" scaleX="1" scaleY="1" x="60" y="0"/>
+			<e:Image id="score20001" width="30" height="28" source="number-09" scaleX="1" scaleY="1" x="90" y="0"/>
+		</e:Group>
+		<e:Label id="ping" text="ping:0" x="4" y="4" textColor="0xff0707" fontFamily="KaiTi" size="18"/>
+	</e:Group>
+	<e:Group width="480" height="800" x="0" y="0" id="tips" anchorOffsetX="0" anchorOffsetY="0" visible="false">
+		<e:Image width="480" height="800" x="0" y="0" source="mask_png"/>
+		<e:Group id="step1" width="200" height="200" x="17" y="150" scaleX="1" scaleY="1">
+			<e:Image width="20" height="20" x="58.67" y="122.33" source="arrow_png" rotation="178.74" scaleX="1" scaleY="1"/>
+			<e:Image width="105.33" height="98.67" x="1.01" y="0.83" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" source="img_honglang-sc/honglangzou001" rotation="359.36"/>
+			<e:Label text="注意只能射击对应的颜色" x="18.34" y="134.5" size="24"/>
+		</e:Group>
+		<e:Group id="step2" width="200" height="289" x="18" y="413" anchorOffsetY="0" visible="false">
+			<e:Image width="93" height="93" x="-3.08" y="80.5" source="btnfight3"/>
+			<e:Image width="20" height="24" x="53.22" y="213.46" source="arrow_png" anchorOffsetX="0.11" anchorOffsetY="-2" rotation="182.01"/>
+			<e:Label text=" 在这里射击对应颜色的怪物,不要让他们通过" x="9" y="231.5" size="20"/>
+		</e:Group>
+		<e:Group id="step3" width="372.33" height="513.67" x="-12.91" y="24.03" anchorOffsetX="-13.25" anchorOffsetY="4.06" visible="false">
+
+
+			<e:Image width="21.97" height="18.95" x="75.64" y="94.82" source="arrow_png" rotation="179.49" anchorOffsetX="0" anchorOffsetY="0"/>
+			<e:Label text="漏打或打错会扣血,死亡后可以用金币复活" x="26.66" y="103.02" size="18"/>
+			<e:Image width="167" height="30" y="39.03" source="rBlodBarBg_png" anchorOffsetY="0" id="null0" x="8.16" scaleX="1" scaleY="1"/>
+			<e:Image width="132" height="17" y="45.03" source="rBlodBar_png" anchorOffsetY="0" id="full0" x="40.02" scaleX="1" scaleY="1"/>
+		</e:Group>
+		<e:Group id="step4" width="417" height="373" x="18" y="396" anchorOffsetX="0" anchorOffsetY="0" visible="false">
+			<e:Image width="120" height="120" x="100" y="246" source="img_xiaohongmao-sc/xiaohongmao001"/>
+			<e:Image width="120" height="120" x="220" y="246" source="img_xiaolanmao-sc/xiaolanmao001"/>
+			<e:Image width="20" height="20" x="148.75" y="203" source="arrow_png"/>
+			<e:Image width="20" height="20" x="267.34" y="202" source="arrow_png"/>
+			<e:Label text="与你的对手开始比赛把,看谁能笑到最后!" x="70.84" y="139.67" size="18"/>
+		</e:Group>
+	</e:Group>
+
+
+</e:Skin>

@@ -1,9 +1,34 @@
+//////////////////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (c) 2014-present, Egret Technology.
+//  All rights reserved.
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions are met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above copyright
+//       notice, this list of conditions and the following disclaimer in the
+//       documentation and/or other materials provided with the distribution.
+//     * Neither the name of the Egret nor the
+//       names of its contributors may be used to endorse or promote products
+//       derived from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY EGRET AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
+//  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+//  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+//  IN NO EVENT SHALL EGRET AND CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+//  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;LOSS OF USE, DATA,
+//  OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+//  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+//  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+//  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+//////////////////////////////////////////////////////////////////////////////////////
 class Main extends egret.DisplayObjectContainer {
 
-    private loadingView: LoadingUI;
-    private _scene: GameSceneView;
-    private swfFrame: any;
-    private _loadTimes: number = 0;
+    public root: egret.DisplayObjectContainer;
     public constructor() {
         super();
 
@@ -11,27 +36,59 @@ class Main extends egret.DisplayObjectContainer {
 
         // 扩展资源加载模块文件解析器
         // http://edn.egret.com/cn/article/index/id/551
-        RES.registerAnalyzer("starlingswf_sheet", starlingswf.StarlingSwfSheetAnalyzer);
+        // RES.registerAnalyzer("starlingswf_sheet", starlingswf.StarlingSwfSheetAnalyzer);
+
+        //https://github.com/egret-labs/resourcemanager/blob/master/docs/README.md#processor
+        
+        RES.processor.map("starlingswf_sheet", new starlingswf.StarlingSwfSheetAnalyzer());
+
+
+    }
+    private onAddToStage(event: egret.Event) {
+
+        egret.lifecycle.addLifecycleListener((context) => {
+            context.onUpdate = () => {
+                // console.log("update");
+            }
+        })
+        egret.lifecycle.onPause = () => {
+            // egret.ticker.pause();
+            console.log('[INFO] [lifecycle] onPause');
+        }
+
+        egret.lifecycle.onResume = () => {
+            // egret.ticker.resume();
+            console.log('[INFO] [lifecycle] onResume');
+        }
+
+        this.runGame();
 
     }
 
-    private onAddToStage(event: egret.Event) {
-        this.runGame().catch(e => {
-            console.log(e);
+    private loadTheme() {
+        let assetAdapter = new AssetAdapter();
+        egret.registerImplementation("eui.IAssetAdapter", assetAdapter);
+        egret.registerImplementation("eui.IThemeAdapter", new ThemeAdapter());
+        return new Promise((resolve, reject) => {
+            // load skin theme configuration file, you can manually modify the file. And replace the default skin.
+            //加载皮肤主题配置文件,可以手动修改这个文件。替换默认皮肤。
+            let theme = new eui.Theme("resource/default.thm.json", this.stage);
+            theme.addEventListener(eui.UIEvent.COMPLETE, () => {
+                resolve();
+            }, this);
+
         })
     }
+
+
+    private loadingView: LoadingUI;
+    private swfFrame: any;
+    private _loadTimes: number = 0;
 
 
 
     private async runGame() {
         await this.loadResource();
-        LocalStore_Clear();
-        Const.SCENT_WIDTH = this.stage.stageWidth;
-        Const.SCENT_HEIGHT = this.stage.stageHeight;
-        console.log(" ============== Screen Size:" + Const.SCENT_WIDTH + "," + Const.SCENT_HEIGHT);
-        console.log(" ============== Display Size:" + this.stage.width + "," + this.stage.height);
-        this.createGameScene();
-
     }
 
     private async loadResource() {
@@ -50,13 +107,14 @@ class Main extends egret.DisplayObjectContainer {
         RES.addEventListener(RES.ResourceEvent.GROUP_PROGRESS, this.onResourceProgress, this);
         RES.addEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR, this.onResourceLoadError, this);
 
-        RES.createGroup("initLoad", ["preload", "bgPic", "animation", "sound"]);
-        RES.loadGroup("initLoad");
+        // RES.createGroup("initLoad", ["preload", "bgPic", "animation", "sound"]);
+        RES.loadGroup("preload");
         console.log("Download Resource");
     }
 
     private onResourceLoadComplete(event: RES.ResourceEvent): void {
-        if (event.groupName == "initLoad") {
+        if (event.groupName == "preload") {
+            console.log("LoadResource is Complete !");
             this.loadingView.onLoadComplete(this.onStartGame, this);
         }
 
@@ -68,8 +126,8 @@ class Main extends egret.DisplayObjectContainer {
     }
 
     private onResourceProgress(event: RES.ResourceEvent): void {
-        if (event.groupName == "initLoad") {
-            this.loadingView.setProgress(event.itemsLoaded, event.itemsTotal);
+        if (event.groupName == "preload") {
+            this.loadingView.onProgress(event.itemsLoaded, event.itemsTotal);
         }
     }
 
@@ -77,7 +135,7 @@ class Main extends egret.DisplayObjectContainer {
         this._loadTimes++;
 
         if (this._loadTimes > 3) {
-            AlertPanel.i().showErr("网络异常，请重新进入游戏");
+            Toast.show("网络异常，请重新进入游戏");
         }
         else {
             RES.loadGroup(e.groupName);
@@ -86,36 +144,50 @@ class Main extends egret.DisplayObjectContainer {
 
 
     private onStartGame(): void {
+        LocalStore_Clear();
+        SoundUtils.instance().initSound();
+        this.loadTheme();
 
+        Toast.initRes(this, "resource/loading/toast-bg.png");
+
+        var rootView = new egret.Sprite();
+        rootView.width = this.stage.width;
+        rootView.height = this.stage.height;
+        rootView.x = 0;
+        rootView.y = 0;
+        this.addChild(rootView);
+
+        SceneManager.init(rootView);
         this.initAnimationData();
-        // this.createGameScene();
-        this.addChild(new GameFightView());
+
+        NetWorkUtil.instance.addEventListener(this);
+
+        this.createGameScene();
     }
 
     private initAnimationData(): void {
-        var arr: Array<string> = ["redNu", "promptPop", "honglang", "lanlang", "go", "xiaohongmao", "xiaolanmao"];
+        var arr: Array<string> = ["promptPop", "honglang", "lanlang", "go", "xiaohongmao", "xiaolanmao"];
         for (var i: number = 0, len = arr.length; i < len; i++) {
             var key: string = arr[i];
-            StarlingSwfFactory.getInstance().addSwf(key, RES.getRes(key + "_swf"), RES.getRes(key));
+            StarlingSwfFactory.getInstance().addSwf(key, RES.getRes(key + "_swf_json"), RES.getRes(key + "_json"));
         }
     }
 
-    private createGameScene(): void {
-        Const.GamePoxY = 0;
-        GameData.curScene = 1;
 
-        var maskRect: egret.Rectangle = new egret.Rectangle();
-        maskRect.width = Const.SCENT_WIDTH;
-        maskRect.height = Const.SCENT_HEIGHT;
-        maskRect.y = Const.GamePoxY;
+    /**
+     * 创建场景界面
+     * Create scene interface
+     */
+    protected createGameScene(): void {
+        SceneManager.showScene(Login);
+        // SceneManager.showScene(Game);
+    }
 
-        SoundUtils.instance().initSound();
 
-        this._scene = new GameSceneView();
-        this._scene.y = Const.GamePoxY;
-        this._scene.width = Const.SCENT_WIDTH;
-        this._scene.height = Const.SCENT_HEIGHT;
-        this._scene.mask = maskRect;
-        this.addChild(this._scene);
+    public onEvent(event: number) {
+        while (SceneManager.back());
+        this.createGameScene();
+        Toast.show("Server Exception,code:" + event);
     }
 }
+//wxbbc70b17d96358cb wx APPID

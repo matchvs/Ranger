@@ -1,430 +1,555 @@
 {
 	"groups": [
 		{
-			"keys": "bgImage,musicBtnImage,startBtnImage,helpBtnImage,bombImage,wall1_1Image,wall1_2Image,fight1BgImage,streakNum,sourceNum,sorceMcImage,comboImage,profileBg_png,btn_modify_png,inputBg_png,btn_joinRoom2_png,roomBg_png,btn_kickPlayer_png,btn_leaveRoom_png,btn_backToHome_png,icon_lose_png,icon_win_png,btn_relive_png,bg_list_png,btn_startGame_png,btn_addRobot_png,arrow_png,logo_png,footer_text_white_png,toast-bg_png",
+			"keys": "checkbox_select_disabled_png,checkbox_select_down_png,checkbox_select_up_png,checkbox_unselect_png,selected_png,border_png,header_png,radiobutton_select_disabled_png,radiobutton_select_down_png,radiobutton_select_up_png,radiobutton_unselect_png,roundthumb_png,thumb_png,track_png,tracklight_png,handle_png,off_png,on_png,button_down_png,button_up_png,thumb_pb_png,track_pb_png,track_sb_png,description_json,toast-bg_png,timefont_json,loadingprogress_png,go_json,go_swf_json,honglang_json,honglang_swf_json,lanlang_json,lanlang_swf_json,sourceNum_json,streakNum_json,promptPop_json,promptPop_swf_json,OneTwoThree_mp3,sound_behit_mp3,sound_gameover_mp3,sound_go_mp3,sound_hit_mp3,sound_miss_mp3,sound_win_mp3,xiaohongmao_json,xiaohongmao_swf_json,xiaolanmao_json,xiaolanmao_swf_json,arrow_png,avatar_png,bBlodBar_png,bBlodBarBg_png,bg_list_png,blodBarMask_png,bomb_png,btn_addRobot_png,btn_back_png,btn_backToHome_png,btn_close_png,btn_createRoom_png,btn_joinRandomRoom_png,btn_joinRoom_png,btn_joinRoom2_png,btn_kickPlayer_png,btn_leaveRoom_png,btn_modify_png,btn_relive_png,btn_startGame_png,combo_png,complete_png,egret_icon2_png,fight1Bg_png,footer_text_white_png,gameOver_png,gold_png,goldBg_png,help_btn_png,help_object-2_png,icon_lose_png,icon_win_png,inputBg_png,load_bg_png,loading_bg_jpg,loading_logo_png,logo_png,mask_png,music_btn_png,option_05_png,option_06_png,option_07_png,option_bg_png,option_btn_b_png,optionBgImage_png,overBg_png,rBlodBar_png,rBlodBarBg_png,roomBg_jpg,roomBg_png,shan_png,sorceMc_png,start_btn_png,toast-bg2_png,wall1_1_png,wall1_2_png,mask_white_png,btnfight_json,sound_bg_mp3",
 			"name": "preload"
-		},
-		{
-			"keys": "completeImage,overBgImage,shanImage,closeGameBtnImage,optionBtnImage,option5Image,option6Image,option7Image,optionMusicBgImage,optionBgImage,blodBarMaskImage,rBlodBarBgImage,rBlodBarImage,bBlodBarBgImage,bBlodBarImage,maskImage,gameOverImage,gold,goldBg,roomBg,btn_joinRoom_png,btn_createRoom_png,btn_joinRandomRoom_png,btn_back_png,avatar_png,btn_close_png,profile_png",
-			"name": "bgPic"
-		},
-		{
-			"keys": "redNu,redNu_swf,promptPop,promptPop_swf,honglang,honglang_swf,lanlang,lanlang_swf,go,go_swf,xiaohongmao,xiaohongmao_swf,xiaolanmao,xiaolanmao_swf",
-			"name": "animation"
-		},
-		{
-			"keys": "bgSound,winSound,missSound,hitSound,goSound,overSound,beHitSound,numSound",
-			"name": "sound"
 		}
 	],
 	"resources": [
 		{
-			"url": "assets/load_bg.png",
+			"url": "assets/CheckBox/checkbox_select_disabled.png",
 			"type": "image",
-			"name": "bgImage"
+			"name": "checkbox_select_disabled_png"
 		},
 		{
-			"url": "assets/help_btn.png",
+			"url": "assets/CheckBox/checkbox_select_down.png",
 			"type": "image",
-			"name": "helpBtnImage"
+			"name": "checkbox_select_down_png"
 		},
 		{
-			"url": "assets/music_btn.png",
+			"url": "assets/CheckBox/checkbox_select_up.png",
 			"type": "image",
-			"name": "musicBtnImage"
+			"name": "checkbox_select_up_png"
 		},
 		{
-			"url": "assets/start_btn.png",
+			"url": "assets/CheckBox/checkbox_unselect.png",
 			"type": "image",
-			"name": "startBtnImage"
+			"name": "checkbox_unselect_png"
 		},
 		{
-			"url": "assets/fight1Bg.png",
+			"url": "assets/ItemRenderer/selected.png",
 			"type": "image",
-			"name": "fight1BgImage"
+			"name": "selected_png"
 		},
 		{
-			"url": "assets/shan.png",
+			"url": "assets/Panel/border.png",
 			"type": "image",
-			"name": "shanImage"
+			"name": "border_png"
 		},
 		{
-			"url": "assets/help_object-2.png",
+			"url": "assets/Panel/header.png",
 			"type": "image",
-			"name": "closeGameBtnImage"
+			"name": "header_png"
 		},
 		{
-			"url": "assets/option_btn_b.png",
+			"url": "assets/RadioButton/radiobutton_select_disabled.png",
 			"type": "image",
-			"name": "optionBtnImage"
+			"name": "radiobutton_select_disabled_png"
 		},
 		{
-			"url": "assets/option_bg.png",
+			"url": "assets/RadioButton/radiobutton_select_down.png",
 			"type": "image",
-			"name": "optionMusicBgImage"
+			"name": "radiobutton_select_down_png"
 		},
 		{
-			"url": "assets/option_05.png",
+			"url": "assets/RadioButton/radiobutton_select_up.png",
 			"type": "image",
-			"name": "option5Image"
+			"name": "radiobutton_select_up_png"
 		},
 		{
-			"url": "assets/option_06.png",
+			"url": "assets/RadioButton/radiobutton_unselect.png",
 			"type": "image",
-			"name": "option6Image"
+			"name": "radiobutton_unselect_png"
 		},
 		{
-			"url": "assets/option_07.png",
+			"url": "assets/ScrollBar/roundthumb.png",
 			"type": "image",
-			"name": "option7Image"
+			"name": "roundthumb_png"
 		},
 		{
-			"url": "assets/optionBgImage.png",
+			"url": "assets/Slider/thumb.png",
 			"type": "image",
-			"name": "optionBgImage"
+			"name": "thumb_png"
 		},
 		{
-			"url": "assets/wall1_1.png",
+			"url": "assets/Slider/track.png",
 			"type": "image",
-			"name": "wall1_1Image"
+			"name": "track_png"
 		},
 		{
-			"url": "assets/wall1_2.png",
+			"url": "assets/Slider/tracklight.png",
 			"type": "image",
-			"name": "wall1_2Image"
+			"name": "tracklight_png"
 		},
 		{
-			"url": "assets/bomb.png",
+			"url": "assets/ToggleSwitch/handle.png",
 			"type": "image",
-			"name": "bombImage"
+			"name": "handle_png"
 		},
 		{
-			"url": "assets/combo.png",
+			"url": "assets/ToggleSwitch/off.png",
 			"type": "image",
-			"name": "comboImage"
+			"name": "off_png"
 		},
 		{
-			"url": "assets/gameOver.png",
+			"url": "assets/ToggleSwitch/on.png",
 			"type": "image",
-			"name": "gameOverImage"
+			"name": "on_png"
 		},
 		{
-			"url": "assets/gold.png",
+			"url": "assets/Button/button_down.png",
 			"type": "image",
-			"name": "gold"
+			"name": "button_down_png"
 		},
 		{
-			"url": "assets/goldBg.png",
+			"url": "assets/Button/button_up.png",
 			"type": "image",
-			"name": "goldBg"
+			"name": "button_up_png"
 		},
 		{
-			"url": "assets/mask.png",
+			"url": "assets/ProgressBar/thumb_pb.png",
 			"type": "image",
-			"name": "maskImage"
+			"name": "thumb_pb_png"
 		},
 		{
-			"url": "assets/blodBarMask.png",
+			"url": "assets/ProgressBar/track_pb.png",
 			"type": "image",
-			"name": "blodBarMaskImage"
+			"name": "track_pb_png"
 		},
 		{
-			"url": "assets/rBlodBarBg.png",
+			"url": "assets/ScrollBar/track_sb.png",
 			"type": "image",
-			"name": "rBlodBarBgImage"
-		},
-		{
-			"url": "assets/rBlodBar.png",
-			"type": "image",
-			"name": "rBlodBarImage"
-		},
-		{
-			"url": "assets/bBlodBarBg.png",
-			"type": "image",
-			"name": "bBlodBarBgImage"
-		},
-		{
-			"url": "assets/bBlodBar.png",
-			"type": "image",
-			"name": "bBlodBarImage"
-		},
-		{
-			"url": "assets/sorceMc.png",
-			"type": "image",
-			"name": "sorceMcImage"
-		},
-		{
-			"url": "assets/overBg.png",
-			"type": "image",
-			"name": "overBgImage"
-		},
-		{
-			"url": "assets/complete.png",
-			"type": "image",
-			"name": "completeImage"
-		},
-		{
-			"url": "assets/number/streakNum.json",
-			"type": "sheet",
-			"name": "streakNum"
-		},
-		{
-			"url": "assets/number/sourceNum.json",
-			"type": "sheet",
-			"name": "sourceNum"
-		},
-		{
-			"url": "assets/sound/sound_bg.mp3",
-			"type": "sound",
-			"name": "bgSound",
-			"soundType": "music"
-		},
-		{
-			"url": "assets/sound/sound_win.mp3",
-			"type": "sound",
-			"name": "winSound",
-			"soundType": "effect"
-		},
-		{
-			"url": "assets/sound/sound_miss.mp3",
-			"type": "sound",
-			"name": "missSound",
-			"soundType": "effect"
-		},
-		{
-			"url": "assets/sound/sound_hit.mp3",
-			"type": "sound",
-			"name": "hitSound",
-			"soundType": "effect"
-		},
-		{
-			"url": "assets/sound/sound_go.mp3",
-			"type": "sound",
-			"name": "goSound",
-			"soundType": "effect"
-		},
-		{
-			"url": "assets/sound/sound_gameover.mp3",
-			"type": "sound",
-			"name": "overSound",
-			"soundType": "effect"
-		},
-		{
-			"url": "assets/sound/sound_behit.mp3",
-			"type": "sound",
-			"name": "beHitSound",
-			"soundType": "effect"
-		},
-		{
-			"url": "assets/sound/OneTwoThree.mp3",
-			"type": "sound",
-			"name": "numSound",
-			"soundType": "effect"
-		},
-		{
-			"url": "assets/xiaohongmao/xiaohongmao.json",
-			"type": "starlingswf_sheet",
-			"name": "xiaohongmao"
-		},
-		{
-			"url": "assets/xiaohongmao/xiaohongmao_swf.json",
-			"type": "json",
-			"name": "xiaohongmao_swf"
-		},
-		{
-			"url": "assets/xiaolanmao/xiaolanmao.json",
-			"type": "starlingswf_sheet",
-			"name": "xiaolanmao"
-		},
-		{
-			"url": "assets/xiaolanmao/xiaolanmao_swf.json",
-			"type": "json",
-			"name": "xiaolanmao_swf"
-		},
-		{
-			"url": "assets/redNu/redNu.json",
-			"type": "starlingswf_sheet",
-			"name": "redNu"
-		},
-		{
-			"url": "assets/redNu/redNu_swf.json",
-			"type": "json",
-			"name": "redNu_swf"
-		},
-		{
-			"url": "assets/promptPop/promptPop.json",
-			"type": "starlingswf_sheet",
-			"name": "promptPop"
-		},
-		{
-			"url": "assets/promptPop/promptPop_swf.json",
-			"type": "json",
-			"name": "promptPop_swf"
-		},
-		{
-			"url": "assets/honglang/honglang.json",
-			"type": "starlingswf_sheet",
-			"name": "honglang"
-		},
-		{
-			"url": "assets/honglang/honglang_swf.json",
-			"type": "json",
-			"name": "honglang_swf"
-		},
-		{
-			"url": "assets/lanlang/lanlang.json",
-			"type": "starlingswf_sheet",
-			"name": "lanlang"
-		},
-		{
-			"url": "assets/lanlang/lanlang_swf.json",
-			"type": "json",
-			"name": "lanlang_swf"
-		},
-		{
-			"url": "assets/go/go.json",
-			"type": "starlingswf_sheet",
-			"name": "go"
-		},
-		{
-			"url": "assets/go/go_swf.json",
-			"type": "json",
-			"name": "go_swf"
+			"name": "track_sb_png"
 		},
 		{
 			"url": "config/description.json",
 			"type": "json",
-			"name": "description"
+			"name": "description_json"
 		},
 		{
-			"name": "roomBg",
+			"url": "loading/toast-bg.png",
 			"type": "image",
-			"url": "assets/roomBg.jpg"
+			"name": "toast-bg_png"
 		},
 		{
-			"name": "btn_joinRoom_png",
-			"type": "image",
-			"url": "assets/btn_joinRoom.png"
+			"url": "font/timefont.json",
+			"type": "sheet",
+			"name": "timefont_json",
+			"subkeys": "+,-,0,1,2,3,4,5,6,7,8,9,x,人,倍,始,开,："
 		},
 		{
-			"name": "btn_createRoom_png",
+			"url": "loading/loadingprogress.png",
 			"type": "image",
-			"url": "assets/btn_createRoom.png"
+			"name": "loadingprogress_png"
 		},
 		{
-			"name": "btn_joinRandomRoom_png",
-			"type": "image",
-			"url": "assets/btn_joinRandomRoom.png"
+			"url": "ranger/go/go.json",
+			"type": "sheet",
+			"name": "go_json",
+			"subkeys": "img_GO!-sc/001,img_GO!-sc/002,img_GO!-sc/003,img_GO!-sc/004"
 		},
 		{
-			"name": "btn_back_png",
-			"type": "image",
-			"url": "assets/btn_back.png"
+			"url": "ranger/go/go_swf.json",
+			"type": "json",
+			"name": "go_swf_json"
 		},
 		{
-			"name": "avatar_png",
-			"type": "image",
-			"url": "assets/avatar.png"
+			"url": "ranger/honglang/honglang.json",
+			"type": "sheet",
+			"name": "honglang_json",
+			"subkeys": "img_honglang-sc/honglangzou001,img_honglang-sc/honglangzou002,img_honglang-sc/honglangzou003,img_honglang-sc/honglangzou004,img_honglang-sc/honglangzou005"
 		},
 		{
-			"name": "btn_close_png",
-			"type": "image",
-			"url": "assets/btn_close.png"
+			"url": "ranger/honglang/honglang_swf.json",
+			"type": "json",
+			"name": "honglang_swf_json"
 		},
 		{
-			"name": "profile_png",
-			"type": "image",
-			"url": "assets/profile.png"
+			"url": "ranger/lanlang/lanlang.json",
+			"type": "sheet",
+			"name": "lanlang_json",
+			"subkeys": "img_lanlang-sc/lanlangzou001,img_lanlang-sc/lanlangzou002,img_lanlang-sc/lanlangzou003,img_lanlang-sc/lanlangzou004,img_lanlang-sc/lanlangzou005"
 		},
 		{
-			"name": "profileBg_png",
-			"type": "image",
-			"url": "assets/profileBg.png"
+			"url": "ranger/lanlang/lanlang_swf.json",
+			"type": "json",
+			"name": "lanlang_swf_json"
 		},
 		{
-			"name": "btn_modify_png",
-			"type": "image",
-			"url": "assets/btn_modify.png"
+			"url": "ranger/number/sourceNum.json",
+			"type": "sheet",
+			"name": "sourceNum_json",
+			"subkeys": "number-0,number-1,number-2,number-3,number-4,number-5,number-6,number-7,number-8,number-9"
 		},
 		{
-			"name": "inputBg_png",
-			"type": "image",
-			"url": "assets/inputBg.png"
+			"url": "ranger/number/streakNum.json",
+			"type": "sheet",
+			"name": "streakNum_json",
+			"subkeys": "number-00,number-01,number-02,number-03,number-04,number-05,number-06,number-07,number-08,number-09"
 		},
 		{
-			"name": "btn_joinRoom2_png",
-			"type": "image",
-			"url": "assets/btn_joinRoom2.png"
+			"url": "ranger/promptPop/promptPop.json",
+			"type": "sheet",
+			"name": "promptPop_json",
+			"subkeys": "img_good_1,img_miss_1,img_pre_1"
 		},
 		{
-			"name": "roomBg_png",
-			"type": "image",
-			"url": "assets/roomBg.png"
+			"url": "ranger/promptPop/promptPop_swf.json",
+			"type": "json",
+			"name": "promptPop_swf_json"
 		},
 		{
-			"name": "btn_kickPlayer_png",
-			"type": "image",
-			"url": "assets/btn_kickPlayer.png"
+			"url": "ranger/sound/OneTwoThree.mp3",
+			"type": "sound",
+			"name": "OneTwoThree_mp3"
 		},
 		{
-			"name": "btn_leaveRoom_png",
-			"type": "image",
-			"url": "assets/btn_leaveRoom.png"
+			"url": "ranger/sound/sound_behit.mp3",
+			"type": "sound",
+			"name": "sound_behit_mp3"
 		},
 		{
-			"name": "btn_backToHome_png",
-			"type": "image",
-			"url": "assets/btn_backToHome.png"
+			"url": "ranger/sound/sound_gameover.mp3",
+			"type": "sound",
+			"name": "sound_gameover_mp3"
 		},
 		{
-			"name": "icon_lose_png",
-			"type": "image",
-			"url": "assets/icon_lose.png"
+			"url": "ranger/sound/sound_go.mp3",
+			"type": "sound",
+			"name": "sound_go_mp3"
 		},
 		{
-			"name": "icon_win_png",
-			"type": "image",
-			"url": "assets/icon_win.png"
+			"url": "ranger/sound/sound_hit.mp3",
+			"type": "sound",
+			"name": "sound_hit_mp3"
 		},
 		{
-			"name": "btn_relive_png",
-			"type": "image",
-			"url": "assets/btn_relive.png"
+			"url": "ranger/sound/sound_miss.mp3",
+			"type": "sound",
+			"name": "sound_miss_mp3"
 		},
 		{
-			"name": "bg_list_png",
-			"type": "image",
-			"url": "assets/bg_list.png"
+			"url": "ranger/sound/sound_win.mp3",
+			"type": "sound",
+			"name": "sound_win_mp3"
 		},
 		{
-			"name": "btn_startGame_png",
-			"type": "image",
-			"url": "assets/btn_startGame.png"
+			"url": "ranger/xiaohongmao/xiaohongmao.json",
+			"type": "sheet",
+			"name": "xiaohongmao_json",
+			"subkeys": "img_xiaohongmao-sc/xiaohongmao001,img_xiaohongmao-sc/xiaohongmao002,img_xiaohongmao-sc/xiaohongmao003,img_xiaohongmao-sc/xiaohongmao004,img_xiaohongmao-sc/xiaohongmaowin,img_xiaohongmao-sc/xiaohongmaozhuanshen1,img_xiaohongmao-sc/xiaohongmaozhuanshen2,img_xiaohongmao-sc/xiaohongmaozhuanshen3,img_xiaohongmao-sc/xiaohongmaozhuanshen4"
 		},
 		{
-			"name": "btn_addRobot_png",
-			"type": "image",
-			"url": "assets/btn_addRobot.png"
+			"url": "ranger/xiaohongmao/xiaohongmao_swf.json",
+			"type": "json",
+			"name": "xiaohongmao_swf_json"
 		},
 		{
-			"name": "arrow_png",
-			"type": "image",
-			"url": "assets/arrow.png"
+			"url": "ranger/xiaolanmao/xiaolanmao.json",
+			"type": "sheet",
+			"name": "xiaolanmao_json",
+			"subkeys": "img_xiaolanmao-sc/xiaolanmao001,img_xiaolanmao-sc/xiaolanmao002,img_xiaolanmao-sc/xiaolanmao003,img_xiaolanmao-sc/xiaolanmao004,img_xiaolanmao-sc/xiaolanmaowin,img_xiaolanmao-sc/xiaolanmaozhuanshen1,img_xiaolanmao-sc/xiaolanmaozhuanshen2,img_xiaolanmao-sc/xiaolanmaozhuanshen3,img_xiaolanmao-sc/xiaolanmaozhuanshen4"
 		},
 		{
-			"name": "logo_png",
-			"type": "image",
-			"url": "assets/logo.png"
+			"url": "ranger/xiaolanmao/xiaolanmao_swf.json",
+			"type": "json",
+			"name": "xiaolanmao_swf_json"
 		},
 		{
-			"name": "footer_text_white_png",
+			"url": "ranger/arrow.png",
 			"type": "image",
-			"url": "assets/footer_text_white.png"
+			"name": "arrow_png"
 		},
 		{
-			"name": "toast-bg_png",
+			"url": "ranger/avatar.png",
 			"type": "image",
-			"url": "assets/toast-bg.png"
+			"name": "avatar_png"
+		},
+		{
+			"url": "ranger/bBlodBar.png",
+			"type": "image",
+			"name": "bBlodBar_png"
+		},
+		{
+			"url": "ranger/bBlodBarBg.png",
+			"type": "image",
+			"name": "bBlodBarBg_png"
+		},
+		{
+			"url": "ranger/bg_list.png",
+			"type": "image",
+			"name": "bg_list_png"
+		},
+		{
+			"url": "ranger/blodBarMask.png",
+			"type": "image",
+			"name": "blodBarMask_png"
+		},
+		{
+			"url": "ranger/bomb.png",
+			"type": "image",
+			"name": "bomb_png"
+		},
+		{
+			"url": "ranger/btn_addRobot.png",
+			"type": "image",
+			"name": "btn_addRobot_png"
+		},
+		{
+			"url": "ranger/btn_back.png",
+			"type": "image",
+			"name": "btn_back_png"
+		},
+		{
+			"url": "ranger/btn_backToHome.png",
+			"type": "image",
+			"name": "btn_backToHome_png"
+		},
+		{
+			"url": "ranger/btn_close.png",
+			"type": "image",
+			"name": "btn_close_png"
+		},
+		{
+			"url": "ranger/btn_createRoom.png",
+			"type": "image",
+			"name": "btn_createRoom_png"
+		},
+		{
+			"url": "ranger/btn_joinRandomRoom.png",
+			"type": "image",
+			"name": "btn_joinRandomRoom_png"
+		},
+		{
+			"url": "ranger/btn_joinRoom.png",
+			"type": "image",
+			"name": "btn_joinRoom_png"
+		},
+		{
+			"url": "ranger/btn_joinRoom2.png",
+			"type": "image",
+			"name": "btn_joinRoom2_png"
+		},
+		{
+			"url": "ranger/btn_kickPlayer.png",
+			"type": "image",
+			"name": "btn_kickPlayer_png"
+		},
+		{
+			"url": "ranger/btn_leaveRoom.png",
+			"type": "image",
+			"name": "btn_leaveRoom_png"
+		},
+		{
+			"url": "ranger/btn_modify.png",
+			"type": "image",
+			"name": "btn_modify_png"
+		},
+		{
+			"url": "ranger/btn_relive.png",
+			"type": "image",
+			"name": "btn_relive_png"
+		},
+		{
+			"url": "ranger/btn_startGame.png",
+			"type": "image",
+			"name": "btn_startGame_png"
+		},
+		{
+			"url": "ranger/combo.png",
+			"type": "image",
+			"name": "combo_png"
+		},
+		{
+			"url": "ranger/complete.png",
+			"type": "image",
+			"name": "complete_png"
+		},
+		{
+			"url": "ranger/egret_icon.png",
+			"type": "image",
+			"name": "egret_icon2_png"
+		},
+		{
+			"url": "ranger/fight1Bg.png",
+			"type": "image",
+			"name": "fight1Bg_png"
+		},
+		{
+			"url": "ranger/footer_text_white.png",
+			"type": "image",
+			"name": "footer_text_white_png"
+		},
+		{
+			"url": "ranger/gameOver.png",
+			"type": "image",
+			"name": "gameOver_png"
+		},
+		{
+			"url": "ranger/gold.png",
+			"type": "image",
+			"name": "gold_png"
+		},
+		{
+			"url": "ranger/goldBg.png",
+			"type": "image",
+			"name": "goldBg_png"
+		},
+		{
+			"url": "ranger/help_btn.png",
+			"type": "image",
+			"name": "help_btn_png"
+		},
+		{
+			"url": "ranger/help_object-2.png",
+			"type": "image",
+			"name": "help_object-2_png"
+		},
+		{
+			"url": "ranger/icon_lose.png",
+			"type": "image",
+			"name": "icon_lose_png"
+		},
+		{
+			"url": "ranger/icon_win.png",
+			"type": "image",
+			"name": "icon_win_png"
+		},
+		{
+			"url": "ranger/inputBg.png",
+			"type": "image",
+			"name": "inputBg_png"
+		},
+		{
+			"url": "ranger/load_bg.png",
+			"type": "image",
+			"name": "load_bg_png"
+		},
+		{
+			"url": "ranger/loading_bg.jpg",
+			"type": "image",
+			"name": "loading_bg_jpg"
+		},
+		{
+			"url": "ranger/loading_logo.png",
+			"type": "image",
+			"name": "loading_logo_png"
+		},
+		{
+			"url": "ranger/logo.png",
+			"type": "image",
+			"name": "logo_png"
+		},
+		{
+			"url": "ranger/mask.png",
+			"type": "image",
+			"name": "mask_png"
+		},
+		{
+			"url": "ranger/music_btn.png",
+			"type": "image",
+			"name": "music_btn_png"
+		},
+		{
+			"url": "ranger/option_05.png",
+			"type": "image",
+			"name": "option_05_png"
+		},
+		{
+			"url": "ranger/option_06.png",
+			"type": "image",
+			"name": "option_06_png"
+		},
+		{
+			"url": "ranger/option_07.png",
+			"type": "image",
+			"name": "option_07_png"
+		},
+		{
+			"url": "ranger/option_bg.png",
+			"type": "image",
+			"name": "option_bg_png"
+		},
+		{
+			"url": "ranger/option_btn_b.png",
+			"type": "image",
+			"name": "option_btn_b_png"
+		},
+		{
+			"url": "ranger/optionBgImage.png",
+			"type": "image",
+			"name": "optionBgImage_png"
+		},
+		{
+			"url": "ranger/overBg.png",
+			"type": "image",
+			"name": "overBg_png"
+		},
+		{
+			"url": "ranger/rBlodBar.png",
+			"type": "image",
+			"name": "rBlodBar_png"
+		},
+		{
+			"url": "ranger/rBlodBarBg.png",
+			"type": "image",
+			"name": "rBlodBarBg_png"
+		},
+		{
+			"url": "ranger/roomBg.jpg",
+			"type": "image",
+			"name": "roomBg_jpg"
+		},
+		{
+			"url": "ranger/roomBg.png",
+			"type": "image",
+			"name": "roomBg_png"
+		},
+		{
+			"url": "ranger/shan.png",
+			"type": "image",
+			"name": "shan_png"
+		},
+		{
+			"url": "ranger/sorceMc.png",
+			"type": "image",
+			"name": "sorceMc_png"
+		},
+		{
+			"url": "ranger/start_btn.png",
+			"type": "image",
+			"name": "start_btn_png"
+		},
+		{
+			"url": "ranger/toast-bg.png",
+			"type": "image",
+			"name": "toast-bg2_png"
+		},
+		{
+			"url": "ranger/wall1_1.png",
+			"type": "image",
+			"name": "wall1_1_png"
+		},
+		{
+			"url": "ranger/wall1_2.png",
+			"type": "image",
+			"name": "wall1_2_png"
+		},
+		{
+			"url": "ranger/mask_white.png",
+			"type": "image",
+			"name": "mask_white_png"
+		},
+		{
+			"name": "btnfight_json",
+			"type": "sheet",
+			"url": "ranger/btnfight/btnfight.json",
+			"subkeys": "btnfight1,btnfight2,btnfight3"
+		},
+		{
+			"name": "sound_bg_mp3",
+			"type": "sound",
+			"url": "ranger/sound/sound_bg.mp3"
 		}
 	]
 }
