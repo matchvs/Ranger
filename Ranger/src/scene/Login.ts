@@ -45,9 +45,14 @@ class Login extends BaseScene implements eui.UIComponent {
 		this.registerUser();
 	}
 	public mvsErrorResponse(code, errMsg) {
-		console.info('[ERROR] mvsErrorResponse', arguments);
-		this.loading.close();
-		Toast.show("网络异常:code: "+code+", msg:" + errMsg);
+        if (code === 400) {
+            
+        }
+        else {
+            console.info('[ERROR] mvsErrorResponse', arguments);
+            this.loading.close();
+            Toast.show("网络异常:code: "+code+", msg:" + errMsg);
+        }
 	}
 
 	public registerUser() {

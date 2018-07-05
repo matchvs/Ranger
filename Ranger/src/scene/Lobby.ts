@@ -6,7 +6,8 @@ class Lobby extends BaseScene implements eui.UIComponent {
 	private room: eui.Group;
 	private roomstate: eui.Group;
 	private p1name: eui.Label;
-	private sourceArr: any[] = [{ label: "1" }];
+	// private sourceArr: any[] = [{ label: "1" }];
+	private sourceArr: any[] = [{}];
 	private loopReqRoomListTimer;
 	public constructor() {
 		super();
