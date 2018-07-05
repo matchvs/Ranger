@@ -9,7 +9,7 @@ class Login extends BaseScene implements eui.UIComponent {
 	protected onCreated() {
 		super.onCreated();
 		this.loading = Loading.create(this);
-		
+
 	}
 
 	private mvsRegisterUserResponse(data): void {
@@ -45,14 +45,14 @@ class Login extends BaseScene implements eui.UIComponent {
 		this.registerUser();
 	}
 	public mvsErrorResponse(code, errMsg) {
-        if (code === 400) {
-            
-        }
-        else {
-            console.info('[ERROR] mvsErrorResponse', arguments);
-            this.loading.close();
-            Toast.show("网络异常:code: "+code+", msg:" + errMsg);
-        }
+		if (code === 400) {
+
+		}
+		else {
+			console.info('[ERROR] mvsErrorResponse', arguments);
+			this.loading.close();
+			Toast.show("网络异常:code: " + code + ", msg:" + errMsg);
+		}
 	}
 
 	public registerUser() {
@@ -73,6 +73,11 @@ class Login extends BaseScene implements eui.UIComponent {
 			this.loading.show();
 
 		} else if (name == "help") {
+
+			// GameData.setType(-1);
+			GameData.type = GameData.p1;
+			GameData.initPlayer(GameData.type, GameData.userName, GameData.userId, GameData.avatarUrl);
+
 			SceneManager.showScene(Game, { "isSingleModel": true, "isShowTip": true })
 		}
 		return true;
