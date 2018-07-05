@@ -16,7 +16,8 @@
 	<e:Image x="97.17" y="428.19" width="72.19" height="27.82" anchorOffsetX="0" anchorOffsetY="0" source="combo_png"/>
 	<e:Image x="98.5" y="490" width="60" height="30" source ="img_good_1"/>
 	<e:Image x="98.5" y="522" width="60" height="30" source ="img_miss_1"/>
-	<e:Image width="130" height="44" x="175" y="326" anchorOffsetX="0" anchorOffsetY="0" source="icon_win_png" />
+	<e:Image id="winIcon" width="130" height="44" x="175" y="326" anchorOffsetX="0" anchorOffsetY="0" source="icon_win_png"  visible="false"/>
+	<e:Image id="loseIcon" width="130" height="44" x="175" y="326" anchorOffsetX="0" anchorOffsetY="0" source="icon_lose_png" visible="false"/>
 	<e:Label id="score" text="999" x="319.83" y="394.81" fontFamily="KaiTi" size="30" italic="true"
 	         bold="true" width="85.34" height="30"  anchorOffsetX="0" anchorOffsetY="0" textColor="0x000000"/>
 	<e:Label id="perfect" text="999" x="318.5" y="457.34" fontFamily="KaiTi" size="30" italic="true" bold="true"
@@ -26,4 +27,5 @@
 	         textColor="0x6bb402" />
 	<e:Label id="miss" text="999" x="318.5" y="520.67" fontFamily="KaiTi" size="30" italic="true" bold="true"
 	         textColor="0xff0327" />
+	<e:Image width="78" height="28" x="98.5" y="394.81" source="sorceMc_png" fillMode="clip" anchorOffsetX="0" anchorOffsetY="0"/>
 </e:Skin>

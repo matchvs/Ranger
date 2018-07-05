@@ -23,7 +23,8 @@ class GameData {
     public static p1: string = "r";
     public static p2: string = "b";
     private static player1: Player = new Player(GameData.p1);
-    private static player2: Player = new Player(GameData.p1);
+    // private static player2: Player = new Player(GameData.p1);
+    private static player2: Player = new Player(GameData.p2);
     public static type: string = GameData.p1; // r b
 
     // 成长数据
@@ -53,7 +54,7 @@ class GameData {
 
     public static bgSpeed: number = 1;
     public static enemySpeed: number = 30;//enemy run speed
-    public static createEnemyInterval: number = 1;//secend
+    public static createEnemyInterval: number = 2;//secend
 
 
 
@@ -86,5 +87,14 @@ class GameData {
     public static setType(userID: number) {
         GameData.type = userID > GameData.userId ? GameData.p1 : GameData.p2;
         console.log("[GameData] GameData.type =>" + GameData.type);
+    }
+
+    public static resetType() {
+        GameData.type = GameData.p1;
+    }
+
+    public static resetAll() {
+        GameData.type = GameData.p1;
+        // TODO:
     }
 }

@@ -28,6 +28,8 @@ class Game extends BaseScene implements eui.UIComponent {
 		egret.Ticker.getInstance().register(this.onUpdate, this);
 		this.logic = new GameLogic(this);
 
+		// 显示分数
+		this.gold.text = GameData.gold + "";
 
 		if (this.isShowTip) {
 			this.tipsController.show(this, ["tips", "step1", "step2", "step3", "step4"]);
@@ -81,6 +83,7 @@ class Game extends BaseScene implements eui.UIComponent {
 		this.isSingleModel = (par && par.isSingleModel) ? par.isSingleModel : false;
 		this.isShowTip = (par && par.isShowTip) ? par.isShowTip : false;
 		// console.log("onshow,par:" + par);
+
 	}
 	public finish() {
 		if (this.isSingleModel) {
@@ -129,6 +132,9 @@ class Game extends BaseScene implements eui.UIComponent {
 				};
 				break;
 			case "back":
+				// 中途退出,把用户的分数置为-1,方便处理
+				GameData.getPlayer(GameData.type).score = -1;
+
 				this.finish();
 				break;
 		}

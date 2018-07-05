@@ -1,3 +1,7 @@
+declare class ImageButtonSkin extends eui.Skin{
+}
+declare class LoginButton extends eui.Skin{
+}
 declare module skins{
 	class AnimationSkin extends eui.Skin{
 	}
@@ -53,10 +57,6 @@ declare module skins{
 declare module skins{
 	class VSliderSkin extends eui.Skin{
 	}
-}
-declare class ImageButtonSkin extends eui.Skin{
-}
-declare class LoginButton extends eui.Skin{
 }
 declare class EnemySkin extends eui.Skin{
 }

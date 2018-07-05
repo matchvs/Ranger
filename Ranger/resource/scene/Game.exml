@@ -95,7 +95,7 @@
 		<e:Image id="back" width="71" height="38" x="394" y="106.5" source="btn_back_png" anchorOffsetX="0" anchorOffsetY="0"/>
 		<e:Image width="137" height="40" x="10.69" y="111.99" source="bg_list_png"/>
 		<e:Image width="30" height="30" x="15.58" y="116.99" source="gold_png"/>
-		<e:Label id="gold" text="10" x="27.77" y="119.5" textColor="0xfaab1c" anchorOffsetX="0" width="76.42" anchorOffsetY="0" height="26.97" bold="true" textAlign="center" size="26" touchEnabled="false" fontFamily="KaiTi"/>
+		<e:Label id="gold" text="" x="27.77" y="119.5" textColor="0xfaab1c" anchorOffsetX="0" width="76.42" anchorOffsetY="0" height="26.97" bold="true" textAlign="center" size="26" touchEnabled="false" fontFamily="KaiTi"/>
 		<e:Image id="arrow" width="24" height="24" x="165.67" y="607" source="arrow_png"/>
 		<e:Group id="score2" width="120" height="28" y="29" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" x="339">
 			<e:Image id="score21000" width="30" height="28" source="number-02" scaleX="1" scaleY="1" y="0" x="0"/>
