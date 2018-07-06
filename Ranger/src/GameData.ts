@@ -32,7 +32,7 @@ class GameData {
 
 
     public static MAX_BLOOD: number = 20;
-    public static BASE_SCORE: number = 1;
+    public static BASE_SCORE: number = 10;
     public static Gold4Relive: number = 10;
     public static TIME_MIN_INTVRAL_ENEMY_CREATE = 0.2;
     public static SPEED_MAX_RUN_MULTIPLE: number = 2;
