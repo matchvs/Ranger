@@ -20,4 +20,12 @@
 	</e:Button>
 	<e:Image width="270" height="32" x="105" y="754.67" source="footer_text_white_png" />
 	<e:Image id="help" width="60" height="56" x="408" y="661.34" anchorOffsetX="0" anchorOffsetY="0" source="help_btn_png"/>
+	<e:Group id="option" width="479" height="290" x="1" y="210" anchorOffsetX="0" anchorOffsetY="0" visible="false">
+		<e:Image width="352" height="216" x="63.5" y="37" source="option_bg_png" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1"/>
+		<e:Image id="close" width="82" height="74" x="355" y="13" source="option_07_png"/>
+		<e:Image id="bgMusicOff" width="60" height="40" x="245" y="120" anchorOffsetX="0" anchorOffsetY="0" source="option_05_png" visible="false"/>
+		<e:Image id="bgMusicOn" width="66" height="39" x="275" y="121" anchorOffsetX="0" anchorOffsetY="0" source="option_06_png" visible="false"/>
+		<e:Image id="musicOff" width="60" height="40" x="245" y="182" anchorOffsetX="0" anchorOffsetY="0" source="option_05_png" visible="false"/>
+		<e:Image id="musicOn" width="66" height="39" x="275" y="183" anchorOffsetX="0" anchorOffsetY="0" source="option_06_png" visible="false"/>
+	</e:Group>
 </e:Skin>
