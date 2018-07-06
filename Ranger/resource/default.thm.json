@@ -23,6 +23,8 @@
 	},
 	"autoGenerateExmlsList": true,
 	"exmls": [
+		"resource/euix/ImageButton.exml",
+		"resource/euix/LoginButton.exml",
 		"resource/eui_skins/AnimationSkin.exml",
 		"resource/eui_skins/ButtonSkin.exml",
 		"resource/eui_skins/CheckBoxSkin.exml",
@@ -37,8 +39,6 @@
 		"resource/eui_skins/ToggleSwitchSkin.exml",
 		"resource/eui_skins/VScrollBarSkin.exml",
 		"resource/eui_skins/VSliderSkin.exml",
-		"resource/euix/ImageButton.exml",
-		"resource/euix/LoginButton.exml",
 		"resource/scene/Enemy.exml",
 		"resource/scene/Game.exml",
 		"resource/scene/GameOver.exml",
