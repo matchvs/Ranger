@@ -134,4 +134,8 @@ class Login extends BaseScene implements eui.UIComponent {
             this.musicOn.visible = true;
         }
     }
+
+    public onHide() {
+        this.option.visible = false;
+    }
 }
