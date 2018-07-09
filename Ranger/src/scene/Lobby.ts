@@ -1,7 +1,7 @@
 class Lobby extends BaseScene implements eui.UIComponent {
 	public timerView: TimerView;
 	private nickname;
-	private avator;
+	private avator: eui.Image;
 	private roomList: eui.List;
 	private room: eui.Group;
 	private roomstate: eui.Group;
@@ -53,10 +53,24 @@ class Lobby extends BaseScene implements eui.UIComponent {
 			this.findChild("waigtingtime100"))
 		this.nickname = this.findChild("nickname");
 		this.nickname.text = GameData.userName;
-		this.avator = this.findChild("avator");
+		this.avator = <eui.Image>this.findChild("avator");
 		this.roomList = <eui.List>this.findChild("roomList");
 		ListViewUtil.initListView(this.room, this.roomList, this.sourceArr, ListViewImageItem);
-
+		try {
+			getWxUserInfo(function (userinfo) {
+				try {
+					this.nickname.text = userinfo.nickName;
+					this.loadAvatar(userinfo.avatarUrl);
+					console.log("get wx.userinfo success ", JSON.stringify(userinfo));
+					window["mta"].Event.stat("user", { 'auth': 'ok' });
+				} catch (error) {
+					console.warn('[WARN] fail,get wx.userinfo,' + JSON.stringify(error));
+					window["mta"].Event.stat("user", { 'auth': ("exception:" + JSON.stringify(error)) });
+				}
+			}.bind(this));
+		} catch (error) {
+			this.loadAvatar("https://fluttergo.com/images/flutter-mark-square-100.png");
+		}
 	}
 	protected onShow() {
 		this.mvsBind();
@@ -122,10 +136,11 @@ class Lobby extends BaseScene implements eui.UIComponent {
 			let imageLoader = <egret.ImageLoader>event.currentTarget;
 			let texture = new egret.Texture();
 			texture._setBitmapData(imageLoader.data);
-			this.avatarBmp = new egret.Bitmap(texture);
-			this.avatarBmp.width = 100;
-			this.avatarBmp.height = 100;
-			this.avator.addChild(this.avatarBmp);
+			this.avator.texture = texture;
+			// this.avatarBmp = new egret.Bitmap(texture);
+			// this.avatarBmp.width = 100;
+			// this.avatarBmp.height = 100;
+			// this.avator.addChild(this.avatarBmp);
 		}, this);
 		imageLoader.load(url);
 	}

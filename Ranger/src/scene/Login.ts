@@ -53,12 +53,13 @@ class Login extends BaseScene implements eui.UIComponent {
     }
     public mvsErrorResponse(code, errMsg) {
         if (code === 400) {
-
+            console.warn('[WARN] 400 errcode not be case ');
         }
         else {
             console.info('[ERROR] mvsErrorResponse', arguments);
             this.loading.close();
             Toast.show("网络异常:code: " + code + ", msg:" + errMsg);
+            NetWorkUtil.checkStatsEeception(code);
         }
     }
 
@@ -140,5 +141,6 @@ class Login extends BaseScene implements eui.UIComponent {
 
     public onHide() {
         this.option.visible = false;
+        Delay.cancel();
     }
 }

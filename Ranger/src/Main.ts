@@ -39,7 +39,7 @@ class Main extends egret.DisplayObjectContainer {
         // RES.registerAnalyzer("starlingswf_sheet", starlingswf.StarlingSwfSheetAnalyzer);
 
         //https://github.com/egret-labs/resourcemanager/blob/master/docs/README.md#processor
-        
+
         RES.processor.map("starlingswf_sheet", new starlingswf.StarlingSwfSheetAnalyzer());
 
 
@@ -54,6 +54,7 @@ class Main extends egret.DisplayObjectContainer {
         egret.lifecycle.onPause = () => {
             // egret.ticker.pause();
             console.log('[INFO] [lifecycle] onPause');
+            Main.restart();
         }
 
         egret.lifecycle.onResume = () => {
@@ -161,7 +162,18 @@ class Main extends egret.DisplayObjectContainer {
         this.initAnimationData();
 
         NetWorkUtil.instance.addEventListener(this);
-
+        try {
+            var require = window["require"];
+            var mta = require('library/mta_analysis.js')
+            window["mta"] = mta;
+            window["mta"].App.init({
+                "appID": "500623547",
+                "eventID": "500623822",
+            });
+            console.log('[INFO] success,init MTA');
+        } catch (error) {
+            console.warn('[WARN] fail ,init mta case:' + JSON.stringify(error));
+        }
         this.createGameScene();
     }
 
@@ -183,11 +195,13 @@ class Main extends egret.DisplayObjectContainer {
         // SceneManager.showScene(Game);
     }
 
-
+    public static restart() {
+        while (SceneManager.back()) { };
+        SceneManager.showScene(Login);
+    }
     public onEvent(event: number) {
-        while (SceneManager.back());
-        this.createGameScene();
-        Toast.show("Server Exception,code:" + event);
+        Main.restart();
+        // Toast.show("Server Exception,code:" + event);
     }
 }
 //wxbbc70b17d96358cb wx APPID

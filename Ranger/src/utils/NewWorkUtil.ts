@@ -3,8 +3,6 @@ class NetWorkUtil {
         if (stats === 200) {
             return false;
         }
-
-
         NetWorkUtil.boardcastException(stats);
         return true;
 
