@@ -110,8 +110,11 @@ class Login extends BaseScene implements eui.UIComponent {
 
             // GameData.setType(-1);
             GameData.type = GameData.p1;
-            GameData.initPlayer(GameData.type, GameData.userName, GameData.userId, GameData.avatarUrl);
+            GameData.initPlayer(GameData.type, 'You', GameData.userId, GameData.avatarUrl);
+            // 初始化第二个ranger
+            GameData.initPlayer(GameData.p2, 'blue Ranger', -1, '');
 
+            console.log('singleModel player', GameData.getPlayer(GameData.p1))
             SceneManager.showScene(Game, { "isSingleModel": true, "isShowTip": true })
         }
         return true;
