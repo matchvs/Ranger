@@ -18,15 +18,6 @@ class Lobby extends BaseScene implements eui.UIComponent {
 		super.partAdded(partName, instance);
 	}
 
-	protected onHide() {
-		this.timerView.stop();
-		console.log("hide");
-		this.mvsUnBind();
-		if (!this.loopReqRoomListTimer) {
-			clearInterval(this.loopReqRoomListTimer);
-			this.loopReqRoomListTimer = null;
-		}
-	}
 
 
 
@@ -75,6 +66,16 @@ class Lobby extends BaseScene implements eui.UIComponent {
 	protected onShow() {
 		this.mvsBind();
 	}
+	protected onHide() {
+		this.timerView.stop();
+		console.log("hide");
+		this.mvsUnBind();
+		if (this.loopReqRoomListTimer) {
+			clearInterval(this.loopReqRoomListTimer);
+			this.loopReqRoomListTimer = null;
+		}
+	}
+
 	public joinRoomRandom() {
 		console.log('[room join random]: ' + this.nickname.text);
 		MvsManager.getInstance().joinRandomRoom(2, this.nickname.text);
@@ -120,13 +121,14 @@ class Lobby extends BaseScene implements eui.UIComponent {
 		Delay.run(function () {
 			this.timerView.stop();
 			SceneManager.showScene(Game, { "isSingleModel": isSingleModel ? isSingleModel : false });
+			this.hideAllRoomView();
 		}.bind(this), 500);
-
 	}
 
 	public mvsLeaveRoomNotify(leaveRoomInfo) {
 		let lUserId = leaveRoomInfo.userId;
 		Toast.show(lUserId + "离开了房间");
+		NetWorkUtil.dispatchEvent(NetWorkUtil.LEAVE_ROOM_NOTIFY);
 	}
 
 	private loadAvatar(url: any) {
@@ -160,7 +162,14 @@ class Lobby extends BaseScene implements eui.UIComponent {
 		}
 		(<any>this.roomList.dataProvider).refresh();
 	}
-
+	public hideAllRoomView() {
+		var stack: any = this.findChild("stack");
+		stack.selectedIndex = 0;
+		this.room.visible = false;
+		this.roomstate.visible = false;
+		clearInterval(this.loopReqRoomListTimer);
+		this.loopReqRoomListTimer = null;
+	}
 	public onClick(name: string, v: egret.DisplayObject) {
 		let stack: any;
 
@@ -194,19 +203,14 @@ class Lobby extends BaseScene implements eui.UIComponent {
 				stack.selectedIndex = 1;
 				this.getRoomList();
 				this.room.visible = true;
-				if (!this.loopReqRoomListTimer) {
+				if (this.loopReqRoomListTimer == null) {
 					loopReqRoomListFunc();
 					this.loopReqRoomListTimer = setInterval(loopReqRoomListFunc, 3000);
 				}
 				break;
 			case "leave":
-				stack = this.findChild("stack");
-				stack.selectedIndex = 0;
-				this.room.visible = false;
-				this.roomstate.visible = false;
+				this.hideAllRoomView();
 				MvsManager.getInstance().leaveRoom("");
-				clearInterval(this.loopReqRoomListTimer);
-				this.loopReqRoomListTimer = null;
 				break;
 			case "match":
 				this.timerView.start();

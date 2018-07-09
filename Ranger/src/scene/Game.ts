@@ -78,12 +78,17 @@ class Game extends BaseScene implements eui.UIComponent {
 		this.logic.checkGameEvent();
 
 	}
-
+	private onEvent(event) {
+		this.finish();
+	}
 	protected onShow(par) {
 		this.isSingleModel = (par && par.isSingleModel) ? par.isSingleModel : false;
 		this.isShowTip = (par && par.isShowTip) ? par.isShowTip : false;
 		// console.log("onshow,par:" + par);
-
+		NetWorkUtil.instance.addEventListener(this.onEvent.bind(this), NetWorkUtil.LEAVE_ROOM_NOTIFY);
+	}
+	protected onHide() {
+		NetWorkUtil.instance.removeEventListener(this.onEvent);
 	}
 	public finish() {
 		if (this.isSingleModel) {

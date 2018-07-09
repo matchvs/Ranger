@@ -78,8 +78,9 @@ class SceneManager {
             var perScene: any = this.root.getChildAt(this.root.numChildren - 1);
             if (perScene) {
                 perScene.onHide && perScene.onHide();
-
                 if (!SceneManager.isAnimation) {
+                    var top: any = this.root.getChildAt(this.root.numChildren - 2);
+                    top.onShow && top.onShow();
                     this.root.removeChild(perScene);
                 } else {
                     perScene.x = 0;

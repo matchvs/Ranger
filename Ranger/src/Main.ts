@@ -54,7 +54,9 @@ class Main extends egret.DisplayObjectContainer {
         egret.lifecycle.onPause = () => {
             // egret.ticker.pause();
             console.log('[INFO] [lifecycle] onPause');
-            Main.restart();
+            if (window["wx"]) {
+                Main.restart();
+            }
         }
 
         egret.lifecycle.onResume = () => {

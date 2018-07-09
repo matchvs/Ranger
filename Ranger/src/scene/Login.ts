@@ -16,7 +16,7 @@ class Login extends BaseScene implements eui.UIComponent {
     protected onCreated() {
         super.onCreated();
         this.loading = Loading.create(this);
-
+        MvsManager.getInstance().logout("");
     }
 
     private mvsRegisterUserResponse(data): void {
