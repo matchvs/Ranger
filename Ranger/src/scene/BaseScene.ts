@@ -55,7 +55,10 @@ class BaseScene extends eui.Component implements eui.UIComponent {
         console.log("[BaseScene] childrenCreated");
     }
     protected onCreated(): void {
+        // this.removeEventListener(egret.Event.COMPLETE, this.onCreated, this);
+
         console.log("[BaseScene] [onCreated] " + this.name);
+        // console.error("[BaseScene] [onCreated] " + this.name);
     }
     protected onDestory(): void {
         console.log("[BaseScene] [onDestory] " + this.name);
@@ -68,7 +71,7 @@ class BaseScene extends eui.Component implements eui.UIComponent {
 
     }
 
-    public finish(){
+    public finish() {
         console.log('[INFO] [BaseScene] finish');
     }
 

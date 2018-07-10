@@ -81,7 +81,10 @@ class SceneManager {
                 if (!SceneManager.isAnimation) {
                     if (this.root.numChildren > 1) {
                         var top: any = this.root.getChildAt(this.root.numChildren - 2);
+                        console.log("[SceneManager]  Back,  from scene:" + perScene.constructor.name + "@" + perScene.hashCode+" to "+top.constructor.name+"@"+top.hashCode);
                         top.onShow && top.onShow();
+
+                        
                     }
                     this.root.removeChild(perScene);
                 } else {
@@ -98,7 +101,7 @@ class SceneManager {
                         egret.Tween.get(top, { loop: false }).to({ x: 0, y: 0 }, 400, egret.Ease.backIn);
                     }
                 }
-                console.log("[SceneManager]  Back  to scene:" + perScene.constructor.name + "@" + perScene.hashCode);
+                
                 return true;
             } else {
                 console.warn('[WARN] preScene is undefine');

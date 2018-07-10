@@ -17,15 +17,28 @@ class NetWorkUtil {
     public static instance = new NetWorkUtil();
 
     public addEventListener(l, event?) {
-        this.listeners.push(l);
         if (event) {
             l["event"] = event;
         }
+        this.listeners.push(l);
     }
-    public removeEventListener(l) {
+    // public removeEventListener(l) {
+    //     for (var i = 0; i < NetWorkUtil.instance.listeners.length; i++) {
+    //         if (NetWorkUtil.instance.listeners[i] == l
+    //             || (l["event"]
+    //                 && NetWorkUtil.instance.listeners[i]["event"]
+    //                 && NetWorkUtil.instance.listeners[i]["event"] == l["event"])) {
+    //             console.log('l["event"]', l["event"])
+    //             NetWorkUtil.instance.listeners[i] = null;
+    //         }
+    //     }
+    // }
+    public removeEventListener(name: number) {
         for (var i = 0; i < NetWorkUtil.instance.listeners.length; i++) {
-            if (NetWorkUtil.instance.listeners[i] == l) {
-                NetWorkUtil.instance.listeners[i] = null;
+            if (NetWorkUtil.instance.listeners[i]['event'] && NetWorkUtil.instance.listeners[i]['event'] === name) {
+                console.log(`removeEventListener ${name} success`)
+                // NetWorkUtil.instance.listeners[i] = null;
+                NetWorkUtil.instance.listeners.splice(i, 1)
             }
         }
     }

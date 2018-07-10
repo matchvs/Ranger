@@ -79,16 +79,20 @@ class Game extends BaseScene implements eui.UIComponent {
 
 	}
 	private onEvent(event) {
+		// NetWorkUtil.instance.removeEventListener(this.onEvent);
 		this.finish();
 	}
 	protected onShow(par) {
+		console.log('Game onShow')
 		this.isSingleModel = (par && par.isSingleModel) ? par.isSingleModel : false;
 		this.isShowTip = (par && par.isShowTip) ? par.isShowTip : false;
 		// console.log("onshow,par:" + par);
 		NetWorkUtil.instance.addEventListener(this.onEvent.bind(this), NetWorkUtil.LEAVE_ROOM_NOTIFY);
 	}
 	protected onHide() {
-		NetWorkUtil.instance.removeEventListener(this.onEvent);
+		console.log('Game onHide')
+		// NetWorkUtil.instance.removeEventListener(this.onEvent.bind(this));
+		NetWorkUtil.instance.removeEventListener(NetWorkUtil.LEAVE_ROOM_NOTIFY);
 	}
 	public finish() {
 		if (this.isSingleModel) {
@@ -99,6 +103,9 @@ class Game extends BaseScene implements eui.UIComponent {
 		}
 		SoundUtils.instance().stopBg();
 		SceneManager.back();
+
+		console.error('finish')
+
 		SceneManager.showScene(GameOver, GameData.getPlayer(GameData.type));
 	}
 	public onClick(name: string, v: egret.DisplayObject) {
