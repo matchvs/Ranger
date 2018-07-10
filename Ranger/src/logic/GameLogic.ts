@@ -396,6 +396,9 @@ class GameLogic {
             this.onFailSendFrameEvent(data);
         }
     }
+
+    private showCombTimer: egret.Timer = null
+
 	/**
 	 * 打中怪物
 	 */
@@ -413,6 +416,41 @@ class GameLogic {
         player.comboNum++;
         player.highComobNum = MathUtils.max(player.comboNum, player.highComobNum);
 
+        if (killer === GameData.getMePlayer().type) {
+            this.comboNumView.setValue(player.comboNum)
+            this.comboNumView.visible = true
+
+            if (!this.showCombTimer) {
+                console.error('showCombTimer 1')
+                // this.showCombTimer.stop()
+                this.showCombTimer = new egret.Timer(1000, 1)
+                // this.showCombTimer.addEventListener(egret.TimerEvent.COMPLETE, () => {
+                //     console.error('1')
+                //     this.comboNumView.visible = false
+                //     this.showCombTimer = null
+                // }, this)
+
+                this.showCombTimer.addEventListener(egret.TimerEvent.TIMER_COMPLETE, this.showCombTimerComplete, this)
+
+
+                this.showCombTimer.start()
+            }
+            else {
+                console.error('showCombTimer 2')
+                this.showCombTimer.stop()
+                this.showCombTimer = new egret.Timer(1000, 1)
+                // this.showCombTimer.addEventListener(egret.TimerEvent.COMPLETE, () => {
+                //     console.error('2')
+                //     this.comboNumView.visible = false
+                //     this.showCombTimer = null
+                // }, this)
+
+                this.showCombTimer.addEventListener(egret.TimerEvent.TIMER_COMPLETE, this.showCombTimerComplete, this)
+
+                this.showCombTimer.start()
+            }
+        }
+
         if (killer !== GameData.getMePlayer().type) {
             this.playFireAnimation(this.getOther(), this.findChild("btnfight" + row));
         }
@@ -429,7 +467,7 @@ class GameLogic {
             killer === GameData.getMePlayer().type && this.popProm("pop2");
             player.good++;
         }
-        console.error('handlerHitedEmeny player', player)
+        // console.error('handlerHitedEmeny player', player)
         // enemy找不到了,加分应和enemy.goDie分开
         if (enemy) {
             enemy.goDie();
@@ -443,7 +481,11 @@ class GameLogic {
         scoreView.setValue(GameData.getPlayer(killer).score + "");
     }
 
-
+    private showCombTimerComplete() {
+        this.showCombTimer.removeEventListener(egret.TimerEvent.COMPLETE, this.showCombTimerComplete, this)
+        this.comboNumView.visible = false
+        this.showCombTimer = null
+    }
 
 
     public dispose(): void {
@@ -462,7 +504,7 @@ class GameLogic {
         if (result === 0) {
         } else {
             this.onFailSendFrameEvent(data);
-            console.error('sendFrameEvent reliveFun error', result)
+            // console.error('sendFrameEvent reliveFun error', result)
         }
     }
 
@@ -476,7 +518,7 @@ class GameLogic {
         if (result === 0) {
         } else {
             this.onFailSendFrameEvent(data);
-            console.error('sendFrameEvent reliveFun error', result)
+            // console.error('sendFrameEvent reliveFun error', result)
         }
     }
 

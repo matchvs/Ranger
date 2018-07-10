@@ -104,7 +104,7 @@ class Game extends BaseScene implements eui.UIComponent {
 		SoundUtils.instance().stopBg();
 		SceneManager.back();
 
-		console.error('finish')
+		// console.error('finish')
 
 		SceneManager.showScene(GameOver, GameData.getPlayer(GameData.type));
 	}
