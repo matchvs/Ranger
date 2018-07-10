@@ -135,7 +135,11 @@ class GameLogic {
             }
 
             if (e.y > (this.layerFight.y + this.layerFight.height - e.height)) {
-                this.boardMissEvent(e.name, e.type, e.time);
+
+                // 只有属于自己没打的才发
+                if (e.type === GameData.type) {
+                    this.boardMissEvent(e.name, e.type, e.time);
+                }
                 // console.log('[INFO] miss'+e.name+" state:"+e.state+" e.hashcode"+e.hashCode);
                 e.over();
                 break;
@@ -177,6 +181,7 @@ class GameLogic {
             if (event === Const.WILL_INIT_ENEMY_EVENT) {
                 this.handlerCreatEnemy(jsonItems);
             } else if (event === Const.MISS_FUN_EVENT) {
+                // console.error('MISS_FUN_EVENT')
                 this.handlerMiss(jsonItems);
             } else if (event === Const.HIT_FUN_EVENT) {
                 this.handlerHitedEmeny(jsonItems)
@@ -288,11 +293,15 @@ class GameLogic {
         let name = data.name;
         let type = data.type;
         let time = data.time;
-        GameData.getPlayer(type).miss++;
-        GameData.getPlayer(type).comboNum = 0;
+        // GameData.getPlayer(type).miss++;
+        // GameData.getPlayer(type).comboNum = 0;
 
         this.handlerChangeBlood({ type: type }, Const.DROP_ACTION);
         if (!GameData.getPlayer(type).isDie) {
+
+            GameData.getPlayer(type).miss++;
+            GameData.getPlayer(type).comboNum = 0;
+
             SoundUtils.instance().playMiss();
             SoundUtils.instance().playBeHit();
             this.popProm("pop3");
@@ -416,13 +425,11 @@ class GameLogic {
         } else if (rank > 1.0 && (rank < 0.8 && rank > 0.0)) {//good
             killer === GameData.getMePlayer().type && this.popProm("pop2");
             player.good++;
-        } else if (rank <= 0.0) {//miss
-            killer === GameData.getMePlayer().type && this.popProm("pop3");
-            player.miss++;
         } else {//good
             killer === GameData.getMePlayer().type && this.popProm("pop2");
+            player.good++;
         }
-
+        console.error('handlerHitedEmeny player', player)
         // enemy找不到了,加分应和enemy.goDie分开
         if (enemy) {
             enemy.goDie();
