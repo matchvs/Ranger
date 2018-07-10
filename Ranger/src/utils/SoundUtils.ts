@@ -73,6 +73,6 @@ class SoundUtils {
         this.bgSound.play();
     }
     public stopBg(): void {
-        this.bgSound.pause();
+        this.bgSound && this.bgSound.pause && this.bgSound.pause();
     }
 }

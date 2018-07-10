@@ -54,6 +54,7 @@ class Main extends egret.DisplayObjectContainer {
         egret.lifecycle.onPause = () => {
             // egret.ticker.pause();
             console.log('[INFO] [lifecycle] onPause');
+            SoundUtils.instance().stopBg();
             if (window["wx"]) {
                 Main.restart();
             }
@@ -62,6 +63,7 @@ class Main extends egret.DisplayObjectContainer {
         egret.lifecycle.onResume = () => {
             // egret.ticker.resume();
             console.log('[INFO] [lifecycle] onResume');
+            SoundUtils.instance().stopBg();
         }
 
         this.runGame();
