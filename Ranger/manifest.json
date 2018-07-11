@@ -16,7 +16,6 @@
 		"bin-debug/starlingswf/display/SwfMovieClip.js",
 		"bin-debug/bean/Player.js",
 		"bin-debug/scene/BaseScene.js",
-		"bin-debug/utils/Utils.js",
 		"bin-debug/GameData.js",
 		"bin-debug/starlingswf/display/StarlingSwfMovieClip.js",
 		"bin-debug/ThemeAdapter.js",
@@ -39,6 +38,7 @@
 		"bin-debug/starlingswf/SwfAssetManager.js",
 		"bin-debug/Main.js",
 		"bin-debug/starlingswf/SwfUpdateManager.js",
+		"bin-debug/starlingswf/display/ISwfAnimation.js",
 		"bin-debug/starlingswf/SwfAnimationInfo.js",
 		"bin-debug/Platform.js",
 		"bin-debug/SceneManager.js",
@@ -67,6 +67,6 @@
 		"bin-debug/utils/StreakNum.js",
 		"bin-debug/utils/Tips.js",
 		"bin-debug/utils/Toast.js",
-		"bin-debug/starlingswf/display/ISwfAnimation.js"
+		"bin-debug/utils/Utils.js"
 	]
 }

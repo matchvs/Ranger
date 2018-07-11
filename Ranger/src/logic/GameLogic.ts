@@ -152,6 +152,7 @@ class GameLogic {
         var timeReal = time / GameData.FPS;
         this.boardMove(timeReal);
         if (timeReal > GameData.GAME_TOTAL_TIME) {
+            (<Game>this.root).stopGame()
             this.gameState = GameData.GAME_STATUS_OVER;
             this.boardGameOver(GameData.getMePlayer());
             return;

@@ -51,7 +51,7 @@ class Game extends BaseScene implements eui.UIComponent {
 		}.bind(this);
 		var time = 0;
 		this.timer = setInterval(function () {
-			time++;
+            time++;
 			if (GameData.type === GameData.p1) {
 				this.logic.updateGame(time);
 			}
@@ -67,7 +67,7 @@ class Game extends BaseScene implements eui.UIComponent {
 		SoundUtils.instance().playBg();
 	}
 
-	protected stopGame(): void {
+	public stopGame(): void {
 		this.timer && clearInterval(this.timer);
 	}
 	protected onUpdate(): void {
@@ -147,7 +147,7 @@ class Game extends BaseScene implements eui.UIComponent {
 				GameData.getPlayer(GameData.type).isHalfLeave = true;
 				// GameData.getPlayer(GameData.type).score = -1;
 
-				this.finish();
+                this.finish();
 				break;
 		}
 		return true;

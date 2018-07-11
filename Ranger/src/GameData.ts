@@ -72,15 +72,16 @@ class GameData {
         var player = GameData.getPlayer(type);
         player.userId = ID;
         player.userName = name;
+        player.type = type;
         player.url = url;
         player.score = 0;
         player.blood = GameData.MAX_BLOOD;
         player.isDie = false;
         player.comboNum = 0;
+        player.highComobNum = 0;
         player.perfect = 0;
         player.good = 0;
         player.miss = 0;
-        player.type = type;
         player.isHalfLeave = false;
         console.log("[GameData] player.init =>" + JSON.stringify(player));
         return player;

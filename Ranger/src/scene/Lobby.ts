@@ -126,7 +126,7 @@ class Lobby extends BaseScene implements eui.UIComponent {
 	}
 
 	public mvsLeaveRoomNotify(leaveRoomInfo) {
-		let lUserId = leaveRoomInfo.userId;
+        let lUserId = leaveRoomInfo.userId;
 		Toast.show(lUserId + "离开了房间");
 		NetWorkUtil.dispatchEvent(NetWorkUtil.LEAVE_ROOM_NOTIFY);
 	}
