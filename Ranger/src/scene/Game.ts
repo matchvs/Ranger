@@ -143,7 +143,9 @@ class Game extends BaseScene implements eui.UIComponent {
 					this.startSingleGame();
 				};
 				break;
-			case "back":
+            case "back":
+                this.stopGame()
+                
 				GameData.getPlayer(GameData.type).isHalfLeave = true;
 				// GameData.getPlayer(GameData.type).score = -1;
 
