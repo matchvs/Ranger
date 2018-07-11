@@ -55,7 +55,7 @@ function getWxUserInfo(data) {
             return data(res.userInfo);
         },
         fail: function (res) {
-            reject(res);
+            data();
             console.log("fail", res);
             return '';
         }});
