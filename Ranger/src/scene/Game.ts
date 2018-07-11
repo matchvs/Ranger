@@ -144,8 +144,8 @@ class Game extends BaseScene implements eui.UIComponent {
 				};
 				break;
 			case "back":
-				// 中途退出,把用户的分数置为-1,方便处理
-				GameData.getPlayer(GameData.type).score = -1;
+				GameData.getPlayer(GameData.type).isHalfLeave = true;
+				// GameData.getPlayer(GameData.type).score = -1;
 
 				this.finish();
 				break;

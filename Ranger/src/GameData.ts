@@ -81,6 +81,7 @@ class GameData {
         player.good = 0;
         player.miss = 0;
         player.type = type;
+        player.isHalfLeave = false;
         console.log("[GameData] player.init =>" + JSON.stringify(player));
         return player;
     }

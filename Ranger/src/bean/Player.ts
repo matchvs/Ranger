@@ -14,5 +14,6 @@ class Player {
 	public highComobNum: number = 0;
 	public perfect: number = 0;
 	public good: number = 0;
-	public miss: number = 0;
+    public miss: number = 0;
+    public isHalfLeave: boolean = false;
 }
