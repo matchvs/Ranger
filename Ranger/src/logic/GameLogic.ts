@@ -148,6 +148,7 @@ class GameLogic {
         }
     }
     public updateGame(time) {
+        console.log('updata time', time)
 
         var timeReal = time / GameData.FPS;
         this.boardMove(timeReal);
