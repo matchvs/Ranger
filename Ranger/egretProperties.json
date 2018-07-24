@@ -1,47 +1,45 @@
 {
-	"engineVersion": "5.2.4",
-	"compilerVersion": "5.2.4",
-	"template": {},
-	"target": {
-		"current": "web"
-	},
-	"eui": {
-		"exmlRoot": [
-			"resource/eui_skins"
-		],
-		"themes": [
-			"resource/default.thm.json"
-		],
-		"exmlPublishPolicy": "commonjs"
-	},
-	"modules": [
-		{
-			"name": "egret"
-		},
-		{
-			"name": "eui"
-		},
-		{
-			"name": "tween"
-		},
-		{
-			"name": "game"
-		},
-		{
-			"name": "promise"
-		},
-		{
-			"name": "assetsmanager"
-		},
-
-		{
-			"name": "matchvs",
-			"path": "../matchvs"
-		},
-
-		{
-			"name": "wxshare",
-			"path": "../wxshare"
-		}
-	]
+  "engineVersion": "5.2.4",
+  "compilerVersion": "5.2.4",
+  "template": {},
+  "target": {
+    "current": "wxgame"
+  },
+  "eui": {
+    "exmlRoot": [
+      "resource/eui_skins"
+    ],
+    "themes": [
+      "resource/default.thm.json"
+    ],
+    "exmlPublishPolicy": "commonjs"
+  },
+  "modules": [
+    {
+      "name": "egret"
+    },
+    {
+      "name": "eui"
+    },
+    {
+      "name": "tween"
+    },
+    {
+      "name": "game"
+    },
+    {
+      "name": "promise"
+    },
+    {
+      "name": "assetsmanager"
+    },
+    {
+      "name": "matchvs",
+      "path": "../matchvs"
+    },
+    {
+      "name": "wxshare",
+      "path": "../wxshare"
+    }
+  ]
 }
