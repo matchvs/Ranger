@@ -57,9 +57,7 @@ class Main extends egret.DisplayObjectContainer {
             SoundUtils.instance().stopBg();
             if (window["wx"]) {
                 Main.restart();
-            } else { // web上也是跳转到登陆界面
-                Main.restart();
-            }
+            } 
         }
 
         egret.lifecycle.onResume = () => {
