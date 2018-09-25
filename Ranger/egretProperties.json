@@ -41,5 +41,11 @@
       "name": "wxshare",
       "path": "../wxshare"
     }
-  ]
+  ],
+  "targets": {
+    "android": {
+      "appname": "游侠姐妹",
+      "packagename": "com.matchvs.ranger"
+    }
+  }
 }
