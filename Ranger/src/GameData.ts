@@ -4,6 +4,7 @@
 class GameData {
 
     public static FPS: number = 20; //logic fps
+    public static MAX_PLAYER: number = 10; //logic fps
     public static BUFFER_TIME: number = 100;//buffer delay for network flutter 
 
 
@@ -22,9 +23,11 @@ class GameData {
 
     public static p1: string = "r";
     public static p2: string = "b";
+    public static p0: string = "watch";
     private static player1: Player = new Player(GameData.p1);
     // private static player2: Player = new Player(GameData.p1);
     private static player2: Player = new Player(GameData.p2);
+    private static player0: Player = new Player(GameData.p0);
     public static type: string = GameData.p1; // r b
 
     // 成长数据
@@ -60,13 +63,24 @@ class GameData {
 
 
     public static getPlayer(type: string) {
-        return type === GameData.p1 ? GameData.player1 : GameData.player2;
+        switch (type) {
+            case GameData.p1: return GameData.player1;
+            case GameData.p2: return GameData.player2;
+            default: return GameData.player0;
+        }
+    }
+    public static isWatcher() {
+        return GameData.type == GameData.p0 ? true : false;
     }
     public static getMePlayer() {
-        return GameData.type === GameData.p1 ? GameData.player1 : GameData.player2;
+        return GameData.getPlayer(GameData.type);
     }
     public static getOtherPlayer() {
-        return GameData.type === GameData.p2 ? GameData.player1 : GameData.player2;
+        switch (GameData.type) {
+            case GameData.p1: return GameData.player2;
+            case GameData.p2: return GameData.player1;
+            default: return GameData.player0;
+        }
     }
     public static initPlayer(type: string, name, ID, url) {
         var player = GameData.getPlayer(type);
@@ -87,7 +101,11 @@ class GameData {
         return player;
     }
     public static setType(userID: number) {
-        GameData.type = userID > GameData.userId ? GameData.p1 : GameData.p2;
+        if (userID < 0) {
+            GameData.type = GameData.p0;
+        } else {
+            GameData.type = userID > GameData.userId ? GameData.p1 : GameData.p2;
+        }
         console.log("[GameData] GameData.type =>" + GameData.type);
     }
 

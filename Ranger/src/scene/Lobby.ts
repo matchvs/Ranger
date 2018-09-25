@@ -8,9 +8,11 @@ class Lobby extends BaseScene implements eui.UIComponent {
 	private p1name: eui.Label;
 	// private sourceArr: any[] = [{ label: "1" }];
 	private sourceArr: any[] = [];
+	public static instance;
 	private loopReqRoomListTimer;
 	public constructor() {
 		super();
+		Lobby.instance = this;
 
 	}
 
@@ -78,11 +80,10 @@ class Lobby extends BaseScene implements eui.UIComponent {
 
 	public joinRoomRandom() {
 		console.log('[room join random]: ' + this.nickname.text);
-		MvsManager.getInstance().joinRandomRoom(2, this.nickname.text);
+		MvsManager.getInstance().joinRandomRoom(GameData.MAX_PLAYER, this.nickname.text);
 	}
 	public mvsJoinRoomNotify(userInfo): void {
 		console.log('[room join notify]: ' + JSON.stringify(userInfo));
-
 		GameData.setType(Number(userInfo.userId));
 		GameData.initPlayer(GameData.type, GameData.userName, GameData.userId, GameData.avatarUrl);
 		GameData.initPlayer(GameData.type === GameData.p1 ? GameData.p2 : GameData.p1, GameData.userName, GameData.userId, GameData.avatarUrl);
@@ -97,7 +98,7 @@ class Lobby extends BaseScene implements eui.UIComponent {
 		if (userInfoList && userInfoList.length > 0) {
 			Toast.show("匹配成功,游戏开始");
 			var userInfo = userInfoList[0];
-			GameData.setType(Number(userInfo.userId));
+			GameData.setType(userInfoList.length > 1 ? -1 : Number(userInfo.userId));
 			GameData.initPlayer(GameData.type, GameData.userName, GameData.userId, GameData.avatarUrl);
 			GameData.initPlayer(GameData.type === GameData.p1 ? GameData.p2 : GameData.p1, GameData.userName, GameData.userId, userInfo.avatarUrl || GameData.avatarUrl);
 			this.startGame(false);
@@ -109,24 +110,29 @@ class Lobby extends BaseScene implements eui.UIComponent {
 			}
 		}
 	}
-
+	public mvsJoinLiveRoomResponse(status, userInfoList, roomInfo): void {
+		GameData.setType(Number("-1"));
+		GameData.initPlayer(GameData.type, GameData.userName, GameData.userId, GameData.avatarUrl);
+		GameData.initPlayer(GameData.type === GameData.p1 ? GameData.p2 : GameData.p1, GameData.userName, GameData.userId, GameData.avatarUrl);
+		this.startGame(false);
+		this.roomstate.visible = false;
+	}
 	public joinOver() {
 		MvsManager.getInstance().joinOver("");
 	}
 
 	public startGame(isSingleModel) {
-		this.joinOver();
-		Toast.show("匹配成功，开始游戏");
-
+		Toast.show("匹配成功，5秒后开始游戏");
 		Delay.run(function () {
 			this.timerView.stop();
 			SceneManager.showScene(Game, { "isSingleModel": isSingleModel ? isSingleModel : false });
 			this.hideAllRoomView();
-		}.bind(this), 500);
+			this.joinOver();
+		}.bind(this), 5000);
 	}
 
 	public mvsLeaveRoomNotify(leaveRoomInfo) {
-        let lUserId = leaveRoomInfo.userId;
+		let lUserId = leaveRoomInfo.userId;
 		Toast.show(lUserId + "离开了房间");
 		NetWorkUtil.dispatchEvent(NetWorkUtil.LEAVE_ROOM_NOTIFY);
 	}

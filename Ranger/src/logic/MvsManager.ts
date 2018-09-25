@@ -40,7 +40,9 @@ class MvsManager {
         return MvsManager.engine.joinRoom(roomId, userProfile);
     }
     public joinLiveRoom(roomId: string, userProfile: string) {
-        throw MvsManager.engine.joinLiveRoom(roomId, userProfile);
+        //TODO 替换成加入房间的接口
+        // throw MvsManager.engine.joinLiveRoom(roomId, userProfile);
+        return MvsManager.engine.joinRoom(roomId, userProfile);
     }
 
     public joinOver(cpProto: string) {
