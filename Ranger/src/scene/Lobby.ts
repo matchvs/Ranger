@@ -98,6 +98,7 @@ class Lobby extends BaseScene implements eui.UIComponent {
 		if (userInfoList && userInfoList.length > 0) {
 			Toast.show("匹配成功,游戏开始");
 			var userInfo = userInfoList[0];
+			//再前2个人之后进入房间的用户为观战者
 			GameData.setType(userInfoList.length > 1 ? -1 : Number(userInfo.userId));
 			GameData.initPlayer(GameData.type, GameData.userName, GameData.userId, GameData.avatarUrl);
 			GameData.initPlayer(GameData.type === GameData.p1 ? GameData.p2 : GameData.p1, GameData.userName, GameData.userId, userInfo.avatarUrl || GameData.avatarUrl);
@@ -111,11 +112,7 @@ class Lobby extends BaseScene implements eui.UIComponent {
 		}
 	}
 	public mvsJoinLiveRoomResponse(status, userInfoList, roomInfo): void {
-		GameData.setType(Number("-1"));
-		GameData.initPlayer(GameData.type, GameData.userName, GameData.userId, GameData.avatarUrl);
-		GameData.initPlayer(GameData.type === GameData.p1 ? GameData.p2 : GameData.p1, GameData.userName, GameData.userId, GameData.avatarUrl);
-		this.startGame(false);
-		this.roomstate.visible = false;
+		this.mvsJoinRoomResponse(status, userInfoList, roomInfo);
 	}
 	public joinOver() {
 		MvsManager.getInstance().joinOver("");

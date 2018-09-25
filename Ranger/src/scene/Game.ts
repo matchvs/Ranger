@@ -44,7 +44,7 @@ class Game extends BaseScene implements eui.UIComponent {
     }
 
     //在线网络游戏模式
-    protected startNetGame(): void {
+    public startNetGame(): void {
         MvsManager.getInstance().setFrameSync(GameData.FPS);
         MvsManager.response.frameUpdate = function (data: MsFrameData) {
             this.logic.handlerAllGameEvent(data);
@@ -57,6 +57,7 @@ class Game extends BaseScene implements eui.UIComponent {
             }
         }.bind(this), 1000 / GameData.FPS);
         SoundUtils.instance().playBg();
+
     }
     protected startSingleGame(): void {
         var time = 0;
@@ -136,7 +137,7 @@ class Game extends BaseScene implements eui.UIComponent {
             case "btnfight1bg":
             case "btnfight2bg":
             case "btnfight3bg":
-                if (GameData.getMePlayer().isDie === false) {
+                if (!GameData.isWatcher() && GameData.getMePlayer().isDie === false) {
                     this.logic.playFireAnimation(this.logic.getMe(), v);
                     this.logic.colliderCheck(v);
                 } else {
