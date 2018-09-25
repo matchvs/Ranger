@@ -6,9 +6,19 @@ class ListViewImageItem extends eui.ItemRenderer {
 	protected partAdded(partName: string, instance: any): void {
 		super.partAdded(partName, instance);
 
-		instance.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e:egret.Event) {
-			console.log('this.data: '+ JSON.stringify(this.data) );
-			MvsManager.getInstance().joinRoom(this.data.label, GameData.userName);
+		instance.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e: egret.Event) {
+			console.log('this.data: ' + JSON.stringify(this.data));
+			if ("watch" == e.target.name) {
+				
+				try {
+					MvsManager.getInstance().joinLiveRoom(this.data.label, GameData.userName);
+					Toast.show("去观战");
+				} catch (error) {
+					Toast.show("error:"+error);
+				}
+			} else {
+				MvsManager.getInstance().joinRoom(this.data.label, GameData.userName);
+			}
 		}, this);
 
 	}

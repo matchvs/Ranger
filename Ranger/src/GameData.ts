@@ -3,7 +3,7 @@
  */
 class GameData {
 
-    public static FPS: number = 10; //logic fps
+    public static FPS: number = 20; //logic fps
     public static BUFFER_TIME: number = 100;//buffer delay for network flutter 
 
 

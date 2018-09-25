@@ -39,6 +39,9 @@ class MvsManager {
     public joinRoom(roomId: string, userProfile: string) {
         return MvsManager.engine.joinRoom(roomId, userProfile);
     }
+    public joinLiveRoom(roomId: string, userProfile: string) {
+        throw MvsManager.engine.joinLiveRoom(roomId, userProfile);
+    }
 
     public joinOver(cpProto: string) {
         return MvsManager.engine.joinOver(cpProto);
