@@ -152,7 +152,7 @@ class GameLogic {
 
         var timeReal = time / GameData.FPS;
         this.boardMove(timeReal);
-        if (timeReal > GameData.GAME_TOTAL_TIME) {
+        if (timeReal >= GameData.GAME_TOTAL_TIME) {
             (<Game>this.root).stopGame()
             this.gameState = GameData.GAME_STATUS_OVER;
             this.boardGameOver(GameData.getMePlayer());
@@ -232,7 +232,7 @@ class GameLogic {
             event: Const.WILL_INIT_ENEMY_EVENT,
             name: name
         })
-
+        console.log('[INFO] Create Enemy:' + name);
         let result = MvsManager.getInstance().sendFrameEvent(data);
         if (result === 0) {
         } else {
@@ -244,7 +244,7 @@ class GameLogic {
         let nameArr = name.split("_");
         let [type, row, num] = [...nameArr]
 
-        // console.log('[INFO] new enemy' + data.name);
+        // console.log('[INFO] new enemy:' + data.name);
         this.allEnemyArr.get(function (o: Wolf) {
             if (o == null) {
                 o = new Wolf(this.layerFight);
@@ -329,6 +329,7 @@ class GameLogic {
 
     public dropBlood(player, type: string): void {
         var player: any = GameData.getPlayer(type);
+        console.log('[INFO] dropBlood,type:' + type + "   player:" + player.blood+" ("+player.type);
         var bloodbar = (type === GameData.p1 ? this.blodBar1 : this.blodBar2);
         if (player.isDie) {
             return;

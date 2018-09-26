@@ -111,7 +111,7 @@ class Game extends BaseScene implements eui.UIComponent {
         SoundUtils.instance().stopBg();
         SceneManager.back();
 
-        // console.error('finish')
+        console.log('finish')
 
         SceneManager.showScene(GameOver, GameData.getPlayer(GameData.type));
     }
@@ -137,12 +137,15 @@ class Game extends BaseScene implements eui.UIComponent {
             case "btnfight1bg":
             case "btnfight2bg":
             case "btnfight3bg":
-                if (!GameData.isWatcher() && GameData.getMePlayer().isDie === false) {
-                    this.logic.playFireAnimation(this.logic.getMe(), v);
-                    this.logic.colliderCheck(v);
-                } else {
-                    Toast.show("请先复活");
+                if (!GameData.isWatcher()) {
+                    if (GameData.getMePlayer().isDie === false) {
+                        this.logic.playFireAnimation(this.logic.getMe(), v);
+                        this.logic.colliderCheck(v);
+                    } else {
+                        Toast.show("请先复活");
+                    }
                 }
+
                 break;
             case "tips":
                 if (this.tipsController.nextStep()) {

@@ -774,13 +774,6 @@ declare class MatchvsEngine {
      * @returns {number}
      */
     joinRoom(roomID:string,userProfile:string):number
-    /**
-     * 加入观战的房间
-     * @param {string} roomID
-     * @param {string} userProfile
-     * @returns {number}
-     */
-    joinLiveRoom(roomID:string,userProfile:string):number
 
     /**
      * 断线重连

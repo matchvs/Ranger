@@ -7,6 +7,7 @@ class MvsManager {
     public static getInstance(): MvsManager {
         if (MvsManager._instance == null) {
             MvsManager._instance = new MvsManager();
+             MatchvsLog.closeLog();
         }
         return MvsManager._instance;
     }

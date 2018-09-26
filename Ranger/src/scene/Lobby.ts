@@ -6,6 +6,7 @@ class Lobby extends BaseScene implements eui.UIComponent {
 	private room: eui.Group;
 	private roomstate: eui.Group;
 	private p1name: eui.Label;
+	private isStart = false;
 	// private sourceArr: any[] = [{ label: "1" }];
 	private sourceArr: any[] = [];
 	public static instance;
@@ -13,7 +14,6 @@ class Lobby extends BaseScene implements eui.UIComponent {
 	public constructor() {
 		super();
 		Lobby.instance = this;
-
 	}
 
 	protected partAdded(partName: string, instance: any): void {
@@ -85,8 +85,8 @@ class Lobby extends BaseScene implements eui.UIComponent {
 	public mvsJoinRoomNotify(userInfo): void {
 		console.log('[room join notify]: ' + JSON.stringify(userInfo));
 		GameData.setType(Number(userInfo.userId));
-		GameData.initPlayer(GameData.type, GameData.userName, GameData.userId, GameData.avatarUrl);
-		GameData.initPlayer(GameData.type === GameData.p1 ? GameData.p2 : GameData.p1, GameData.userName, GameData.userId, GameData.avatarUrl);
+		GameData.initPlayer(GameData.p1, GameData.userName, GameData.userId, GameData.avatarUrl);
+		GameData.initPlayer(GameData.p2, GameData.userName, GameData.userId, GameData.avatarUrl);
 		this.startGame(false);
 	}
 	public mvsJoinRoomResponse(status, userInfoList, roomInfo): void {
@@ -100,8 +100,8 @@ class Lobby extends BaseScene implements eui.UIComponent {
 			var userInfo = userInfoList[0];
 			//再前2个人之后进入房间的用户为观战者
 			GameData.setType(userInfoList.length > 1 ? -1 : Number(userInfo.userId));
-			GameData.initPlayer(GameData.type, GameData.userName, GameData.userId, GameData.avatarUrl);
-			GameData.initPlayer(GameData.type === GameData.p1 ? GameData.p2 : GameData.p1, GameData.userName, GameData.userId, userInfo.avatarUrl || GameData.avatarUrl);
+			GameData.initPlayer(GameData.p1, GameData.userName, GameData.userId, GameData.avatarUrl);
+			GameData.initPlayer(GameData.p2, GameData.userName, GameData.userId, GameData.avatarUrl);
 			this.startGame(false);
 			this.roomstate.visible = false;
 		} else {
@@ -112,19 +112,24 @@ class Lobby extends BaseScene implements eui.UIComponent {
 		}
 	}
 	public mvsJoinLiveRoomResponse(status, userInfoList, roomInfo): void {
-		this.mvsJoinRoomResponse(status, userInfoList, roomInfo);
+		//TODO 进入观战界面的逻辑, 不能与this.mvsJoinRoomResponse(status, userInfoList, roomInfo)同时调用;
 	}
 	public joinOver() {
 		MvsManager.getInstance().joinOver("");
 	}
 
 	public startGame(isSingleModel) {
+		if (this.isStart) {
+			return;
+		}
 		Toast.show("匹配成功，5秒后开始游戏");
+		this.isStart = true;
 		Delay.run(function () {
 			this.timerView.stop();
 			SceneManager.showScene(Game, { "isSingleModel": isSingleModel ? isSingleModel : false });
 			this.hideAllRoomView();
 			this.joinOver();
+			this.isStart = false;
 		}.bind(this), 5000);
 	}
 
