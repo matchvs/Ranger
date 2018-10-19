@@ -13,6 +13,7 @@ class ListViewImageItem extends eui.ItemRenderer {
 				try {
 					MvsManager.getInstance().joinLiveRoom(this.data.label, GameData.userName);
 					Toast.show("去观战");
+					console.log('[INFO] join room ID:'+this.data.label);
 				} catch (error) {
 					Toast.show("error:"+error);
 					Lobby.instance.mvsJoinLiveRoomResponse(null,null,null);

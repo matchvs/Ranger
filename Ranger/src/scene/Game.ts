@@ -46,9 +46,12 @@ class Game extends BaseScene implements eui.UIComponent {
     //在线网络游戏模式
     public startNetGame(): void {
         MvsManager.getInstance().setFrameSync(GameData.FPS);
-        MvsManager.response.frameUpdate = function (data: MsFrameData) {
+        var freameUpdate = function (data: MsFrameData) {
+            // console.log('[INFO] framedata');
             this.logic.handlerAllGameEvent(data);
         }.bind(this);
+        MvsManager.response.liveFrameUpdate = freameUpdate.bind(this);
+        MvsManager.response.frameUpdate = freameUpdate.bind(this);
         var time = 0;
         this.timer = setInterval(function () {
             time++;

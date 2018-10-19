@@ -25,6 +25,7 @@ class Lobby extends BaseScene implements eui.UIComponent {
 
 	public mvsBind() {
 		MvsManager.response.joinRoomResponse = this.mvsJoinRoomResponse.bind(this);
+		MvsManager.response.joinWatchRoomResponse = this.mvsJoinLiveRoomResponse.bind(this);
 		MvsManager.response.joinRoomNotify = this.mvsJoinRoomNotify.bind(this);
 		MvsManager.response.leaveRoomNotify = this.mvsLeaveRoomNotify.bind(this);
 		MvsManager.response.getRoomListExResponse = this.mvsGetRoomListResponse.bind(this);
@@ -111,8 +112,18 @@ class Lobby extends BaseScene implements eui.UIComponent {
 			}
 		}
 	}
-	public mvsJoinLiveRoomResponse(status, userInfoList, roomInfo): void {
-		//TODO 进入观战界面的逻辑, 不能与this.mvsJoinRoomResponse(status, userInfoList, roomInfo)同时调用;
+	public mvsJoinLiveRoomResponse(rsp:MVS.MsJoinWatchRoomRsp): void {
+		var msg = "加入观战房间失败";
+		if (rsp.status == 200) {
+			msg = "加入观战房间成功";
+			GameData.setType(-1);
+			GameData.initPlayer(GameData.p1, GameData.userName, GameData.userId, GameData.avatarUrl);
+			GameData.initPlayer(GameData.p2, GameData.userName, GameData.userId, GameData.avatarUrl);
+			this.startGame(false);
+			this.roomstate.visible = false;
+			MvsManager.getInstance().setLiveOffSet(-1);
+		}
+		Toast.show(msg+" errcode"+rsp.status);
 	}
 	public joinOver() {
 		MvsManager.getInstance().joinOver("");
@@ -158,7 +169,7 @@ class Lobby extends BaseScene implements eui.UIComponent {
 
 	public getRoomList() {
 
-		let result = MvsManager.getInstance().getRoomList(new MsRoomFilter(2, 0, 0, ""));
+		let result = MvsManager.getInstance().getRoomList(new MsRoomFilter(8, 0, 1, ""));
 
 	}
 
@@ -194,11 +205,11 @@ class Lobby extends BaseScene implements eui.UIComponent {
 			case "creatroom":
 				stack = this.findChild("stack");
 				stack.selectedIndex = 1;
-				let createInfo = new MsCreateRoomInfo("roomName", 2, 0, 0, 1, "");
+				let createInfo = new MsCreateRoomInfo("roomName", 8, 0, 1, 1, "");
 				let userProfile = GameData.userName;
-				let result = MvsManager.getInstance().createRoom(createInfo, userProfile);
+				let result = MvsManager.getInstance().createRoom(createInfo, userProfile,new MVS.MsWatchSet(100000,4,3000,false));
 				if (result != 0) {
-					Toast.show("已经创建了房间");
+					Toast.show("已经创建了房间 "+createInfo.canWatch);
 				}
 				// this.room.visible = true;
 				// if (!this.loopReqRoomListTimer) {

@@ -41,17 +41,18 @@ class MvsManager {
         return MvsManager.engine.joinRoom(roomId, userProfile);
     }
     public joinLiveRoom(roomId: string, userProfile: string) {
-        //TODO 替换成加入房间的接口
-        // throw MvsManager.engine.joinLiveRoom(roomId, userProfile);
-        return MvsManager.engine.joinRoom(roomId, userProfile);
+        return MvsManager.engine.joinWatchRoom(roomId, userProfile);
+    }
+    public setLiveOffSet(offset:number) {
+        return MvsManager.engine.setLiveOffset(offset);
     }
 
     public joinOver(cpProto: string) {
         return MvsManager.engine.joinOver(cpProto);
     }
 
-    public createRoom(createRoom, userProfile) {
-        return MvsManager.engine.createRoom(createRoom, userProfile)
+    public createRoom(createRoom, userProfile,watch) {
+        return MvsManager.engine.createRoom(createRoom, userProfile,watch)
     }
 
     public leaveRoom(cpProto: string): number {

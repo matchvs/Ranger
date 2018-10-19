@@ -8,12 +8,15 @@ class Const {
 
 
     // matchvs
-    public static gameId: number = 201126;
-    public static appKey: string = "f38ef43d2c024590afd295cc311440dd";
-    public static secretKey: string = "9ae1acc200bd4a178d0be24bf3b1f5a3";
+    public static gameId: number = 102003;
+    public static appKey: string = "IDLDIldi3dsdsaf";
+    public static secretKey: string = "0fac9e99805c4aed9f35825fddbbfd22";
+    // public static gameId: number = 201126;
+    // public static appKey: string = "f38ef43d2c024590afd295cc311440dd";
+    // public static secretKey: string = "9ae1acc200bd4a178d0be24bf3b1f5a3";
     public static gameVersion: number = 1;
     public static channel: string = "Matchvs";
-    public static platform: string = "release";
+    public static platform: string = "alpha";
     public static deviceId: string = "123456789";
     public static gatewayId: any = 0;
 
