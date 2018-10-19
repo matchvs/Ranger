@@ -112,24 +112,24 @@ class Lobby extends BaseScene implements eui.UIComponent {
 			}
 		}
 	}
-	public mvsJoinLiveRoomResponse(rsp:MVS.MsJoinWatchRoomRsp): void {
+	public mvsJoinLiveRoomResponse(rsp: MVS.MsJoinWatchRoomRsp): void {
 		var msg = "加入观战房间失败";
 		if (rsp.status == 200) {
 			msg = "加入观战房间成功";
 			GameData.setType(-1);
 			GameData.initPlayer(GameData.p1, GameData.userName, GameData.userId, GameData.avatarUrl);
 			GameData.initPlayer(GameData.p2, GameData.userName, GameData.userId, GameData.avatarUrl);
-			this.startGame(false);
+			this.startGame(false,1);
 			this.roomstate.visible = false;
 			MvsManager.getInstance().setLiveOffSet(-1);
 		}
-		Toast.show(msg+" errcode"+rsp.status);
+		Toast.show(msg + " errcode" + rsp.status);
 	}
 	public joinOver() {
 		MvsManager.getInstance().joinOver("");
 	}
 
-	public startGame(isSingleModel) {
+	public startGame(isSingleModel,delay?:number) {
 		if (this.isStart) {
 			return;
 		}
@@ -141,7 +141,7 @@ class Lobby extends BaseScene implements eui.UIComponent {
 			this.hideAllRoomView();
 			this.joinOver();
 			this.isStart = false;
-		}.bind(this), 5000);
+		}.bind(this), delay?delay:1000);
 	}
 
 	public mvsLeaveRoomNotify(leaveRoomInfo) {
@@ -207,9 +207,11 @@ class Lobby extends BaseScene implements eui.UIComponent {
 				stack.selectedIndex = 1;
 				let createInfo = new MsCreateRoomInfo("roomName", 8, 0, 1, 1, "");
 				let userProfile = GameData.userName;
-				let result = MvsManager.getInstance().createRoom(createInfo, userProfile,new MVS.MsWatchSet(100000,4,3000,false));
+				let result = MvsManager.getInstance().createRoom(createInfo, userProfile, new MVS.MsWatchSet(100000, 4, 6000, false));
 				if (result != 0) {
-					Toast.show("已经创建了房间 "+createInfo.canWatch);
+					Toast.show("已经创建了房间 " + createInfo.canWatch);
+				} else {
+					Toast.show("已经创建了房间 " + createInfo.canWatch);
 				}
 				// this.room.visible = true;
 				// if (!this.loopReqRoomListTimer) {

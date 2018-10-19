@@ -16,6 +16,13 @@
 		"bin-debug/starlingswf/display/SwfMovieClip.js",
 		"bin-debug/bean/Player.js",
 		"bin-debug/scene/BaseScene.js",
+		"bin-debug/scene/ListViewImageItem.js",
+		"bin-debug/scene/Lobby.js",
+		"bin-debug/scene/Login.js",
+		"bin-debug/starlingswf/StarlingSwfSheetAnalyzer.js",
+		"bin-debug/starlingswf/Swf.js",
+		"bin-debug/starlingswf/SwfAssetManager.js",
+		"bin-debug/Main.js",
 		"bin-debug/starlingswf/SwfUpdateManager.js",
 		"bin-debug/starlingswf/display/ISwfAnimation.js",
 		"bin-debug/utils/Utils.js",
@@ -32,13 +39,6 @@
 		"bin-debug/LoadingUI.js",
 		"bin-debug/scene/Enemy.js",
 		"bin-debug/scene/Game.js",
-		"bin-debug/scene/GameOver.js",
-		"bin-debug/scene/ListViewImageItem.js",
-		"bin-debug/scene/Lobby.js",
-		"bin-debug/scene/Login.js",
-		"bin-debug/starlingswf/StarlingSwfSheetAnalyzer.js",
-		"bin-debug/starlingswf/Swf.js",
-		"bin-debug/starlingswf/SwfAssetManager.js",
 		"bin-debug/starlingswf/SwfAnimationInfo.js",
 		"bin-debug/Platform.js",
 		"bin-debug/SceneManager.js",
@@ -67,6 +67,6 @@
 		"bin-debug/utils/StreakNum.js",
 		"bin-debug/utils/Tips.js",
 		"bin-debug/utils/Toast.js",
-		"bin-debug/Main.js"
+		"bin-debug/scene/GameOver.js"
 	]
 }

@@ -215,6 +215,7 @@ class GameLogic {
             return;
         }
         let time = (data && data.time) ? data.time : 0;
+        console.log('[INFO] time:'+time);
         this.gameTime.setValue((GameData.GAME_TOTAL_TIME - Math.floor(time)) + "");
         let enemyOnOneRoad: Array<Wolf> = this.allEnemyArr.getAll();
         for (var i = 0; i < enemyOnOneRoad.length; i++) {
