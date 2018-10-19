@@ -11,7 +11,7 @@
 		<e:Image id="joinroombyid" width="120" height="40" x="223.31" y="44.14" anchorOffsetX="0" anchorOffsetY="0"
 		         source="btn_joinRoom2_png" />
 		<e:Image id="watch" width="120" height="40" x="100" y="44.14" anchorOffsetX="0" anchorOffsetY="0"
-		         source="btn_relive_png"  name="watch"/>
+		          name="watch" source="btn_live_png"/>
 	</e:Group>
 </e:Skin>
 
