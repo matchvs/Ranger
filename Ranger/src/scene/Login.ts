@@ -52,7 +52,7 @@ class Login extends BaseScene implements eui.UIComponent {
         this.registerUser();
     }
     public mvsErrorResponse(code, errMsg) {
-        if (code === 400) {
+        if (code === 400||code === 402) {
             console.warn('[WARN] 400 errcode not be case ');
         }
         else {
