@@ -8,6 +8,9 @@ class Const {
 
 
     // matchvs
+    // public static gameId: number = 201477;
+    // public static appKey: string = "6d321214f9a046968f4bcc5590cf53f0#M";
+    // public static secretKey: string = "c38388b4f0da474f8d494097f61721a3";
     public static gameId: number = 102003;
     public static appKey: string = "IDLDIldi3dsdsaf";
     public static secretKey: string = "0fac9e99805c4aed9f35825fddbbfd22";

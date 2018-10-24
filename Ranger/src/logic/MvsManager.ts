@@ -7,7 +7,7 @@ class MvsManager {
     public static getInstance(): MvsManager {
         if (MvsManager._instance == null) {
             MvsManager._instance = new MvsManager();
-             MatchvsLog.closeLog();
+            //  MatchvsLog.closeLog();
         }
         return MvsManager._instance;
     }
@@ -57,6 +57,9 @@ class MvsManager {
 
     public leaveRoom(cpProto: string): number {
         return MvsManager.engine.leaveRoom(cpProto)
+    }
+    public leaveWatchRoom(cpProto: string): number {
+        return MvsManager.engine.leaveWatchRoom(cpProto)
     }
 
     public setFrameSync(rate: number) {

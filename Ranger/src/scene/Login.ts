@@ -52,8 +52,11 @@ class Login extends BaseScene implements eui.UIComponent {
         this.registerUser();
     }
     public mvsErrorResponse(code, errMsg) {
-        if (code === 400||code === 402) {
+        if (code === 400 || code === 402) {
             console.warn('[WARN] 400 errcode not be case ');
+        } else if (405 == code) {
+            console.log('[ERR] 405 该观战房间已经人满了 '+errMsg);
+            Toast.show("该观战房间已经人满了");
         }
         else {
             console.info('[ERROR] mvsErrorResponse', arguments);

@@ -119,7 +119,7 @@ class Lobby extends BaseScene implements eui.UIComponent {
 			GameData.setType(-1);
 			GameData.initPlayer(GameData.p1, GameData.userName, GameData.userId, GameData.avatarUrl);
 			GameData.initPlayer(GameData.p2, GameData.userName, GameData.userId, GameData.avatarUrl);
-			this.startGame(false,1);
+			this.startGame(false,1,true);
 			this.roomstate.visible = false;
 			MvsManager.getInstance().setLiveOffSet(-1);
 		}
@@ -129,7 +129,7 @@ class Lobby extends BaseScene implements eui.UIComponent {
 		MvsManager.getInstance().joinOver("");
 	}
 
-	public startGame(isSingleModel,delay?:number) {
+	public startGame(isSingleModel,delay?:number,isLive?:boolean) {
 		if (this.isStart) {
 			return;
 		}
@@ -137,7 +137,7 @@ class Lobby extends BaseScene implements eui.UIComponent {
 		this.isStart = true;
 		Delay.run(function () {
 			this.timerView.stop();
-			SceneManager.showScene(Game, { "isSingleModel": isSingleModel ? isSingleModel : false });
+			SceneManager.showScene(Game, { "isSingleModel": (isSingleModel ? isSingleModel : false),"isLive":(isLive?isLive:false)});
 			this.hideAllRoomView();
 			this.joinOver();
 			this.isStart = false;

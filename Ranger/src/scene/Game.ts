@@ -8,6 +8,7 @@ class Game extends BaseScene implements eui.UIComponent {
     private layerFight: egret.DisplayObjectContainer;
     private tipsController: Tips = new Tips();//提示节目
     private isShowTip: boolean = false;//是否显示提示界面
+    private isLive: boolean = false;//是否是观战界面
     private isSingleModel: boolean = false;//是否单机模式
     private isPause = false;//游戏暂停
     private logic: GameLogic;//游戏战斗逻辑
@@ -90,6 +91,7 @@ class Game extends BaseScene implements eui.UIComponent {
         console.log('Game onShow')
         this.isSingleModel = (par && par.isSingleModel) ? par.isSingleModel : false;
         this.isShowTip = (par && par.isShowTip) ? par.isShowTip : false;
+        this.isLive = (par && par.isLive) ? par.isLive : false;
         // console.log("onshow,par:" + par);
         NetWorkUtil.instance.addEventListener(this.onEvent.bind(this), NetWorkUtil.LEAVE_ROOM_NOTIFY);
     }
@@ -110,6 +112,7 @@ class Game extends BaseScene implements eui.UIComponent {
         } else {
             this.stopGame();
             MvsManager.getInstance().leaveRoom("");
+            if(this.isLive)MvsManager.getInstance().leaveWatchRoom("");
         }
         SoundUtils.instance().stopBg();
         SceneManager.back();
