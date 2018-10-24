@@ -55,13 +55,16 @@ class Login extends BaseScene implements eui.UIComponent {
         if (code === 400 || code === 402) {
             console.warn('[WARN] 400 errcode not be case ');
         } else if (405 == code) {
-            console.log('[ERR] 405 该观战房间已经人满了 '+errMsg);
+            console.log('[ERR] 405 该房间已经人满了 '+errMsg);
+            Toast.show("该房间已经人满了");
+        }else if (509 == code) {
+            console.log('[ERR] 509 该观战房间已经人满了 '+errMsg);
             Toast.show("该观战房间已经人满了");
         }
         else {
             console.info('[ERROR] mvsErrorResponse', arguments);
             this.loading.close();
-            Toast.show("网络异常:code: " + code + ", msg:" + errMsg);
+            Toast.show("异常:code: " + code + ", msg:" + errMsg);
             NetWorkUtil.checkStatsEeception(code);
         }
     }
