@@ -555,7 +555,7 @@ declare class MsGatewaySpeedResponse{
 
 /**
  * 设置帧同步回调
- * @param {number} mStatus 状态值 200-成功
+ * @param {number} status 状态值 200-成功
  */
 declare class MsSetChannelFrameSyncRsp{
     public status:number;
