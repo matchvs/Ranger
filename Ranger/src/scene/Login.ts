@@ -57,9 +57,12 @@ class Login extends BaseScene implements eui.UIComponent {
         } else if (405 == code) {
             console.log('[ERR] 405 该房间已经人满了 '+errMsg);
             Toast.show("该房间已经人满了");
-        }else if (509 == code) {
+        } else if (509 == code) {
             console.log('[ERR] 509 该观战房间已经人满了 '+errMsg);
             Toast.show("该观战房间已经人满了");
+        } else if (604 == code) {
+            console.log('[ERR] 604 该观战房间游戏已结束 '+errMsg);
+            Toast.show("游戏已结束");
         }
         else {
             console.info('[ERROR] mvsErrorResponse', arguments);
