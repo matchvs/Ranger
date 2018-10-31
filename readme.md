@@ -23,14 +23,14 @@
 可以对正在进行的游戏进行观战.观战方的画面滞后于正在进行的游戏若干秒.[观战直播功能的详细说明](https://matchvs.com/service?page=live)
 
 
-![shotscreen](readme.assets/1540967304229.png)
+![shotscreen](./readme.assets/1540967304229.png)
 
 ### 体验地址
 
 H5体验地址:http://demo.matchvs.com/Ranger
 
 微信小游戏体验地址:
-![shotscreen-1](weixingame.jpg)
+![shotscreen-1](./weixingame.jpg)
 
 ### ChangeLog
 
