@@ -65,9 +65,16 @@ class Main extends egret.DisplayObjectContainer {
             console.log('[INFO] [lifecycle] onResume');
             // SoundUtils.instance().stopBg();
         }
+        FBInstant.initializeAsync()
+            .then(function () {
+                console.log('[INFO] face book is loding........');
+                FBInstant.setLoadingProgress(100);
 
+                FBInstant.startGameAsync().then(function () {
+                    console.log('[INFO] face book is startGameAsync........');
+                }.bind(this));
+            }.bind(this));
         this.runGame();
-
     }
 
     private loadTheme() {
@@ -97,6 +104,8 @@ class Main extends egret.DisplayObjectContainer {
     }
 
     private async loadResource() {
+
+
         this.loadingView = new LoadingUI();
         this.stage.addChild(this.loadingView);
         RES.addEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
@@ -195,12 +204,16 @@ class Main extends egret.DisplayObjectContainer {
      * Create scene interface
      */
     protected createGameScene(): void {
-        SceneManager.showScene(Login);
+
         // SceneManager.showScene(Game);
+        SceneManager.showScene(Login);
+
+
+
     }
 
     public static restart() {
-        
+
 
         while (SceneManager.back()) { };
         SceneManager.showScene(Login);

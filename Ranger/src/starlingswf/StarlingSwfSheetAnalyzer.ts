@@ -18,7 +18,7 @@ module starlingswf {
 
         public async  onLoadStart(host, resource) {
             console.log('[INFO] onLoadStart' + host + " " + resource);
-            let text = host.load(resource, RES.processor.SheetProcessor);
+            let text = host.load(resource, RES.processor.JsonProcessor);
             // let data = this.parseSpriteSheet(text);
             return text;
         }
