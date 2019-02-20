@@ -3,12 +3,12 @@
         xmlns:ns1="*">
 	<w:Config id="1643596ab7c"></w:Config>
 	<e:Image width="480" height="800" x="0" y="0" source="roomBg_jpg" touchEnabled="false" />
-	<e:Image width="480" height="579" x="0" y="55.84" source="logo_png" touchEnabled="false" />
+
 	<e:Image id="avator" width="64" height="64" x="29" y="23" source="avatar_png" />
 	<e:Label id="nickname" text="Ranger" x="106" y="34" size="24" />
 	<e:ViewStack id="stack" width="480" height="800" x="0" y="0" selectedIndex="0">
 		<e:Group id="randomviewgroup" width="480" height="800" y="0">
-			<e:Button id="match" label="" x="60" y="613.51" height="68" width="360" scaleX="1" scaleY="1">
+			<e:Button id="match" label="" x="60" y="556.17" height="68" width="360" scaleX="1" scaleY="1">
 				<ns1:skinName>
 					<e:Skin states="up,down,disabled">
 						<e:Image width="100%" height="100%" source="btn_joinRandomRoom_png" />
@@ -16,7 +16,7 @@
 					</e:Skin>
 				</ns1:skinName>
 			</e:Button>
-			<e:Button id="creatroom" label="" x="60" y="703" scaleX="1" scaleY="1">
+			<e:Button id="creatroom" label="" x="60" y="632.33" scaleX="1" scaleY="1">
 				<ns1:skinName>
 					<e:Skin states="up,down,disabled">
 						<e:Image width="100%" height="100%" source="btn_createRoom_png" />
@@ -24,7 +24,7 @@
 					</e:Skin>
 				</ns1:skinName>
 			</e:Button>
-			<e:Button id="joinroom" label="" x="250" y="703" scaleX="1" scaleY="1">
+			<e:Button id="joinroom" label="" x="250" y="628.33" scaleX="1" scaleY="1">
 				<ns1:skinName>
 					<e:Skin states="up,down,disabled">
 						<e:Image width="100%" height="100%" source="btn_joinRoom_png" />
@@ -32,6 +32,8 @@
 					</e:Skin>
 				</ns1:skinName>
 			</e:Button>
+			<e:Image width="480" height="579" x="1" y="3" source="logo_png" touchEnabled="false"/>
+			<e:TextInput id="password" width="113.33" height="37.33" anchorOffsetX="0" anchorOffsetY="0" right="26" top="96" text="5201314" x="340.66999999999996" y="96" scaleX="1" scaleY="1"/>
 			
 		</e:Group>
 		<e:Group id="createviewgroup" width="480" height="800" x="0" y="0">
@@ -78,22 +80,26 @@
 			</e:skinName>
 		</e:Button>
 	</e:Group>
-	<e:Group id="room" width="364" height="444" anchorOffsetX="0" anchorOffsetY="0" x="63" y="153"
+	<e:Group id="room" width="364" height="350" anchorOffsetX="0" anchorOffsetY="0" x="63" y="153"
 	         touchEnabled="true" touchThrough="false" visible="false">
-		<e:Image width="100%" height="444" x="0" y="0" anchorOffsetX="0" anchorOffsetY="0" source="mask_png"  scale9Grid="60,100,360,600" alpha="0.8"/>
+		<e:TextInput id="roomShortID" width="268" height="38.66" x="0" y="360" anchorOffsetX="0" anchorOffsetY="0"/>
+		<e:Button id="joinRoomWithID" label="确认" x="280" y="360" anchorOffsetX="0" width="77.33" anchorOffsetY="0" height="42"/>
+		<e:Image width="100%" height="100%" x="0" y="0" anchorOffsetX="0" anchorOffsetY="0" source="mask_png"  scale9Grid="60,100,360,600" alpha="0.8"/>
 		<e:Label text="房间列表" x="8" y="8" textColor="0xffffff" size="24" fontFamily="KaiTi"/>
-		<e:List id="roomList" width="364" height="398" x="0" y="46" anchorOffsetX="0" anchorOffsetY="0">
+		<e:List id="roomList" width="364" height="300" x="0" y="46" anchorOffsetX="0" anchorOffsetY="0">
 			<e:layout>
 				<e:VerticalLayout/>
 			</e:layout>
 		</e:List>
 	</e:Group>
-	<e:Group id="roomstate" width="364" height="444" x="63" y="153" visible="false">
-		<e:Image width="364" height="444" x="0" y="0" anchorOffsetX="0" source="mask_png"/>
-		<e:Image width="64" height="64" x="50.5" y="99" source="avatar_png"/>
-		<e:Label id="p1name" text="已经就绪" x="228" y="120" size="22" fontFamily="KaiTi"/>
-		<e:Image width="64" height="64" x="50.5" y="301" source="avatar_png" alpha="0.9" blendMode="normal"/>
-		<e:Label text="等待加入" x="226.5" y="322" size="22" fontFamily="KaiTi" alpha="0.9"/>
-		<e:Rect width="356" height="2" x="4" y="220" anchorOffsetX="0" anchorOffsetY="0" fillColor="0x383636" ellipseWidth="2" ellipseHeight="2"/>
+	<e:Group id="roomstate" width="364" height="246.66" x="63" y="190.31" anchorOffsetY="0" visible="false">
+		<e:Image width="364" height="100%" x="0" y="0" anchorOffsetX="0" source="mask_png"/>
+		<e:Image width="64" height="64" x="37.17" y="39" source="avatar_png"/>
+		<e:Label id="p1name" text="已经就绪" x="116" y="74.66" size="22" fontFamily="KaiTi"/>
+		<e:Image width="64" height="64" x="37.16" y="147.67" source="avatar_png" alpha="0.9" blendMode="normal"/>
+		<e:Label text="等待加入" x="115.83" y="180.67" size="22" fontFamily="KaiTi" alpha="0.9"/>
+		<e:Rect width="356" height="2" x="4" y="125.33" anchorOffsetX="0" anchorOffsetY="0" fillColor="0x383636" ellipseWidth="2" ellipseHeight="2"/>
+
+		<e:Button id="invite" label="微信邀请" x="222.66" y="162.67" anchorOffsetX="0" width="129.34" anchorOffsetY="0" height="48.66"/>
 	</e:Group>
 </e:Skin>

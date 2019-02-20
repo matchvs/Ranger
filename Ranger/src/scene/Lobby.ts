@@ -11,6 +11,29 @@ class Lobby extends BaseScene implements eui.UIComponent {
 	private sourceArr: any[] = [];
 	public static instance;
 	private loopReqRoomListTimer;
+
+
+
+	public stack: eui.ViewStack;
+	public randomviewgroup: eui.Group;
+	public match: eui.Button;
+	public creatroom: eui.Button;
+	public joinroom: eui.Button;
+	public createviewgroup: eui.Group;
+	public start: eui.Button;
+	public leave: eui.Button;
+	public back: eui.Button;
+	public dialog_waitingmatch: eui.Group;
+	public waigtingtime010: eui.Image;
+	public waigtingtime100: eui.Image;
+	public waigtingtime001: eui.Image;
+	public cancelwaiting: eui.Button;
+	public roomShortID: eui.TextInput;
+	public joinRoomWithID: eui.Button;
+	public password: eui.TextInput;
+	public invite: eui.Button;
+
+
 	public constructor() {
 		super();
 		Lobby.instance = this;
@@ -50,6 +73,11 @@ class Lobby extends BaseScene implements eui.UIComponent {
 		this.avator = <eui.Image>this.findChild("avator");
 		this.roomList = <eui.List>this.findChild("roomList");
 		ListViewUtil.initListView(this.room, this.roomList, this.sourceArr, ListViewImageItem);
+
+
+		this.password.text = Math.floor((Math.random() * 1000000) + 1) + "";//生成随机短号
+
+
 		try {
 			getWxUserInfo(function (userinfo) {
 				try {
@@ -63,11 +91,39 @@ class Lobby extends BaseScene implements eui.UIComponent {
 				}
 			}.bind(this));
 		} catch (error) {
-			this.loadAvatar("https://fluttergo.com/images/flutter-mark-square-100.png");
+			console.log('[INFO] e' + error);
+		}
+		// getWxShareInfo(GameData.shareTicket, function (res) {
+		// 	console.log('[INFO] getWxShareInfo res:' + JSON.stringify(res));
+		// });
+
+		this.isFromShareJoin();
+	}
+	private isFromShareJoin() {
+		var isFromShare = GameData.query;
+
+		if (isFromShare && JSON.stringify(isFromShare) != "{}") {
+			this.roomShortID.text = isFromShare ? GameData.query.password : this.password.text;
+			Toast.show("约战成功,正在进入房间:" + this.roomShortID.text);
+			this.onClick(this.joinRoomWithID.name, this.joinRoomWithID);
+		} else {
+			console.log('[INFO] wx.share.query is null');
+			GameData.query = {};
 		}
 	}
+	private onWXShow = function (res) {
+		GameData.shareTicket = res.shareTicket;
+		GameData.query = res.query;
+		console.log("wx.onshow.res :" + JSON.stringify(res));
+		console.log("GameData.query :" + GameData.query + " tosjon:" + JSON.stringify(GameData.query));
+		this.isFromShareJoin();
+	}.bind(this);
+	
 	protected onShow() {
 		this.mvsBind();
+		if (window["wx"]) {
+			window["wx"].onShow(this.onWXShow);
+		}
 	}
 	protected onHide() {
 		this.timerView.stop();
@@ -77,11 +133,19 @@ class Lobby extends BaseScene implements eui.UIComponent {
 			clearInterval(this.loopReqRoomListTimer);
 			this.loopReqRoomListTimer = null;
 		}
+		if (window["wx"]) {
+			window["wx"].offShow(this.onWXShow);
+		}
 	}
 
 	public joinRoomRandom() {
 		console.log('[room join random]: ' + this.nickname.text);
 		MvsManager.getInstance().joinRandomRoom(GameData.MAX_PLAYER, this.nickname.text);
+		setTimeout(function () {
+			MvsManager.getInstance().leaveRoom("");
+			Toast.show("开始单机游戏");
+			Login.startSingleGame();
+		}.bind(this), 3000);
 	}
 	public mvsJoinRoomNotify(userInfo): void {
 		console.log('[room join notify]: ' + JSON.stringify(userInfo));
@@ -97,14 +161,16 @@ class Lobby extends BaseScene implements eui.UIComponent {
 		console.log('[room join rsp]: ' + JSON.stringify(userInfoList));
 		GameData.roomId = roomInfo.roomId || roomInfo.roomID;
 		if (userInfoList && userInfoList.length > 0) {
-			Toast.show("匹配成功,游戏开始");
-			var userInfo = userInfoList[0];
-			//再前2个人之后进入房间的用户为观战者
-			GameData.setType(userInfoList.length > 1 ? -1 : Number(userInfo.userId));
-			GameData.initPlayer(GameData.p1, GameData.userName, GameData.userId, GameData.avatarUrl);
-			GameData.initPlayer(GameData.p2, GameData.userName, GameData.userId, GameData.avatarUrl);
-			this.startGame(false);
-			this.roomstate.visible = false;
+			Toast.show("匹配成功,3秒后开始游戏开始");
+			setTimeout(function () {
+				var userInfo = userInfoList[0];
+				//再前2个人之后进入房间的用户为观战者
+				GameData.setType(userInfoList.length > 1 ? -1 : Number(userInfo.userId));
+				GameData.initPlayer(GameData.p1, GameData.userName, GameData.userId, GameData.avatarUrl);
+				GameData.initPlayer(GameData.p2, GameData.userName, GameData.userId, GameData.avatarUrl);
+				this.startGame(false);
+				this.roomstate.visible = false;
+			}.bind(this), 3000)
 		} else {
 			if (this.roomstate.visible == true) {
 				Toast.show("创建房间成功,等待其他玩家加入");
@@ -119,7 +185,7 @@ class Lobby extends BaseScene implements eui.UIComponent {
 			GameData.setType(-1);
 			GameData.initPlayer(GameData.p1, GameData.userName, GameData.userId, GameData.avatarUrl);
 			GameData.initPlayer(GameData.p2, GameData.userName, GameData.userId, GameData.avatarUrl);
-			this.startGame(false,1,true);
+			this.startGame(false, 1, true);
 			this.roomstate.visible = false;
 			MvsManager.getInstance().setLiveOffSet(-1);
 		}
@@ -129,7 +195,7 @@ class Lobby extends BaseScene implements eui.UIComponent {
 		MvsManager.getInstance().joinOver("");
 	}
 
-	public startGame(isSingleModel,delay?:number,isLive?:boolean) {
+	public startGame(isSingleModel, delay?: number, isLive?: boolean) {
 		if (this.isStart) {
 			return;
 		}
@@ -137,11 +203,11 @@ class Lobby extends BaseScene implements eui.UIComponent {
 		this.isStart = true;
 		Delay.run(function () {
 			this.timerView.stop();
-			SceneManager.showScene(Game, { "isSingleModel": (isSingleModel ? isSingleModel : false),"isLive":(isLive?isLive:false)});
+			SceneManager.showScene(Game, { "isSingleModel": (isSingleModel ? isSingleModel : false), "isLive": (isLive ? isLive : false) });
 			this.hideAllRoomView();
 			this.joinOver();
 			this.isStart = false;
-		}.bind(this), delay?delay:1000);
+		}.bind(this), delay ? delay : 1000);
 	}
 
 	public mvsLeaveRoomNotify(leaveRoomInfo) {
@@ -189,6 +255,35 @@ class Lobby extends BaseScene implements eui.UIComponent {
 		clearInterval(this.loopReqRoomListTimer);
 		this.loopReqRoomListTimer = null;
 	}
+	public getPassWord(): string {
+		return (this.roomShortID.text && this.roomShortID.text.length > 0) ? this.roomShortID.text : this.password.text;
+	}
+	public joinRoomWithPassWord() {
+
+		//var tags = [{title:"Matchvs"}]; //用户自定义
+		var maxPlayer = 2;
+		var mode = 0;
+		var canwatch = 1;
+		let userProfile = GameData.userName + "";
+
+		var tags = { key: this.getPassWord() };
+		var matchinfo = new MsMatchInfo(maxPlayer, mode, canwatch, tags);
+		var watchset = new MVS.MsWatchSet(600000, 2, 60000, true);
+
+		let result = MvsManager.getInstance().joinRoomWithProperties(matchinfo, userProfile);
+		if (result != 0) {
+			Toast.show("已经创建了房间 ");
+		} else {
+			Toast.show("创建房间成功 ");
+			// this.room.visible = true;
+			// if (!this.loopReqRoomListTimer) {
+			// 	this.loopReqRoomListTimer = setInterval(loopReqRoomListFunc, 2000);
+			// }
+			var stack: any = this.findChild("stack");
+			stack.selectedIndex = 1;
+			this.roomstate.visible = true;
+		}
+	}
 	public onClick(name: string, v: egret.DisplayObject) {
 		let stack: any;
 
@@ -198,26 +293,14 @@ class Lobby extends BaseScene implements eui.UIComponent {
 		switch (name) {
 			case "back":
 				SceneManager.back();
+				MvsManager.getInstance().logout("");
 				break;
 			case "start":
 				Toast.show("再等一人,自动开始");
 				break;
 			case "creatroom":
-				stack = this.findChild("stack");
-				stack.selectedIndex = 1;
-				let createInfo = new MsCreateRoomInfo("roomName", 8, 0, 1, 1, "");
-				let userProfile = GameData.userName;
-				let result = MvsManager.getInstance().createRoom(createInfo, userProfile, new MVS.MsWatchSet(100000, 4, 6000, false));
-				if (result != 0) {
-					Toast.show("已经创建了房间 " + createInfo.canWatch);
-				} else {
-					Toast.show("已经创建了房间 " + createInfo.canWatch);
-				}
-				// this.room.visible = true;
-				// if (!this.loopReqRoomListTimer) {
-				// 	this.loopReqRoomListTimer = setInterval(loopReqRoomListFunc, 2000);
-				// }
-				this.roomstate.visible = true;
+			case "joinRoomWithID":
+				this.joinRoomWithPassWord();
 				break;
 			case "joinroom":
 				stack = this.findChild("stack");
@@ -240,6 +323,9 @@ class Lobby extends BaseScene implements eui.UIComponent {
 			case "cancelwaiting":
 				this.timerView.stop();
 				MvsManager.getInstance().leaveRoom("cancle");
+				break;
+			case this.invite.name:
+				together("等你来战斗" + this.getPassWord(), "password=" + this.getPassWord());
 				break;
 		}
 		return true;

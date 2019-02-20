@@ -92,5 +92,25 @@ class Loading extends egret.Sprite {
         this.isShow = false;
         this.context.removeChild(this);
     }
+    public press2close(msg, func?) {
+        if (!this.isShow) {
+            console.log('[INFO] loading is not  showoing');
+            return;
+        }
+        this.textField.text = "[error] " + msg;
+
+        egret.Tween.removeAllTweens();
+        var btnClose: eui.Button = new eui.Button();
+        btnClose.label = "close";
+        this.addChild(btnClose);
+        btnClose.x = this.width / 2 - btnClose.width / 2
+        btnClose.y = this.height / 2 - btnClose.height / 2
+        btnClose.addEventListener(egret.TouchEvent.TOUCH_TAP, function () {
+            this.isShow = false;
+            this.context.removeChild(this);
+            func && func();
+        }.bind(this), this);
+
+    }
 
 }

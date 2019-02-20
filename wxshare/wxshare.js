@@ -6,6 +6,9 @@ var wxShareConf = {
  * 获取启动参数
  */
 function getLaunchOptionsSync() {
+	 if (!window["wx"]) {
+		 return;
+	 }
     var LaunchOption = wx.getLaunchOptionsSync();
     console.log("LaunchOption:" + JSON.stringify(LaunchOption));
     console.log("LaunchOption quary:" + JSON.stringify(LaunchOption.query));
@@ -18,6 +21,9 @@ function getLaunchOptionsSync() {
  * @param {string} query getLaunchOptionsSync 中的参数
  */
 function together(title, query) {
+	if (!window["wx"]) {
+		 return;
+	 }
     wx.shareAppMessage({
         title: title,
         query: query,
@@ -47,6 +53,9 @@ function together(title, query) {
  * 获取用户信息
  */
 function getWxUserInfo(data) {
+	if (!window["wx"]) {
+		 return;
+	 }
     wx.getUserInfo({
         openIdList: ['selfOpenId'],
         lang: 'zh_CN',
@@ -62,12 +71,36 @@ function getWxUserInfo(data) {
 
 }
 
+/**
+ * 获取用户信息
+ */
+function getWxShareInfo(shareTicket,cb) {
+	if (!window["wx"]) {
+		 return;
+	 }
+    wx.getShareInfo({
+        "shareTicket": shareTicket,
+        "timeout": 10000,
+        success: function (res) {
+            console.log('[getWxShareInfo] success', res.userInfo);
+            return data(res);
+        },
+        fail: function (res) {
+            data();
+            console.log("[getWxShareInfo] fail", res);
+            return '';
+        }});
+
+}
 
 /**
  * 获取用户OpenID
  * @param {object} obj {success:function(res),fail:function(res)}
  */
 function getUserOpenID(obj) {
+	if (!window["wx"]) {
+		 return;
+	 }
     var callObj = obj;
     wx.login({
         success: function (res) {
@@ -99,3 +132,4 @@ window.getLaunchOptionsSync = getLaunchOptionsSync;
 window.together = together;
 window.getWxUserInfo = getWxUserInfo;
 window.getUserOpenID = getUserOpenID;
+window.getWxShareInfo = getWxShareInfo;

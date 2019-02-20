@@ -52,7 +52,10 @@ class MvsManager {
     }
 
     public createRoom(createRoom, userProfile,watch) {
-        return MvsManager.engine.createRoom(createRoom, userProfile,watch)
+        return MvsManager.engine.createRoom(createRoom, userProfile,watch);
+    }
+    public joinRoomWithProperties(matchinfo:MsMatchInfo, userProfile:string) {
+        return MvsManager.engine.joinRoomWithProperties(matchinfo, userProfile);
     }
 
     public leaveRoom(cpProto: string): number {

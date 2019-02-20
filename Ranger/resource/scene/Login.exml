@@ -28,4 +28,5 @@
 		<e:Image id="musicOff" width="60" height="40" x="245" y="182" anchorOffsetX="0" anchorOffsetY="0" source="option_05_png" visible="false"/>
 		<e:Image id="musicOn" width="66" height="39" x="275" y="183" anchorOffsetX="0" anchorOffsetY="0" source="option_06_png" visible="false"/>
 	</e:Group>
+	<e:Image id="exit" width="40" height="40" x="26" y="21" source="btn_close_png"/>
 </e:Skin>

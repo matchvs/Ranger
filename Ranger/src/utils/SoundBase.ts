@@ -100,13 +100,13 @@ class SoundBase extends egret.DisplayObjectContainer {
             return;
         }
         this._status = 1;
-        if (this._soundChannel)
+        if (this._soundChannel) {
             this._soundChannel.stop();
 
-        this._soundChannel = this._sound.play(this._positon, 1);
+            this._soundChannel = this._sound.play(this._positon, 1);
 
-        this._soundChannel.once(egret.Event.SOUND_COMPLETE, this.looped, this);
-
+            this._soundChannel.once(egret.Event.SOUND_COMPLETE, this.looped, this);
+        }
         return this._status;
     }
     //设置循环
@@ -118,7 +118,7 @@ class SoundBase extends egret.DisplayObjectContainer {
     //设置暂停
     public pause() {
         var temp = this._status;
-        if (1 === temp) {
+        if (this._soundChannel && 1 === temp) {
             this._positon = this._soundChannel.position;
             this._soundChannel.stop();
             this._status = 2;

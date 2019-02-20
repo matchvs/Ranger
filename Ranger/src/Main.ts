@@ -47,33 +47,43 @@ class Main extends egret.DisplayObjectContainer {
     private onAddToStage(event: egret.Event) {
 
         egret.lifecycle.addLifecycleListener((context) => {
+            var i =0;
             context.onUpdate = () => {
-                // console.log("update");
+                // console.log("update "+ (i++));
             }
         })
         egret.lifecycle.onPause = () => {
             // egret.ticker.pause();
-            console.log('[INFO] [lifecycle] onPause');
+            // console.log('[INFO] [lifecycle] onPause');
             // SoundUtils.instance().stopBg();
-            // if (window["wx"]) {
-            //     Main.restart();
-            // } 
         }
 
         egret.lifecycle.onResume = () => {
             // egret.ticker.resume();
-            console.log('[INFO] [lifecycle] onResume');
+            // console.log('[INFO] [lifecycle] onResume');
             // SoundUtils.instance().stopBg();
         }
-        FBInstant.initializeAsync()
-            .then(function () {
-                console.log('[INFO] face book is loding........');
-                FBInstant.setLoadingProgress(100);
 
-                FBInstant.startGameAsync().then(function () {
-                    console.log('[INFO] face book is startGameAsync........');
-                }.bind(this));
+        if(window["wx"]){
+            window["wx"].onShow(function callback(res){
+                GameData.shareTicket = res.shareTicket;
+                GameData.query = res.query;
+                console.log("wx.onshow.res :"+JSON.stringify(res));
+                console.log("GameData.query :"+ GameData.query +" tosjon:"+JSON.stringify( GameData.query));
             }.bind(this));
+        }
+        if (window["FBInstant"] != undefined) {
+            FBInstant.initializeAsync()
+                .then(function () {
+                    console.log('[INFO] face book is loding........');
+                    FBInstant.setLoadingProgress(100);
+
+                    FBInstant.startGameAsync().then(function () {
+                        console.log('[INFO] face book is startGameAsync........');
+                    }.bind(this));
+                }.bind(this));
+        }
+
         this.runGame();
     }
 
@@ -179,14 +189,33 @@ class Main extends egret.DisplayObjectContainer {
             var require = window["require"];
             var mta = require('library/mta_analysis.js')
             window["mta"] = mta;
-            window["mta"].App.init({
-                "appID": "500623547",
-                "eventID": "500623822",
-            });
-            console.log('[INFO] success,init MTA');
+
+            try {
+                if (window["wx"] != undefined) {
+                    var LaunchOption = window["wx"].getLaunchOptionsSync();
+                    console.log("LaunchOption:" + JSON.stringify(LaunchOption));
+                    mta.App.init({
+                        "appID": "500623547",
+                        "eventID": "500623822",
+                        "lauchOpts": LaunchOption,
+                    });
+                    console.log('[INFO] int mat-channel success');
+                } else {
+                    window["mta"].App.init({
+                        "appID": "500623547",
+                        "eventID": "500623822",
+                    });
+
+                    console.log('[INFO] success,init MTA');
+                }
+            } catch (error) {
+                console.warn('[WARN] fail ,init mta case:' + error);
+            }
+            console.log('[INFO] init mta success!');
         } catch (error) {
-            console.warn('[WARN] fail ,init mta case:' + JSON.stringify(error));
+            console.warn('[WARN] fail ,load mta library:' + error);
         }
+
         this.createGameScene();
     }
 
