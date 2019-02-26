@@ -119,7 +119,7 @@ class Invite extends BaseScene implements eui.UIComponent {
 
 		Delay.run(function () {
 
-			(!this.isFromInvite) && SceneManager.back();
+			SceneManager.back();
 			SceneManager.showScene(Game, { "isSingleModel": (isSingleModel ? isSingleModel : false), "isLive": (isLive ? isLive : false) });
 			this.joinOver();
 			this.isStart = false;
