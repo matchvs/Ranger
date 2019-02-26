@@ -86,7 +86,7 @@ class Invite extends BaseScene implements eui.UIComponent {
 		}
 		console.log('[room join rsp]: ' + JSON.stringify(userInfoList));
 		GameData.roomId = roomInfo.roomId || roomInfo.roomID;
-		if (userInfoList && userInfoList.length > 1) {
+		if (userInfoList && userInfoList.length > 0) {
 			var userInfo = userInfoList[0];
 			//再前2个人之后进入房间的用户为观战者
 			GameData.setType(userInfoList.length > 1 ? -1 : Number(userInfo.userId));
@@ -94,7 +94,7 @@ class Invite extends BaseScene implements eui.UIComponent {
 			GameData.initPlayer(GameData.p2, GameData.userName, GameData.userId, GameData.avatarUrl);
 			this.t_p2.text = userInfo.userId == GameData.userId ? userInfoList[1].userId : userInfo.userId;
 			this.startGame(false);
-		} else if (userInfoList && userInfoList.length <= 1) {
+		} else if (userInfoList && userInfoList.length <= 0) {
 			if (this.isFromInvite) {
 				Toast.show("房间已经解散");
 				SceneManager.back();
