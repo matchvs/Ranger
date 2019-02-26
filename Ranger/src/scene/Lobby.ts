@@ -99,7 +99,7 @@ class Lobby extends BaseScene implements eui.UIComponent {
 		// 	console.log('[INFO] getWxShareInfo res:' + JSON.stringify(res));
 		// });
 		this.isLuancherFromInvate();
-	
+
 	}
 	private isLuancherFromInvate() {
 		if (window["wx"]) {
@@ -253,6 +253,20 @@ class Lobby extends BaseScene implements eui.UIComponent {
 	public getPassWord(): string {
 		return (this.roomShortID.text && this.roomShortID.text.length > 0) ? this.roomShortID.text : this.password.text;
 	}
+	public creatARoom() {
+		var stack: any = this.findChild("stack");
+		stack.selectedIndex = 1;
+		let createInfo = new MsCreateRoomInfo("roomName", 8, 0, 1, 1, "");
+		let userProfile = GameData.userName;
+		let result = MvsManager.getInstance().createRoom(createInfo, userProfile, new MVS.MsWatchSet(100000, 4, 6000, false));
+		if (result != 0) {
+			Toast.show("已经创建了房间 " + createInfo.canWatch);
+		} else {
+			Toast.show("已经创建了房间 " + createInfo.canWatch);
+		}
+		this.roomstate.visible = true;
+
+	}
 	public joinRoomWithPassWord() {
 
 		//var tags = [{title:"Matchvs"}]; //用户自定义
@@ -289,6 +303,8 @@ class Lobby extends BaseScene implements eui.UIComponent {
 				Toast.show("再等一人,自动开始");
 				break;
 			case "creatroom":
+				this.creatARoom();
+				break;
 			case "joinRoomWithID":
 				this.joinRoomWithPassWord();
 				break;
