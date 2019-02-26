@@ -30,6 +30,7 @@
 		"bin-debug/scene/Enemy.js",
 		"bin-debug/scene/Game.js",
 		"bin-debug/scene/GameOver.js",
+		"bin-debug/scene/Invite.js",
 		"bin-debug/scene/ListViewImageItem.js",
 		"bin-debug/scene/Lobby.js",
 		"bin-debug/scene/Login.js",

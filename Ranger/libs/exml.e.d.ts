@@ -62,6 +62,8 @@ declare class EnemySkin extends eui.Skin{
 }
 declare class GameOverSkin extends eui.Skin{
 }
+declare class InviteSkin extends eui.Skin{
+}
 declare class ListViewImageItemSkin extends eui.Skin{
 }
 declare class LobbySkin extends eui.Skin{

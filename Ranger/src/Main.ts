@@ -47,7 +47,7 @@ class Main extends egret.DisplayObjectContainer {
     private onAddToStage(event: egret.Event) {
 
         egret.lifecycle.addLifecycleListener((context) => {
-            var i =0;
+            var i = 0;
             context.onUpdate = () => {
                 // console.log("update "+ (i++));
             }
@@ -64,14 +64,15 @@ class Main extends egret.DisplayObjectContainer {
             // SoundUtils.instance().stopBg();
         }
 
-        if(window["wx"]){
-            window["wx"].onShow(function callback(res){
+        if (window["wx"]) {
+            window["wx"].onShow(function callback(res) {
                 GameData.shareTicket = res.shareTicket;
                 GameData.query = res.query;
-                console.log("wx.onshow.res :"+JSON.stringify(res));
-                console.log("GameData.query :"+ GameData.query +" tosjon:"+JSON.stringify( GameData.query));
+                console.log("wx.onshow.res :" + JSON.stringify(res));
+                console.log("GameData.query :" + GameData.query + " tosjon:" + JSON.stringify(GameData.query));
             }.bind(this));
         }
+
         if (window["FBInstant"] != undefined) {
             FBInstant.initializeAsync()
                 .then(function () {

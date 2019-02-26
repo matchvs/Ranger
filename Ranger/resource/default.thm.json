@@ -19,7 +19,8 @@
 		"Lobby": "resource/scene/Lobby.exml",
 		"Enemy": "resource/scene/Enemy.exml",
 		"GameOver": "resource/scene/GameOver.exml",
-		"ListViewImageItem": "resource/scene/ListViewImageItem.exml"
+		"ListViewImageItem": "resource/scene/ListViewImageItem.exml",
+		"Invite": "resource/scene/Invite.exml"
 	},
 	"autoGenerateExmlsList": true,
 	"exmls": [
@@ -42,6 +43,7 @@
 		"resource/scene/Enemy.exml",
 		"resource/scene/Game.exml",
 		"resource/scene/GameOver.exml",
+		"resource/scene/Invite.exml",
 		"resource/scene/ListViewImageItem.exml",
 		"resource/scene/Lobby.exml",
 		"resource/scene/Login.exml"

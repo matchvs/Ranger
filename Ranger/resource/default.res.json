@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "checkbox_select_disabled_png,checkbox_select_down_png,checkbox_select_up_png,checkbox_unselect_png,selected_png,border_png,header_png,radiobutton_select_disabled_png,radiobutton_select_down_png,radiobutton_select_up_png,radiobutton_unselect_png,roundthumb_png,thumb_png,track_png,tracklight_png,handle_png,off_png,on_png,button_down_png,button_up_png,thumb_pb_png,track_pb_png,track_sb_png,description_json,toast-bg_png,timefont_json,loadingprogress_png,go_json,go_swf_json,honglang_json,honglang_swf_json,lanlang_json,lanlang_swf_json,sourceNum_json,streakNum_json,promptPop_json,promptPop_swf_json,xiaohongmao_json,xiaohongmao_swf_json,xiaolanmao_json,xiaolanmao_swf_json,arrow_png,avatar_png,bBlodBar_png,bBlodBarBg_png,bg_list_png,blodBarMask_png,bomb_png,btn_addRobot_png,btn_back_png,btn_backToHome_png,btn_close_png,btn_createRoom_png,btn_joinRandomRoom_png,btn_joinRoom_png,btn_joinRoom2_png,btn_kickPlayer_png,btn_leaveRoom_png,btn_modify_png,btn_relive_png,btn_startGame_png,combo_png,complete_png,egret_icon2_png,fight1Bg_png,footer_text_white_png,gameOver_png,gold_png,goldBg_png,help_btn_png,help_object-2_png,icon_lose_png,icon_win_png,inputBg_png,load_bg_png,loading_bg_jpg,loading_logo_png,logo_png,mask_png,music_btn_png,option_05_png,option_06_png,option_07_png,option_bg_png,option_btn_b_png,optionBgImage_png,overBg_png,rBlodBar_png,rBlodBarBg_png,roomBg_jpg,roomBg_png,shan_png,sorceMc_png,start_btn_png,toast-bg2_png,wall1_1_png,wall1_2_png,mask_white_png,btnfight_json,btn_live_png,btn_live2_png",
+			"keys": "checkbox_select_disabled_png,checkbox_select_down_png,checkbox_select_up_png,checkbox_unselect_png,selected_png,border_png,header_png,radiobutton_select_disabled_png,radiobutton_select_down_png,radiobutton_select_up_png,radiobutton_unselect_png,roundthumb_png,thumb_png,track_png,tracklight_png,handle_png,off_png,on_png,button_down_png,button_up_png,thumb_pb_png,track_pb_png,track_sb_png,description_json,toast-bg_png,timefont_json,loadingprogress_png,go_json,go_swf_json,honglang_json,honglang_swf_json,lanlang_json,lanlang_swf_json,sourceNum_json,streakNum_json,promptPop_json,promptPop_swf_json,xiaohongmao_json,xiaohongmao_swf_json,xiaolanmao_json,xiaolanmao_swf_json,arrow_png,avatar_png,bBlodBar_png,bBlodBarBg_png,bg_list_png,blodBarMask_png,bomb_png,btn_addRobot_png,btn_back_png,btn_backToHome_png,btn_close_png,btn_createRoom_png,btn_joinRandomRoom_png,btn_joinRoom_png,btn_joinRoom2_png,btn_kickPlayer_png,btn_leaveRoom_png,btn_modify_png,btn_relive_png,btn_startGame_png,combo_png,complete_png,egret_icon2_png,fight1Bg_png,footer_text_white_png,gameOver_png,gold_png,goldBg_png,help_btn_png,help_object-2_png,icon_lose_png,icon_win_png,inputBg_png,load_bg_png,loading_bg_jpg,loading_logo_png,logo_png,mask_png,music_btn_png,option_05_png,option_06_png,option_07_png,option_bg_png,option_btn_b_png,optionBgImage_png,overBg_png,rBlodBar_png,rBlodBarBg_png,roomBg_jpg,roomBg_png,shan_png,sorceMc_png,start_btn_png,toast-bg2_png,wall1_1_png,wall1_2_png,mask_white_png,btnfight_json,btn_live_png,btn_live2_png,bg_avator_p1_png,bg_avator_p2_png,btn_invite_png,btn_invite_friend_png,vs_png,btn_back2_png",
 			"name": "preload"
 		}
 	],
@@ -520,6 +520,36 @@
 			"name": "btn_live2_png",
 			"type": "image",
 			"url": "ranger/btn_live.png"
+		},
+		{
+			"name": "bg_avator_p1_png",
+			"type": "image",
+			"url": "ranger/invite/bg_avator_p1.png"
+		},
+		{
+			"name": "bg_avator_p2_png",
+			"type": "image",
+			"url": "ranger/invite/bg_avator_p2.png"
+		},
+		{
+			"name": "btn_invite_png",
+			"type": "image",
+			"url": "ranger/invite/btn_invite.png"
+		},
+		{
+			"name": "btn_invite_friend_png",
+			"type": "image",
+			"url": "ranger/invite/btn_invite_friend.png"
+		},
+		{
+			"name": "vs_png",
+			"type": "image",
+			"url": "ranger/invite/vs.png"
+		},
+		{
+			"name": "btn_back2_png",
+			"type": "image",
+			"url": "ranger/invite/btn_back.png"
 		}
 	]
 }

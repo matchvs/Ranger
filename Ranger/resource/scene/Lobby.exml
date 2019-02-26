@@ -16,7 +16,7 @@
 					</e:Skin>
 				</ns1:skinName>
 			</e:Button>
-			<e:Button id="creatroom" label="" x="60" y="632.33" scaleX="1" scaleY="1">
+			<e:Button id="creatroom" label="" x="60" y="698.33" scaleX="1" scaleY="1">
 				<ns1:skinName>
 					<e:Skin states="up,down,disabled">
 						<e:Image width="100%" height="100%" source="btn_createRoom_png" />
@@ -24,7 +24,7 @@
 					</e:Skin>
 				</ns1:skinName>
 			</e:Button>
-			<e:Button id="joinroom" label="" x="250" y="628.33" scaleX="1" scaleY="1">
+			<e:Button id="joinroom" label="" x="250" y="696.33" scaleX="1" scaleY="1">
 				<ns1:skinName>
 					<e:Skin states="up,down,disabled">
 						<e:Image width="100%" height="100%" source="btn_joinRoom_png" />
@@ -33,7 +33,8 @@
 				</ns1:skinName>
 			</e:Button>
 			<e:Image width="480" height="579" x="1" y="3" source="logo_png" touchEnabled="false"/>
-			<e:TextInput id="password" width="113.33" height="37.33" anchorOffsetX="0" anchorOffsetY="0" right="26" top="96" text="5201314" x="340.66999999999996" y="96" scaleX="1" scaleY="1"/>
+			<e:TextInput id="password" width="113.33" height="37.33" anchorOffsetX="0" anchorOffsetY="0" right="26" top="96" text="5201314" x="340.66999999999996" y="96" scaleX="1" scaleY="1" visible="false"/>
+			<e:Image id="btn_invite" x="60" y="626" source="btn_invite_png"/>
 			
 		</e:Group>
 		<e:Group id="createviewgroup" width="480" height="800" x="0" y="0">
@@ -100,6 +101,6 @@
 		<e:Label text="等待加入" x="115.83" y="180.67" size="22" fontFamily="KaiTi" alpha="0.9"/>
 		<e:Rect width="356" height="2" x="4" y="125.33" anchorOffsetX="0" anchorOffsetY="0" fillColor="0x383636" ellipseWidth="2" ellipseHeight="2"/>
 
-		<e:Button id="invite" label="微信邀请" x="222.66" y="162.67" anchorOffsetX="0" width="129.34" anchorOffsetY="0" height="48.66"/>
+		<e:Button id="invite" label="微信邀请" x="222.66" y="162.67" anchorOffsetX="0" width="129.34" anchorOffsetY="0" height="48.66" visible="false"/>
 	</e:Group>
 </e:Skin>

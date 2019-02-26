@@ -19,6 +19,8 @@ class Lobby extends BaseScene implements eui.UIComponent {
 	public match: eui.Button;
 	public creatroom: eui.Button;
 	public joinroom: eui.Button;
+	public password: eui.TextInput;
+	public btn_invite: eui.Image;
 	public createviewgroup: eui.Group;
 	public start: eui.Button;
 	public leave: eui.Button;
@@ -30,8 +32,8 @@ class Lobby extends BaseScene implements eui.UIComponent {
 	public cancelwaiting: eui.Button;
 	public roomShortID: eui.TextInput;
 	public joinRoomWithID: eui.Button;
-	public password: eui.TextInput;
 	public invite: eui.Button;
+
 
 
 	public constructor() {
@@ -96,12 +98,22 @@ class Lobby extends BaseScene implements eui.UIComponent {
 		// getWxShareInfo(GameData.shareTicket, function (res) {
 		// 	console.log('[INFO] getWxShareInfo res:' + JSON.stringify(res));
 		// });
-
-		this.isFromShareJoin();
+		this.isLuancherFromInvate();
+		this.isShowFromInvate();
 	}
-	private isFromShareJoin() {
+	private isLuancherFromInvate(){
+		  if (window["wx"]) {
+            var options = getLaunchOptionsSync();
+            if (options && JSON.stringify(options.query) != "{}") {
+                GameData.query = options.query;
+            }
+            console.log("GameData.query :" + GameData.query + " tosjon:" + JSON.stringify(GameData.query));
+            Toast.show("从微信邀请启动");
+            SceneManager.showScene(Invite);
+        }
+	}
+	private isShowFromInvate() {
 		var isFromShare = GameData.query;
-
 		if (isFromShare && JSON.stringify(isFromShare) != "{}") {
 			this.roomShortID.text = isFromShare ? GameData.query.password : this.password.text;
 			Toast.show("约战成功,正在进入房间:" + this.roomShortID.text);
@@ -118,7 +130,7 @@ class Lobby extends BaseScene implements eui.UIComponent {
 		console.log("GameData.query :" + GameData.query + " tosjon:" + JSON.stringify(GameData.query));
 		this.isFromShareJoin();
 	}.bind(this);
-	
+
 	protected onShow() {
 		this.mvsBind();
 		if (window["wx"]) {
@@ -161,7 +173,7 @@ class Lobby extends BaseScene implements eui.UIComponent {
 		console.log('[room join rsp]: ' + JSON.stringify(userInfoList));
 		GameData.roomId = roomInfo.roomId || roomInfo.roomID;
 		if (userInfoList && userInfoList.length > 0) {
-			Toast.show("匹配成功,3秒后开始游戏开始");
+			Toast.show("匹配成功");
 			setTimeout(function () {
 				var userInfo = userInfoList[0];
 				//再前2个人之后进入房间的用户为观战者
@@ -170,7 +182,7 @@ class Lobby extends BaseScene implements eui.UIComponent {
 				GameData.initPlayer(GameData.p2, GameData.userName, GameData.userId, GameData.avatarUrl);
 				this.startGame(false);
 				this.roomstate.visible = false;
-			}.bind(this), 3000)
+			}.bind(this), 1000)
 		} else {
 			if (this.roomstate.visible == true) {
 				Toast.show("创建房间成功,等待其他玩家加入");
@@ -199,7 +211,6 @@ class Lobby extends BaseScene implements eui.UIComponent {
 		if (this.isStart) {
 			return;
 		}
-		Toast.show("匹配成功，5秒后开始游戏");
 		this.isStart = true;
 		Delay.run(function () {
 			this.timerView.stop();
@@ -207,7 +218,7 @@ class Lobby extends BaseScene implements eui.UIComponent {
 			this.hideAllRoomView();
 			this.joinOver();
 			this.isStart = false;
-		}.bind(this), delay ? delay : 1000);
+		}.bind(this), delay ? delay : 300);
 	}
 
 	public mvsLeaveRoomNotify(leaveRoomInfo) {
@@ -268,17 +279,12 @@ class Lobby extends BaseScene implements eui.UIComponent {
 
 		var tags = { key: this.getPassWord() };
 		var matchinfo = new MsMatchInfo(maxPlayer, mode, canwatch, tags);
-		var watchset = new MVS.MsWatchSet(600000, 2, 60000, true);
 
 		let result = MvsManager.getInstance().joinRoomWithProperties(matchinfo, userProfile);
 		if (result != 0) {
 			Toast.show("已经创建了房间 ");
 		} else {
 			Toast.show("创建房间成功 ");
-			// this.room.visible = true;
-			// if (!this.loopReqRoomListTimer) {
-			// 	this.loopReqRoomListTimer = setInterval(loopReqRoomListFunc, 2000);
-			// }
 			var stack: any = this.findChild("stack");
 			stack.selectedIndex = 1;
 			this.roomstate.visible = true;
@@ -326,6 +332,9 @@ class Lobby extends BaseScene implements eui.UIComponent {
 				break;
 			case this.invite.name:
 				together("等你来战斗" + this.getPassWord(), "password=" + this.getPassWord());
+				break;
+			case this.btn_invite.name:
+				SceneManager.showScene(Invite);
 				break;
 		}
 		return true;
