@@ -12,6 +12,7 @@ class Invite extends BaseScene implements eui.UIComponent {
 	private isStart: boolean = false;
 	private isFromInvite: boolean = false;
 	private timer_wait = 0;
+	private query: any = {};
 	public constructor() {
 		super();
 	}
@@ -30,14 +31,13 @@ class Invite extends BaseScene implements eui.UIComponent {
 
 	}
 	private isLaunchFromInvite() {
-		var isFromShare = GameData.query;
+		var isFromShare = this.query;
 		if (isFromShare && JSON.stringify(isFromShare) != "{}") {
-			this.password.text = isFromShare ? GameData.query.password : this.password.text;
+			this.password.text = isFromShare ? this.query.password : this.password.text;
 			this.isFromInvite = true;
 			Toast.show("约战成功,正在进入房间:" + this.password.text);
 		} else {
 			console.log('[INFO] wx.share.query is null');
-			GameData.query = {};
 		}
 		this.joinRoomWithPassWord();
 	}
@@ -127,12 +127,13 @@ class Invite extends BaseScene implements eui.UIComponent {
 	}
 	protected onHide() {
 		this.timer_wait && clearInterval(this.timer_wait);
-		GameData.query = {};
+		this.query = {};
 		this.mvsUnBind();
 
 	}
-	protected onShow() {
+	protected onShow(par) {
 		this.mvsBind();
+		this.query = par;
 	}
 	public onClick(name: string, v: egret.DisplayObject) {
 		switch (v) {

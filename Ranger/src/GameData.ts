@@ -18,8 +18,8 @@ class GameData {
     public static avatarUrl: string = "avatar_png";
     public static token: string = "";
 
-    public static shareTicket: string = "";//wx.shareTicket
-    public static query: any = null;//wx.query
+    // public static shareTicket: string = "";//wx.shareTicket
+    // public static query: any = null;//wx.query
 
 
     public static roomId: string = "";

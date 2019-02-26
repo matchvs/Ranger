@@ -93,12 +93,12 @@ class Game extends BaseScene implements eui.UIComponent {
         this.isShowTip = (par && par.isShowTip) ? par.isShowTip : false;
         this.isLive = (par && par.isLive) ? par.isLive : false;
         // console.log("onshow,par:" + par);
-        NetWorkUtil.instance.addEventListener(this.onEvent.bind(this), NetWorkUtil.LEAVE_ROOM_NOTIFY);
+        NetWorkUtil.instance.addEventListener(this.onEvent, NetWorkUtil.LEAVE_ROOM_NOTIFY);
     }
     protected onHide() {
         console.log('Game onHide')
         // NetWorkUtil.instance.removeEventListener(this.onEvent.bind(this));
-        NetWorkUtil.instance.removeEventListener(NetWorkUtil.LEAVE_ROOM_NOTIFY);
+        NetWorkUtil.instance.removeEventListener(this.onEvent,NetWorkUtil.LEAVE_ROOM_NOTIFY,);
         this.stopGame()
     }
     protected onDestory() {

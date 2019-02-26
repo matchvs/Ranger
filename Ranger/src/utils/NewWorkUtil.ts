@@ -8,46 +8,50 @@ class NetWorkUtil {
         return true;
 
     }
-    private listeners: Array<any> = [];
+    private listeners: Object = { "boardcast": [] };
     public static boardcastException(stats: number) {
-        for (var i = 0; i < NetWorkUtil.instance.listeners.length; i++) {
-            NetWorkUtil.instance.listeners[i] && NetWorkUtil.instance.listeners[i].onEvent && NetWorkUtil.instance.listeners[i].onEvent(stats);
+        for (var i = 0; i < NetWorkUtil.instance.listeners["boardcast"].length; i++) {
+            var l = NetWorkUtil.instance.listeners["boardcast"][i];
+            l && l(stats);
         }
     }
     public static instance = new NetWorkUtil();
 
-    public addEventListener(l, event?) {
-        if (event) {
-            l["event"] = event;
+    public addEventListener(callback: Function, key?: any) {
+        if (!key) {
+            key = "boardcast";
         }
-        this.listeners.push(l);
+        if(!this.listeners[key]){
+            this.listeners[key]=[];
+        }
+        this.listeners[key].push(callback);
     }
-    // public removeEventListener(l) {
-    //     for (var i = 0; i < NetWorkUtil.instance.listeners.length; i++) {
-    //         if (NetWorkUtil.instance.listeners[i] == l
-    //             || (l["event"]
-    //                 && NetWorkUtil.instance.listeners[i]["event"]
-    //                 && NetWorkUtil.instance.listeners[i]["event"] == l["event"])) {
-    //             console.log('l["event"]', l["event"])
-    //             NetWorkUtil.instance.listeners[i] = null;
-    //         }
-    //     }
-    // }
-    public removeEventListener(name: number) {
-        for (var i = 0; i < NetWorkUtil.instance.listeners.length; i++) {
-            if (NetWorkUtil.instance.listeners[i]['event'] && NetWorkUtil.instance.listeners[i]['event'] === name) {
-                console.log(`removeEventListener ${name} success`)
+    public removeEventListener(callback: Function, key: any) {
+        if (!NetWorkUtil.instance.listeners[key]) return;
+
+        for (var i = 0; i < NetWorkUtil.instance.listeners[key].length; i++) {
+            if (NetWorkUtil.instance.listeners[key][i] && NetWorkUtil.instance.listeners[key][i] === key) {
+                console.log(`removeEventListener ${key} success`)
                 // NetWorkUtil.instance.listeners[i] = null;
-                NetWorkUtil.instance.listeners.splice(i, 1)
+                NetWorkUtil.instance.listeners[key].splice(i, 1)
             }
         }
     }
-    public static dispatchEvent(stats: number) {
-        for (var i = 0; i < NetWorkUtil.instance.listeners.length; i++) {
+    public static dispatchEvent(key: any, data?: any) {
+        if (!NetWorkUtil.instance.listeners[key]) return;
+
+        for (var i = 0; i < NetWorkUtil.instance.listeners[key].length; i++) {
+            if (NetWorkUtil.instance.listeners[key][i] && NetWorkUtil.instance.listeners[key][i] === key) {
+                console.log(`removeEventListener ${key} success`)
+                // NetWorkUtil.instance.listeners[i] = null;
+                NetWorkUtil.instance.listeners[key][i](key, data);
+            }
+        }
+        for (var i = 0; i < NetWorkUtil.instance.listeners[key].length; i++) {
             if (NetWorkUtil.instance.listeners[i]
                 && NetWorkUtil.instance.listeners[i]["event"]
-                && NetWorkUtil.instance.listeners[i]["event"] == stats) {
-                NetWorkUtil.instance.listeners[i](stats);
+                && NetWorkUtil.instance.listeners[i]["event"]["key"] == key) {
+
             }
 
         }

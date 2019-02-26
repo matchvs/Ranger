@@ -66,10 +66,10 @@ class Main extends egret.DisplayObjectContainer {
 
         if (window["wx"]) {
             window["wx"].onShow(function callback(res) {
-                GameData.shareTicket = res.shareTicket;
-                GameData.query = res.query;
-                console.log("wx.onshow.res :" + JSON.stringify(res));
-                console.log("GameData.query :" + GameData.query + " tosjon:" + JSON.stringify(GameData.query));
+                if (res.query && res.query != "{}") {
+                    NetWorkUtil.dispatchEvent("showFromInvite", res.query);
+                    Toast.show("来自微信分享");
+                }
             }.bind(this));
         }
 
@@ -185,7 +185,7 @@ class Main extends egret.DisplayObjectContainer {
         SceneManager.init(rootView);
         this.initAnimationData();
 
-        NetWorkUtil.instance.addEventListener(this);
+        NetWorkUtil.instance.addEventListener(this.onEvent);
         try {
             var require = window["require"];
             var mta = require('library/mta_analysis.js')

@@ -99,43 +99,29 @@ class Lobby extends BaseScene implements eui.UIComponent {
 		// 	console.log('[INFO] getWxShareInfo res:' + JSON.stringify(res));
 		// });
 		this.isLuancherFromInvate();
-		this.isShowFromInvate();
+	
 	}
-	private isLuancherFromInvate(){
-		  if (window["wx"]) {
-            var options = getLaunchOptionsSync();
-            if (options && JSON.stringify(options.query) != "{}") {
-                GameData.query = options.query;
-            }
-            console.log("GameData.query :" + GameData.query + " tosjon:" + JSON.stringify(GameData.query));
-            Toast.show("从微信邀请启动");
-            SceneManager.showScene(Invite);
-        }
-	}
-	private isShowFromInvate() {
-		var isFromShare = GameData.query;
-		if (isFromShare && JSON.stringify(isFromShare) != "{}") {
-			this.roomShortID.text = isFromShare ? GameData.query.password : this.password.text;
-			Toast.show("约战成功,正在进入房间:" + this.roomShortID.text);
-			this.onClick(this.joinRoomWithID.name, this.joinRoomWithID);
-		} else {
-			console.log('[INFO] wx.share.query is null');
-			GameData.query = {};
+	private isLuancherFromInvate() {
+		if (window["wx"]) {
+			var options = getLaunchOptionsSync();
+			if (options && JSON.stringify(options.query) != "{}") {
+				// GameData.query = options.query;
+				Toast.show("从微信邀请启动");
+				SceneManager.showScene(Invite, options.query);
+			}
+			// console.log("GameData.query :" + GameData.query + " tosjon:" + JSON.stringify(GameData.query));
 		}
 	}
-	private onWXShow = function (res) {
-		GameData.shareTicket = res.shareTicket;
-		GameData.query = res.query;
-		console.log("wx.onshow.res :" + JSON.stringify(res));
-		console.log("GameData.query :" + GameData.query + " tosjon:" + JSON.stringify(GameData.query));
-		this.isFromShareJoin();
+
+	private onWXShow = function (key, res) {
+		SceneManager.showScene(Invite, res);
 	}.bind(this);
+
+
 
 	protected onShow() {
 		this.mvsBind();
-		if (window["wx"]) {
-			window["wx"].onShow(this.onWXShow);
-		}
+		NetWorkUtil.instance.addEventListener(this.onWXShow, "showFromInvite");
 	}
 	protected onHide() {
 		this.timerView.stop();
@@ -145,9 +131,7 @@ class Lobby extends BaseScene implements eui.UIComponent {
 			clearInterval(this.loopReqRoomListTimer);
 			this.loopReqRoomListTimer = null;
 		}
-		if (window["wx"]) {
-			window["wx"].offShow(this.onWXShow);
-		}
+		NetWorkUtil.instance.removeEventListener(this.onWXShow, "showFromInvite");
 	}
 
 	public joinRoomRandom() {
