@@ -28,7 +28,7 @@ class Invite extends BaseScene implements eui.UIComponent {
 		super.childrenCreated();
 		this.password.text = Math.floor((Math.random() * 1000000) + 1) + "";//生成随机短号
 		this.isLaunchFromInvite();
-
+		console.log('[INFO] Invite.childrenCreadted');
 	}
 	private isLaunchFromInvite() {
 		var isFromShare = this.query;
@@ -134,6 +134,7 @@ class Invite extends BaseScene implements eui.UIComponent {
 	protected onShow(par) {
 		this.mvsBind();
 		this.query = par;
+		console.log('[INFO] Invite.show()'+par);
 	}
 	public onClick(name: string, v: egret.DisplayObject) {
 		switch (v) {

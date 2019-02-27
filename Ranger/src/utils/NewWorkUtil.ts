@@ -30,7 +30,7 @@ class NetWorkUtil {
         if (!NetWorkUtil.instance.listeners[key]) return;
 
         for (var i = 0; i < NetWorkUtil.instance.listeners[key].length; i++) {
-            if (NetWorkUtil.instance.listeners[key][i] && NetWorkUtil.instance.listeners[key][i] === key) {
+            if (NetWorkUtil.instance.listeners[key][i] ) {
                 console.log(`removeEventListener ${key} success`)
                 // NetWorkUtil.instance.listeners[i] = null;
                 NetWorkUtil.instance.listeners[key].splice(i, 1)
@@ -41,19 +41,12 @@ class NetWorkUtil {
         if (!NetWorkUtil.instance.listeners[key]) return;
 
         for (var i = 0; i < NetWorkUtil.instance.listeners[key].length; i++) {
-            if (NetWorkUtil.instance.listeners[key][i] && NetWorkUtil.instance.listeners[key][i] === key) {
-                console.log(`removeEventListener ${key} success`)
+            if (NetWorkUtil.instance.listeners[key][i]) {
+                console.log(`dispatchEvent ${key} success`)
                 // NetWorkUtil.instance.listeners[i] = null;
                 NetWorkUtil.instance.listeners[key][i](key, data);
             }
         }
-        for (var i = 0; i < NetWorkUtil.instance.listeners[key].length; i++) {
-            if (NetWorkUtil.instance.listeners[i]
-                && NetWorkUtil.instance.listeners[i]["event"]
-                && NetWorkUtil.instance.listeners[i]["event"]["key"] == key) {
 
-            }
-
-        }
     }
 }

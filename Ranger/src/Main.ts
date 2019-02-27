@@ -54,23 +54,25 @@ class Main extends egret.DisplayObjectContainer {
         })
         egret.lifecycle.onPause = () => {
             // egret.ticker.pause();
-            // console.log('[INFO] [lifecycle] onPause');
+            console.log('[INFO] [lifecycle] onPause');
             // SoundUtils.instance().stopBg();
         }
 
         egret.lifecycle.onResume = () => {
             // egret.ticker.resume();
-            // console.log('[INFO] [lifecycle] onResume');
+            console.log('[INFO] [lifecycle] onResume');
             // SoundUtils.instance().stopBg();
         }
 
         if (window["wx"]) {
             window["wx"].onShow(function callback(res) {
-                if (res.query && res.query != "{}") {
+                console.log('[INFO] wx.onShow'+res);
+                if (res.query && JSON.stringify(res.query) != "{}") {
                     NetWorkUtil.dispatchEvent("showFromInvite", res.query);
-                    Toast.show("来自微信分享");
+                    Toast.show("来自微信分享"+JSON.stringify(res.query));
                 }
             }.bind(this));
+            console.log('[INFO] add wx.onShow listener');
         }
 
         if (window["FBInstant"] != undefined) {

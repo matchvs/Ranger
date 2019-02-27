@@ -114,6 +114,7 @@ class Lobby extends BaseScene implements eui.UIComponent {
 	}
 
 	private onWXShow = function (key, res) {
+		console.log('[INFO] onDispatch '+ JSON.stringify(res));
 		SceneManager.showScene(Invite, res);
 	}.bind(this);
 
@@ -121,6 +122,7 @@ class Lobby extends BaseScene implements eui.UIComponent {
 
 	protected onShow() {
 		this.mvsBind();
+		console.log('[INFO] Lobby.onShow');
 		NetWorkUtil.instance.addEventListener(this.onWXShow, "showFromInvite");
 	}
 	protected onHide() {
