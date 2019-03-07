@@ -103,7 +103,7 @@
 			<e:Image id="score20010" width="30" height="28" source="number-09" scaleX="1" scaleY="1" x="60" y="0"/>
 			<e:Image id="score20001" width="30" height="28" source="number-09" scaleX="1" scaleY="1" x="90" y="0"/>
 		</e:Group>
-		<e:Label id="ping" text="ping:0" x="4" y="4" textColor="0xff0707" fontFamily="KaiTi" size="18"/>
+		<e:Label id="ping" text="ping:0" x="4" y="4" textColor="0xff0707" fontFamily="KaiTi" size="18" touchEnabled="true"/>
 	</e:Group>
 	<e:Group width="480" height="800" x="0" y="0" id="tips" anchorOffsetX="0" anchorOffsetY="0" visible="false">
 		<e:Image width="480" height="800" x="0" y="0" source="mask_png"/>

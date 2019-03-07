@@ -37,6 +37,7 @@ class GameLogic {
     private lastRecNewPkgTime: number = 0;
 
     private gameState = GameData.GAME_STATUS_PLAY;
+    private pingWindow: PingWindow;
     public constructor(gameView: BaseScene) {
 
         this.root = gameView;
@@ -158,6 +159,9 @@ class GameLogic {
             this.boardGameOver(GameData.getMePlayer());
             return;
         }
+        if (time % 10 == 0) {
+            this.boardPing();
+        }
 
         if (timeReal - this.lastCreatEnemy > this.speedCreatEnemyInterval) {
             this.boardCreateEnemy(timeReal);
@@ -172,10 +176,10 @@ class GameLogic {
 
     }
     public handlerAllGameEvent(data) {
-        if (GameData.debug) {
-            this.ping.text = "pkg interval:" + (new Date().getMilliseconds() - this.lastRecNewPkgTime);
-            this.lastRecNewPkgTime = new Date().getMilliseconds();
-        }
+        // if (GameData.debug) {
+        //     this.ping.text = "pkg interval:" + (new Date().getMilliseconds() - this.lastRecNewPkgTime);
+        //     this.lastRecNewPkgTime = new Date().getMilliseconds();
+        // }
         let items = data.frameItems ? data.frameItems : [{ "cpProto": data }];
         for (let i = 0; i < items.length; i++) {
             let jsonItems = JSON.parse(items[i].cpProto);
@@ -191,6 +195,12 @@ class GameLogic {
                 this.handlerChangeBlood(jsonItems, Const.RELIVE_ACTION);
             } else if (event === Const.GAME_OVER_EVENT) {
                 this.showGameOver();
+            } else if (event === Const.PING) {
+                if (jsonItems["ID"] = GameData.getMePlayer().userId) {
+                    var ping = new Date().getTime() - jsonItems["time"];
+                    this.pingWindow && this.pingWindow.update(ping);
+                }
+
             } else {
                 this.handlerMove(jsonItems);
             }
@@ -330,7 +340,7 @@ class GameLogic {
 
     public dropBlood(player, type: string): void {
         var player: any = GameData.getPlayer(type);
-        console.log('[INFO] dropBlood,type:' + type + "   player:" + player.blood+" ("+player.type);
+        console.log('[INFO] dropBlood,type:' + type + "   player:" + player.blood + " (" + player.type);
         var bloodbar = (type === GameData.p1 ? this.blodBar1 : this.blodBar2);
         if (player.isDie) {
             return;
@@ -526,6 +536,21 @@ class GameLogic {
         }
     }
 
+    public boardPing() {
+        let data = JSON.stringify({
+            event: Const.PING,
+            time: new Date().getTime(),
+            ID:GameData.getMePlayer().userId
+        })
+
+        let result = MvsManager.getInstance().sendFrameEvent(data);
+        if (result === 0) {
+        } else {
+            this.onFailSendFrameEvent(data);
+            // console.error('sendFrameEvent reliveFun error', result)
+        }
+    }
+
     // bomb
     public bombArr: Array<Bomb> = [];
     public initBomb(maxBoomCahceSize): void {
@@ -565,4 +590,8 @@ class GameLogic {
         this.dispose();
         this.root.finish();
     }
+
+    public setPingWindow(p: PingWindow) {
+        this.pingWindow = p;
+    };
 }

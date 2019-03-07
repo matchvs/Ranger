@@ -13,6 +13,7 @@ class Game extends BaseScene implements eui.UIComponent {
     private isPause = false;//游戏暂停
     private logic: GameLogic;//游戏战斗逻辑
     private timer;
+    private pingWindow: PingWindow;
     public constructor() {
         super();
     }
@@ -42,6 +43,13 @@ class Game extends BaseScene implements eui.UIComponent {
                 this.startNetGame();
             }
         }
+        this.pingWindow = new PingWindow();
+        var s = this.pingWindow.init(720, 360);
+        s.y = 40;
+        this.addChild(s);
+        this.pingWindow.toggle();
+        this.logic.setPingWindow(this.pingWindow);
+
     }
 
     //在线网络游戏模式
@@ -98,7 +106,7 @@ class Game extends BaseScene implements eui.UIComponent {
     protected onHide() {
         console.log('Game onHide')
         // NetWorkUtil.instance.removeEventListener(this.onEvent.bind(this));
-        NetWorkUtil.instance.removeEventListener(this.onEvent,NetWorkUtil.LEAVE_ROOM_NOTIFY,);
+        NetWorkUtil.instance.removeEventListener(this.onEvent, NetWorkUtil.LEAVE_ROOM_NOTIFY, );
         this.stopGame()
     }
     protected onDestory() {
@@ -112,7 +120,7 @@ class Game extends BaseScene implements eui.UIComponent {
         } else {
             this.stopGame();
             MvsManager.getInstance().leaveRoom("");
-            if(this.isLive)MvsManager.getInstance().leaveWatchRoom("");
+            if (this.isLive) MvsManager.getInstance().leaveWatchRoom("");
         }
         SoundUtils.instance().stopBg();
         SceneManager.back();
@@ -166,6 +174,9 @@ class Game extends BaseScene implements eui.UIComponent {
                 // GameData.getPlayer(GameData.type).score = -1;
 
                 this.finish();
+                break;
+            case "ping":
+                this.pingWindow.toggle();
                 break;
         }
         return true;

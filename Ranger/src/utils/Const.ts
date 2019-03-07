@@ -52,6 +52,7 @@ class Const {
 
     public static MOVE_EVENT: string = "move_event";
     public static GAME_OVER_EVENT: string = "move_game_over";
+    public static PING: string = "ping";
 
     public static ADD_ACTION: string = "add_action";
     public static DROP_ACTION: string = "drop_action";
