@@ -67,7 +67,9 @@ class Login extends BaseScene implements eui.UIComponent {
         }
         else {
             console.info('[ERROR] mvsErrorResponse', arguments);
-            this.loading.press2close("异常:code: " + code + ", msg:" + errMsg, function () { NetWorkUtil.checkStatsEeception(code); }.bind(this));
+            this.loading.press2close("异常:code: " + code + ", msg:" + errMsg, function () {
+                NetWorkUtil.checkStatsEeception(code);
+            }.bind(this));
             Toast.show("异常:code: " + code + ", msg:" + errMsg);
 
         }
@@ -123,13 +125,13 @@ class Login extends BaseScene implements eui.UIComponent {
         }
         else if (name == "exit") {
 
-           if(window["wx"]){
-               window["wx"].exitMiniProgram({
-                   success:function(){},
-                   fail:function(){},
-                   complete:function(){},
-               });
-           }
+            if (window["wx"]) {
+                window["wx"].exitMiniProgram({
+                    success: function () { },
+                    fail: function () { },
+                    complete: function () { },
+                });
+            }
         }
         return true;
     }

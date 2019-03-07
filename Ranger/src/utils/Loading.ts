@@ -95,6 +95,7 @@ class Loading extends egret.Sprite {
     public press2close(msg, func?) {
         if (!this.isShow) {
             console.log('[INFO] loading is not  showoing');
+            func && func();
             return;
         }
         this.textField.text = "[error] " + msg;
