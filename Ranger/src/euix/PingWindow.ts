@@ -1,5 +1,5 @@
 class PingWindow {
-	private v ;
+	private v;
 	public toggle() {
 		this.v.visible = !this.v.visible;
 	}
@@ -69,11 +69,30 @@ class PingWindow {
 		}.bind(this), 100);
 		return v;
 	}
+
+	private stat(ping) {
+		try {
+			if (window["MtaH5"]) {
+				var pingrange = "0-60";
+				if (ping > 60 && ping <= 100) {
+					pingrange = "61-100";
+				} else if (ping > 100 && ping <= 200) {
+					pingrange = "101-200";
+				} else if (ping > 200) {
+					pingrange = "201+";
+				}
+				window["MtaH5"].clickStat("pingrange", { "pingrange": pingrange });
+			}
+		} catch (error) {
+			console.log('[stat err] ' + error);
+		}
+	}
 	public update(ping: number) {
-		console.log('[INFO] ping:'+ping);
+		console.log('[INFO] ping:' + ping);
 		this.pings.unshift(ping);
 		while (this.pings.length > (this.width / this.padding)) {
 			this.pings.pop();
 		}
+		this.stat(ping);
 	}
 }
