@@ -1,8 +1,12 @@
-/************************************************************************************************************
- * Describe :   Matchvs skd .d.ts define files for typescrip
- * Version  :   Develop v3.7.4.0
- * CHANGE   :   2018.09.01
- ************************************************************************************************************/
+/*
+ * @Company: Matchvs
+ * @Author: Ville
+ * @Date: 2018-04-17 17:46:35
+ * @LastEditors: Ville
+ * @LastEditTime: 2019-02-27 15:38:32
+ * @Version: Develop v3.7.5.+
+ * @Description: Matchvs skd .d.ts define files for typescrip
+ */
 
 declare namespace MVS{
 
@@ -14,7 +18,8 @@ declare namespace MVS{
         public startIndex:number;
         public timestamp:string;
         public enableGS:number;
-        constructor(frameRate:number, startIndex:number, timestamp:string,enableGS:number);
+        public cacheFrameMS:number;
+        constructor(frameRate:number, startIndex:number, timestamp:string,enableGS:number, cacheFrameMS:number);
     }
 
     /**
@@ -92,6 +97,83 @@ declare namespace MVS{
         constructor(status:number, targetRoomType:number);
     }
 
+    class MsCreateTeamInfo{
+        public password:string;
+        public capacity:number;
+        public mode:number;
+        public visibility:number;
+        public userProfile:string;
+        /**
+         * Creates an instance of MsCreateTeamInfo.
+         * @param {string} [password] 队伍密码
+         * @param {number} [capacity] 队伍人数容量
+         * @param {number} [mode] 模式-由开发者自己定义
+         * @param {number} [visibility] 0-不可见 1-可见
+         * @param {string} [userProfile] 用户自定义信息
+         * @memberof MsCreateTeamInfo
+         */
+        constructor(password?:string, capacity?:number, mode?:number, visibility?:number, userProfile?:string);
+    }
+
+    class MsTeamMatchCond{
+        public teamNum:number;
+        public teamMemberNum:number;
+        public timeout:number;
+        public weight:number;
+        public weightRange:number;
+        public weightRule:number;
+        public full:number;
+        /**
+         *Creates an instance of MsTeamMatchCond.
+         * @param {number} [teamNum] 匹配的队伍数
+         * @param {number} [teamMemberNum] 每个队伍的人数加满多少人
+         * @param {number} [timeout] 匹配多久视为超时
+         * @param {number} [weight] 匹配的权重值   比如：10
+         * @param {number} [weightRange] 权重值范围 比如：5  则匹配范围是 5-15
+         * @param {number} [weightRule] 权值匹配规则，默认 0-平均值
+         * @param {number} [full] 是否人满匹配，0-人不满也可以匹配，1-人满匹配 (人不满匹配不到会超时报422错误码)
+         * @memberof MsTeamMatchCond
+         */
+        constructor(teamNum?:number, teamMemberNum?: number, timeout?: number, weight?: number, weightRange?: number, weightRule?: number, full?:number);
+    }
+
+    class MsTeamMatchInfo{
+        public roomName: string;
+        public maxPlayer: number;
+        public canWatch: number;
+        public mode: number;
+        public visibility: number;
+        public roomProperty: string;
+        public watchSet:MsWatchSet;
+        public cond:MsTeamMatchCond;
+        /**
+         *Creates an instance of MsTeamMatchInfo.
+         * @param {string} roomName 房间名称
+         * @param {number} maxPlayer 最大人数，如果
+         * @param {number} canWatch 是否打开观战 1-可以 2-不可以，配合 watchSet 参数使用
+         * @param {number} mode 模式-由开发者自己定义
+         * @param {number} visibility 0-不可见 1-可见
+         * @param {string} roomProperty 自定义房间信息
+         * @param {MsWatchSet} watchSet 观战信息， canWatch 为 1的时候有效
+         * @param {MsTeamMatchCond} cond 队伍匹配参数设置
+         * @memberof MsTeamMatchInfo
+         */
+        constructor(roomName: string, maxPlayer: number, canWatch: number, mode: number, visibility: number, roomProperty: string, cond: MsTeamMatchCond, watchSet: MsWatchSet);
+    }
+
+    class MsJoinTeamInfo{
+        public teamID:string;
+        public password:string;
+        public userProfile:string;
+        /**
+         *Creates an instance of MsJoinTeamInfo.
+         * @param {string} teamID      队伍ID号
+         * @param {string} password    队伍密码
+         * @param {string} userProfile 自定义队伍信息
+         * @memberof MsJoinTeamInfo
+         */
+        constructor(teamID: string, password: string, userProfile: string);
+    }
 }
 
 
@@ -181,13 +263,17 @@ declare class MsJoinOverNotifyInfo{
  * @param {number} mode         房间模式，由cp自己定义
  * @param {number} canWatch     可观战人数 1-可以 2-不可以
  * @param tags                  实际为 object 使用属性匹配时定义的协议，为 key-value 对象{key:value,key:value}
+ * @param {number} visibility   0-房间不可见，1-房间可见
+ * @param {string} roomProperty 房间自定义属性值
  */
 declare class MsMatchInfo{
     public maxPlayer:number;
     public mode:number;
     public canWatch:number;
     public tags:any;
-    constructor(maxPlayer:number, mode:number, canWatch:number, tags:any)
+    public visibility:number;
+    public roomProperty:string
+    constructor(maxPlayer:number, mode:number, canWatch:number, tags:any,visibility ?:number, roomProperty?:string)
 }
 
 /**
@@ -222,7 +308,7 @@ declare class MsRoomUserInfo{
  *
  * @param {number} maxPlayer    最大人数
  * @param {number} mode         房间模式，由cp自己定义
- * @param {number} canWatch     可观战人数 1-可以 2-不可以
+ * @param {number} canWatch     可观战 1-可以 2-不可以
  * @param {string} roomProperty 房间属性，开发者自定义数据，比如地图
  */
 declare class MsRoomFilter{
@@ -279,8 +365,11 @@ declare class MsGetRoomDetailRsp{
     public owner:number;
     public createFlag:number;
     public userInfos:Array<MsRoomUserInfo>;
+    public watchinfo: any;
+    public brigades: Array<any>;
     constructor(status:number, state:number, maxPlayer:number, mode:number, canWatch:number,
-                roomProperty:number, owner:number, createFlag:number, userInfos:Array<MsRoomUserInfo>);
+                roomProperty:number, owner:number, createFlag:number, userInfos:Array<MsRoomUserInfo>,
+        watchinfo?:any, brigades?:Array<any>);
 }
 
 /**
@@ -309,8 +398,9 @@ declare class MsRoomAttribute{
     public owner:number;
     public state:number;
     public createTime:string;
+    public watchSet:MVS.MsWatchSet;
     constructor(roomID:string, roomName:string, maxPlayer:number, gamePlayer:number, watchPlayer:number,
-                mode:number, canWatch:number, roomProperty:string, owner:number, state:number, createTime:string);
+                mode:number, canWatch:number, roomProperty:string, owner:number, state:number, createTime:string, watchSet:MVS.MsWatchSet);
 }
 
 /**
@@ -906,13 +996,13 @@ declare class MatchvsResponse {
      * @param {MsRoomInfo} roomInfo
      */
     reconnectResponse(status:number, roomUserInfoList:Array<MsRoomUserInfo>, roomInfo:MsRoomInfo);
-	
+
 	 /**
      * 允许房间加人的通知
      * @param {MsReopenRoomNotify} data
      */
 	joinOpenNotify(data:MsReopenRoomNotify);
-	
+
 	 /**
      * 设置允许房间加人的结果
      * @param {MsReopenRoomResponse} data
@@ -973,8 +1063,157 @@ declare class MatchvsResponse {
      */
     changeRoleResponse(status:MVS.MsChangeRoleRsp):void
 
+    /**
+     * 超时时间设置回调函数
+     * @param {number} status 回调状态 200成功
+     */
+    setReconnectTimeoutResponse(status:number):void
 
+    /**
+     * 创建组队同步放回信息
+     * @param {*} rps
+     * @param {number} rps.status
+     * @param {string} rps.teamID
+     * @param {number} rps.owner
+     * @memberof MatchvsResponse
+     */
+    createTeamResponse(rps:any):void
 
+    /**
+     * 加入队伍返回信息
+     * @param {*} rsp
+     * @param {*} rsp.team //队伍信息
+     * @param {number} rsp.team.teamID 队伍号
+     * @param {string} rsp.team.password 队伍验证信息
+     * @param {number} rsp.team.capacity 队伍人数容量
+     * @param {number} rsp.team.mode 模式-开发者自定义的值
+     * @param {number} rsp.team.owner 队长
+     * @param {number} rsp.status 加入队伍状态值
+     * @param {Array<any>} rsp.userList [{userID:, userProfile:,}]
+     * @memberof MatchvsResponse
+     */
+    joinTeamResponse(rsp:any):void
+
+    /**
+     * 加入队伍异步返回信息，有人加入队伍的时候，在队伍中的其他人会收到这个接口的通知
+     * @param {*} rsp
+     * @param {*} rsp.user 队伍中的用户
+     * @param {number} rsp.user.userID 用户ID
+     * @param {string} rsp.user.userProfile 加入队伍时，传入的自定义信息
+     * @memberof MatchvsResponse
+     */
+    joinTeamNotify(rsp:any):void
+
+    /**
+     * 离开队伍回调信息
+     * @param {*} rsp
+     * @param {number} rsp.userID 离开者ID
+     * @param {number} rsp.teamID 离开的队伍号
+     * @param {number} rsp.status 状态值 200 成功
+     * @memberof MatchvsResponse
+     */
+    leaveTeamResponse(rsp:any):void
+
+    /**
+     * 有人离开队伍，其他人收到的通知接口
+     * @param {*} rsp
+     * @param {number} rsp.teamID 离开的队伍
+     * @param {number} rsp.userID 离开者
+     * @param {number} rsp.owner 队长
+     * @memberof MatchvsResponse
+     */
+    leaveTeamNotify(rsp:any):void
+
+    /**
+     * 队伍中发起匹配者会收到这个回调，表示正在匹配中
+     * @param {*} rsp
+     * @param {number} rsp.status 匹配状态
+     * @memberof MatchvsResponse
+     */
+    teamMatchResponse(rsp:any):void
+
+    /**
+     * 发起匹配后，队伍中所有人都会收到匹配结果通知
+     * @param {*} rsp
+     * @param {number} rsp.status 配置的状态，200 成功，422 超时
+     * @param {Array<any>} rsp.brigades 配置到队伍，大队伍列表信息
+     * @param {number} rsp.brigades.brigadeID 大队伍ID号
+     * @param {Array<any>} rsp.brigades.playerList 小队伍玩家列表
+     * @param {number} rsp.brigades.playerList.userID 小队伍玩家ID
+     * @param {string} rsp.brigades.playerList.userProfile 小队伍玩家自定义数据
+     * @memberof MatchvsResponse
+     */
+    teamMatchResultNotify(rsp:any):void
+    /**
+     * 队伍中如果有人发起匹配，其他人会收到这个开启匹配的通知
+     * @param {*} rsp
+     * @param {*} rsp.teamID 队伍号
+     * @param {*} rsp.userID 发起匹配者ID
+     * @memberof MatchvsResponse
+     */
+    teamMatchStartNotify(rsp:any):void
+
+    /**
+     *
+     * @param {number} rsp.status 状态值
+     * @param {number} rsp.frameCount 帧数量
+     * @param {number} rsp.msgCount 消息数量
+     */
+    getOffLineDataResponse(rsp:any);
+
+    /**
+     * 取消组队匹配返回，但调用 cancelTeamMatch 接口后，通过这个接口接收服务的结果
+     * @param {number} rsp.status
+     */
+    cancelTeamMatchResponse(rsp:any);
+
+    /**
+     * 取消组队匹配时
+     * @param {any} notify 
+     * @param {number} notify.userID 取消组队匹配的玩家ID
+     * @param {string} notify.teamID 当前的队伍号
+     * @param {string} notify.cpProto 取消时附带的消息
+     */
+    cancelTeamMatchNotify(notify:any);
+
+    /**
+     * 在队伍中发送消息回调，调用sendTeamEvent 接口后，这个接口收到发送的结果
+     * @param {any} rsp
+     * @param {number} rsp.status 发送队伍消息的结果，200 成功。
+     * @param {Array<number>} rsp.dstUserIDs 发送消息给了哪些玩家。
+     */
+    sendTeamEventResponse(rsp:any);
+
+    /**
+     * 接收忘记发送队伍消息，当其他玩家在队伍中发送消息时，其他指定的玩家就能收到这个接口的回调
+     * @param {any} notify
+     * @param {any} notify.userID 发送消息的玩家ID
+     * @param {any} notify.teamID 当前队伍号
+     * @param {string} notify.cpProto 收到的数据
+     */
+    sendTeamEventNotify(notify:any);
+
+    /**
+     * 调用 kickTeamMember 接口后，通过这个接口获取服务的结果
+     * @param {any} rsp
+     * @param {number} rsp.status 状态 200 表示成功
+     * @param {Array<number>} rsp.members 队伍内剩下的玩家
+     * @param {number} rsp.owner 当前队伍中队长
+     * @param {string} rsp.teamID 当前队伍号
+     */
+    kickTeamMemberResponse(rsp:any);
+
+    /**
+     * 收到踢人通知，当队伍中有人触发踢人接口，其他人就会收到这个接口的通知
+     * @param {any} notify 
+     * @param {string} notify.teamID 当前队伍号
+     * @param {number} notify.userID 当前发起踢人的玩家号
+     * @param {number} notify.dstUserID 被踢的玩家号
+     * @param {number} notify.owner 当前队伍的队长
+     * @param {Array<number>} notify.members 队伍中剩下的玩家
+     * @param {string} notify.cpProto 踢人时携带的消息
+     */
+    kickTeamMemberNotify(notify:any);
 }
 
 
@@ -995,33 +1234,48 @@ declare class MatchvsEngine {
      * @param {string} pChannel     默认填写 "Matchvs"
      * @param {string} pPlatform    有 release和alpha 两个值，对应两个不同环境。
      * @param {number} gameID       游戏ID，官网生成
+     * @param {number} appKey       游戏 App key 官网生成
+     * @param {number} gameVersion       游戏版本，自定义，用于隔离匹配空间
+     * @param {number} threshold       用于多节点获取，设置节点的延迟容忍值。
      * @returns {number}
      */
-    init(pResponse: MatchvsResponse, pChannel: string, pPlatform: string, gameID: number): number
+    init(pResponse: MatchvsResponse, pChannel: string, pPlatform: string, gameID: number, appKey: string, gameVersion: number, threshold ?:number): number
+
 
     /**
      * 用于独立部署的初始化接口，初始化，后续收到的回调是都是由该对象初始化的pResponse对象控制。
      * @param {MatchvsResponse} pResponse 这个参数需要保证全局唯一，避免在重定MatchvsResponse类型值时收不到 相关接口的
      * @param {string} endPoint matchvs 服务部署的地址 有端口就要加上端口号,例如：www.matchvs.com:12345
      * @param {number} gameID   独立部署配置的 游戏ID
+     * @param {number} appKey       游戏 App key 官网生成
      * @returns {number} 0-成功
      */
-    premiseInit(pResponse: MatchvsResponse, endPoint:string, gameID:number): number
+    premiseInit(pResponse: MatchvsResponse, endPoint:string, gameID:number, appKey: string): number
+
+    /**
+     * 获取节点，只有init 的时候传入了 threshold 参数才可使用
+     * @returns {number} nodeID 节点ID
+     * @returns {number} latency 当前节点延迟
+     * @returns {number} area 节点位置
+     */
+    getNodeList():Array<any>
+
+    /**
+     * init 如果有传入 threshold 参数就可以使用这个接口，切换到指定节点，但处在登录，或者非登录模式都可以
+     * @param {number} args.nodeID 要切换的节点ID
+     */
+    changeNode(args:Object):number
 
     /**
      * 登录
      * @param {number} pUserID 用户ID，该值必须使用 registerUser接口回调的用户ID
      * @param {string} pToken  用户验证字段，用于验证 userID
-     * @param {number} pGameID      游戏ID，由 matchvs 官网生成
-     * @param {number} pGameVersion 开发者自定义 默认 1
-     * @param {string} pAppkey      游戏key 由 matchvs 官网生成
-     * @param {string} pSecretKey   游戏秘钥 由 matchvs 官网生成
      * @param pDeviceID             用于区分 用户在不同设备登录情况，用户只能在一个设备登录，默认填1，如果允许一个设备登录就要开发者
      *                              自定义唯一值，或者获取 设备ID值
-     * @param pGatewayID            默认填0
+     * @param {number} nodeID 节点ID，如果不传就使用默认节点，如果传了的话需要同时，init的时候设置threshold参数
      * @returns {number}
      */
-    login(pUserID: number, pToken: string, pGameID: number, pGameVersion: number, pAppkey: string, pSecretKey: string, pDeviceID: string, pGatewayID: number): number
+    login(pUserID: number, pToken: string, pDeviceID: string, nodeID?:number): number
 
     /**
      * 用户网关速度，暂时不用
@@ -1090,9 +1344,10 @@ declare class MatchvsEngine {
      * 同一个房间。matchinfo 类型的 tags 是 {key=value,key1=value2} 类型，可以指定多个属性。
      * @param {MsMatchInfo} matchinfo 匹配属性规则类型
      * @param {string} userProfile 加入房间附带消息，由用户自己定义，比如：头像，分数等
+     * @param {MVS.MsWatchSet} watchSet matchvsinfo 中的 canWatch设置为1(可观战),需要设置这个参数
      * @returns {number}
      */
-    joinRoomWithProperties(matchinfo:MsMatchInfo, userProfile:string):number
+    joinRoomWithProperties(matchinfo:MsMatchInfo, userProfile:string, watchSet?:MVS.MsWatchSet):number
 
     /**
      * 加入指定房间，通过rooID 加入到指定的房间
@@ -1145,9 +1400,11 @@ declare class MatchvsEngine {
      * frameRate ex:10/s . = 0 is off,>0 is on.
      * @param {number} frameRate
      * @param {number} enableGS 0-gs不参与帧同步 1-gs参与帧同步
+     * @param {any} other 其他数据
+     * @param {any} other.cacheFrameMS 其他数据
      * @returns {number}
      */
-    setFrameSync(frameRate:number, enableGS?:number ):number
+    setFrameSync(frameRate:number, enableGS?:number , other?:any):number
 
 
     /**
@@ -1175,9 +1432,9 @@ declare class MatchvsEngine {
 
     /**
      * 发送消息的扩展，sequence 的用途和 sendEvent 返回的 sequence 相同
-     * @param {number} msgType          0-包含destUids  1-排除destUids
+     * @param {number} msgType          0-客户端+not GameServer  1-not客户端 + GameServer   2-客户端 + GameServer
      * @param {string} data             要发送的数据
-     * @param {number} desttype         0-客户端+not CPS  1-not客户端+ CPS   2-客户端 + CPS
+     * @param {number} desttype         0-包含destUids  1-排除destUids
      * @param {Array<number>} userIDs   玩家ID集合 [1,2,3,4,5]
      * @returns {{sequence: number, result: number}}
      */
@@ -1197,30 +1454,13 @@ declare class MatchvsEngine {
      * @returns {number}
      */
     logout(cpProto:string):number
-	
+
 	/**
      * 设置允许房间加人，与 joinOver 对应
      * @param {number} cpProto 开发者自定义数据
      * @returns {number}
      */
     joinOpen(cpProto:string):number
-	
-	/**
-	* 存储数据
-	* @param {number} gameID 游戏ID
-	* @param {number} userID 用户ID
-	* @param {string} key    存储键
-	* @param {any} value     存储值
-	*/
-	hashSet (gameID, userID, key, value) :void
-	
-	/**
-	* 存储数据
-	* @param {number} gameID
-	* @param {number} userID
-	* @param {string} key
-	*/
-	hashGet (gameID, userID, key) :void
 
     /**
      * 加入观战房间
@@ -1253,23 +1493,73 @@ declare class MatchvsEngine {
      * @param rType 0-切换到游戏模式，1-切换到观战模式 如果返回 -30 表示你当前模式与切换模式相同
      */
     changeRole(userProfile:string, rType:number):number
-	
-}
-declare class md5 {
-	 constructor();//构造函数
-	 
-	/**
-	*
-	*/
-	hex_md5 (s:string) :string
 
+    /**
+     * 断线后重连超时时间设置
+     * @param {number} timeout 时间以秒为单位
+     */
+    setReconnectTimeout(timeout:number):number
+
+    /**
+     * 创建组队
+     * @param {MVS.MsCreateTeamInfo} teaminfo
+     * @returns {number}
+     * @memberof MatchvsEngine
+     */
+    createTeam(teaminfo: MVS.MsCreateTeamInfo):number
+
+    /**
+     * 加入组队队伍，队伍必须是由 createTeam 接口创建的
+     * @param {MVS.MsJoinTeamInfo} teaminfo
+     * @returns {number}
+     * @memberof MatchvsEngine
+     */
+    joinTeam(teaminfo:MVS.MsJoinTeamInfo):number
+
+    /**
+     * 离开组队队伍
+     * @returns {number}
+     * @memberof MatchvsEngine
+     */
+    leaveTeam():number
+
+    /**
+     * 加入的队伍之后，可以由队伍中的任何一个人发起队伍匹配
+     * @param {MVS.MsTeamMatchInfo} matchInfo
+     * @returns {number}
+     * @memberof MatchvsEngine
+     */
+    teamMatch(matchInfo:MVS.MsTeamMatchInfo):number
+
+    /**
+     * 获取断线期间的帧数据，只有开启的帧同步功能才能有效
+     * @param cacheFrameMS
+     */
+    getOffLineData(cacheFrameMS:number):number
+
+    /**
+     * 取消组队匹配，只有在组队匹配的时候才能调用这个接口
+     * @param {object} args
+     * @param {string} args.cpProto 取消组队匹配时携带的消息 长度不能超过 1024/B
+     */
+    cancelTeamMatch(args:object):number
+
+    /**
+     * 组队时，进入到同一个队伍中的玩家，可以通过这个接口来发送消息。这个消息发送频率是有限制 50ms/条。
+     * @param {object} args
+     * @param {number} args.dstType 0-包含dstUids  1-排除dstUids
+     * @param {number} args.msgType 0-只发client  1-只发gs  2-client和 gs 都发
+     * @param {Array<number>} args.dstUserIDs 指定的用户列表 配合 dstType 使用
+     * @param {string} args.data 发送的数据 长度不能超过 1024/B
+     */
+    sendTeamEvent(args:object):number
+
+    /**
+     * 剔除队伍中的指定玩家，队伍中任何人都可以剔除任意人，但是不能剔除自己。
+     * @param {object} args
+     * @param {number} args.userID 要剔除的玩家
+     * @param {number} args.cpProto 剔除玩家时携带的信息，长度不能超过 1024/B
+     */
+    kickTeamMember(args:object):number
 }
 
-declare class MatchvsHttp {
-	constructor(callBack);//构造函数
-	
-	
-	get(url);
-	
- 
-}

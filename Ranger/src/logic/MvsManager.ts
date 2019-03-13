@@ -13,7 +13,8 @@ class MvsManager {
     }
 
     public init(): any {
-        return MvsManager.engine.init(MvsManager.response, Const.channel, Const.platform, Const.gameId);
+        return MvsManager.engine.init(MvsManager.response, Const.channel, Const.platform, Const.gameId,
+            Const.appKey,  Const.gameVersion);
     }
 
     public uninit(): any {
@@ -25,8 +26,7 @@ class MvsManager {
     }
 
     public login(): any {
-        return MvsManager.engine.login(GameData.userId, GameData.token, Const.gameId, Const.gameVersion,
-            Const.appKey, Const.secretKey, Const.deviceId, Const.gatewayId)
+        return MvsManager.engine.login(GameData.userId, GameData.token, Const.deviceId,0)
     }
 
     public logout(cpProto): any {

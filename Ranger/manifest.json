@@ -9,7 +9,8 @@
 		"libs/modules/assetsmanager/assetsmanager.js",
 		"libs/modules/matchvs/matchvs.js",
 		"libs/modules/wxshare/wxshare.js",
-		"libs/modules/promise/promise.js"
+		"libs/modules/promise/promise.js",
+		"libs/modules/socket/socket.js"
 	],
 	"game": [
 		"bin-debug/starlingswf/display/SwfSprite.js",

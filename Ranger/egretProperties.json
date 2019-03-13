@@ -46,6 +46,9 @@
     },
     {
       "name": "promise"
+    },
+    {
+      "name": "socket"
     }
   ],
   "targets": {
